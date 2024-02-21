@@ -19,6 +19,14 @@ const bodyTextMonserat14 = TextStyle(
   package: "xefi_flutter_ui_kit",
 );
 
+const titleText1 = TextStyle(
+  fontSize: 24,
+  fontWeight: FontWeight.w700,
+  fontStyle: FontStyle.normal,
+  fontFamily: "Montserrat",
+  package: "xefi_flutter_ui_kit",
+);
+
 ThemeData xMyTheme = ThemeData(
   primaryColor: Colors.red, // Couleur principale de l'application
   colorScheme: const ColorScheme(
@@ -26,7 +34,7 @@ ThemeData xMyTheme = ThemeData(
       brightness: Brightness.light,
       primary: Colors.red,
       onPrimary: Colors.orange,
-      secondary: Colors.black26,
+      secondary: Color(0x42000000),
       onSecondary: Colors.black26,
       error: Colors.red,
       onError: Colors.redAccent,

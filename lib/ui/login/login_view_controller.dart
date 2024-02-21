@@ -17,7 +17,6 @@ class LoginViewController extends GetxController with StateMixin {
   @override
   Future<void> onReady() async {
     change(null, status: RxStatus.loading());
-    print("aaaaaaaaaa");
     change(null, status: RxStatus.success());
     super.onReady();
   }
