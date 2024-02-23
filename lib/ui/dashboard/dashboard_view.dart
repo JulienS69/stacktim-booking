@@ -4,6 +4,7 @@ import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
 import 'package:stacktim_booking/widget/x_chevron.dart';
+import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 
 class DashboardView extends GetView<DashboardViewController> {
   const DashboardView({
@@ -12,7 +13,8 @@ class DashboardView extends GetView<DashboardViewController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return XMobileScaffold(
+      bottomNavIndex: 1,
       appBar: const XPageHeader(
         title: '',
         imagePath: logo,

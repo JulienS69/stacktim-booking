@@ -4,6 +4,8 @@ import 'package:stacktim_booking/ui/dashboard/dashboard_view.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/login/login_view.dart';
 import 'package:stacktim_booking/ui/login/login_view_controller_bindings.dart';
+import 'package:stacktim_booking/ui/profil/profil_view.dart';
+import 'package:stacktim_booking/ui/profil/profil_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/welcome/welcome_view.dart';
 import 'package:stacktim_booking/ui/welcome/welcome_view_controller_bindings.dart';
 
@@ -26,6 +28,12 @@ class Nav {
       name: Routes.dashboard,
       page: () => const DashboardView(),
       binding: DashboardViewControllerBindings(),
+    ),
+    GetPage(
+      title: 'profil'.tr,
+      name: Routes.profil,
+      page: () => const ProfilView(),
+      binding: ProfilViewControllerBindings(),
     ),
   ];
 }

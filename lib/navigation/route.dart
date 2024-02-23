@@ -6,4 +6,5 @@ class Routes {
   static String login = '/login';
   static String welcome = '/welcome';
   static String dashboard = '/dashboard';
+  static String profil = '/profil';
 }
