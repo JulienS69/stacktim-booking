@@ -66,6 +66,11 @@ class XChip<T> extends StatelessWidget {
               : chipColor == XChipColor.blue
                   ? blueChip.withOpacity(0.2)
                   : redChip.withOpacity(0.2),
+      shadowColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(color: Colors.transparent),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
     );
   }
 }

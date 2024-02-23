@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/logic/status/status.dart';
+import 'package:stacktim_booking/widget/x_chip.dart';
 
 class DashboardViewController extends GetxController with StateMixin {
   List<Status> statusList = const [
@@ -27,6 +29,31 @@ class DashboardViewController extends GetxController with StateMixin {
       return const Color(0xFFFFEB3B);
     } else {
       return const Color(0xFFE53935);
+    }
+  }
+
+  XChip getChipByStatusTag(String? tag) {
+    switch (tag) {
+      case "Passed":
+        return XChip.chipStatus(
+          label: "Passée".tr.capitalizeFirst!,
+          chipColor: XChipColor.yellow,
+        );
+      case "inComming":
+        return XChip.chipStatus(
+          label: "A venir".tr.capitalizeFirst!,
+          chipColor: XChipColor.red,
+        );
+      case "inProgress":
+        return XChip.chipStatus(
+          label: "En cours".tr.capitalizeFirst!,
+          chipColor: XChipColor.blue,
+        );
+      default:
+        return XChip.chipStatus(
+          label: "Aucun status".tr.capitalizeFirst!,
+          chipColor: XChipColor.red,
+        );
     }
   }
 }
