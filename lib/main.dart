@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       theme: xMyTheme,
       initialRoute: Routes.initialRoute,
       getPages: Nav.routes,
+      defaultTransition: Transition.fadeIn,
       debugShowCheckedModeBanner: false,
       logWriterCallback: (text, {bool isError = false}) {
         log(

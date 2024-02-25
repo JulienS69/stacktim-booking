@@ -1,9 +1,14 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:stacktim_booking/helper/bottom_colors.dart';
 import 'package:stacktim_booking/helper/icons.dart';
+import 'package:stacktim_booking/helper/tab_icon_data.dart';
+import 'package:stacktim_booking/navigation/x_bottom_navigation_bar.dart';
+import 'package:stacktim_booking/ui/dashboard/dashboard_view.dart';
+
+import '../navigation/route.dart';
 
 class XMobileScaffold extends StatefulWidget {
-  final Widget body;
   final bool isShowBottomNavigationBar;
   final Widget? floatingActionButton;
   final PreferredSizeWidget? appBar;
@@ -16,12 +21,10 @@ class XMobileScaffold extends StatefulWidget {
   final TextStyle? titleStyle;
   final Widget? leadingWidget;
   final bool? extendBodyBehindAppBar;
-  final int bottomNavIndex;
+  final Widget content;
 
   const XMobileScaffold({
     Key? key,
-    required this.body,
-    required this.bottomNavIndex,
     this.isShowBottomNavigationBar = true,
     this.floatingActionButton,
     this.appBar,
@@ -34,13 +37,16 @@ class XMobileScaffold extends StatefulWidget {
     this.titleStyle,
     this.leadingWidget,
     this.extendBodyBehindAppBar,
+    required this.content,
   }) : super(key: key);
 
   @override
   State<XMobileScaffold> createState() => _XMobileScaffoldState();
 }
 
-class _XMobileScaffoldState extends State<XMobileScaffold> {
+class _XMobileScaffoldState extends State<XMobileScaffold>
+    with TickerProviderStateMixin {
+  late final AnimationController animationController;
   List<IconData> iconList = [
     dashboardIcon,
     calendarIcon,
@@ -48,73 +54,69 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
     Icons.dangerous,
   ];
 
+  Widget tabBody = Container(
+    color: BottomTheme.background,
+  );
+
   late final GlobalKey<ScaffoldState> scaffoldKey;
+  List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   @override
   void initState() {
     scaffoldKey = GlobalKey<ScaffoldState>();
-    if (widget.onLoad != null) {
-      widget.onLoad!(scaffoldKey);
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 600), vsync: this);
+    for (final TabIconData tab in tabIconsList) {
+      tab.isSelected = false;
     }
-
+    tabIconsList[0].isSelected = true;
+    tabBody = DashboardView();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    int bottomNavIndex = widget.bottomNavIndex;
     return Scaffold(
       bottomSheet: widget.bottomSheet,
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
-          Expanded(
-            child: widget.body,
-          ),
+          widget.content,
         ],
       ),
       appBar: widget.appBar,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-      ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
-        child: AnimatedBottomNavigationBar.builder(
-          onTap: (index) {
-            // if (index == 0 && Get.currentRoute != Routes.dashboard) {
-            //   Get.offAllNamed(Routes.dashboard);
-            // } else if (index == 2 && Get.currentRoute != Routes.profil) {
-            //   Get.offAllNamed(Routes.profil);
-            // }
-            setState(() => bottomNavIndex = index);
-          },
-          itemCount: iconList.length,
-          tabBuilder: (int index, bool isActive) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  iconList[index],
-                  size: 24,
-                  color: isActive ? Colors.red : Colors.white,
-                ),
-              ],
-            );
-          },
-          activeIndex: bottomNavIndex,
-          gapLocation: GapLocation.center,
-          notchSmoothness: NotchSmoothness.smoothEdge,
-          leftCornerRadius: 5,
-          rightCornerRadius: 5,
-          backgroundColor: Colors.black,
-        ),
-      ),
+      bottomNavigationBar: customBottomBar(),
       extendBodyBehindAppBar: widget.extendBodyBehindAppBar ?? false,
+    );
+  }
+
+  Widget customBottomBar() {
+    return SizedBox(
+      height: 100,
+      child: Column(
+        children: <Widget>[
+          BottomBarView(
+            tabIconsList: tabIconsList,
+            addClick: () {},
+            changeIndex: (int index) {
+              if (index == 0 || index == 2) {
+                animationController.reverse().then<dynamic>((_) {
+                  if (mounted) {
+                    return Get.offAllNamed(Routes.dashboard);
+                  }
+                });
+              } else if (index == 1 || index == 3) {
+                animationController.reverse().then<dynamic>((_) {
+                  if (mounted) {
+                    return Get.offAllNamed(Routes.profil);
+                  }
+                });
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }

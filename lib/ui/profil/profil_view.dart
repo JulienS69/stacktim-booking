@@ -14,12 +14,11 @@ class ProfilView extends GetView<ProfilViewController> {
   @override
   Widget build(BuildContext context) {
     return XMobileScaffold(
-      bottomNavIndex: 0,
       appBar: const XPageHeader(
         title: '',
         imagePath: logo,
       ),
-      body: controller.obx(
+      content: controller.obx(
         (state) => const SingleChildScrollView(
           child: Column(
             children: [

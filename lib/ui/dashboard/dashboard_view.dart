@@ -14,12 +14,11 @@ class DashboardView extends GetView<DashboardViewController> {
   @override
   Widget build(BuildContext context) {
     return XMobileScaffold(
-      bottomNavIndex: 1,
       appBar: const XPageHeader(
         title: '',
         imagePath: logo,
       ),
-      body: controller.obx(
+      content: controller.obx(
         (state) => SingleChildScrollView(
           child: Column(
             children: [
