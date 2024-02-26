@@ -1,14 +1,12 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stacktim_booking/helper/bottom_colors.dart';
 import 'package:stacktim_booking/helper/icons.dart';
-import 'package:stacktim_booking/helper/tab_icon_data.dart';
-import 'package:stacktim_booking/navigation/x_bottom_navigation_bar.dart';
-import 'package:stacktim_booking/ui/dashboard/dashboard_view.dart';
 
 import '../navigation/route.dart';
 
 class XMobileScaffold extends StatefulWidget {
+  final Widget body;
   final bool isShowBottomNavigationBar;
   final Widget? floatingActionButton;
   final PreferredSizeWidget? appBar;
@@ -21,10 +19,12 @@ class XMobileScaffold extends StatefulWidget {
   final TextStyle? titleStyle;
   final Widget? leadingWidget;
   final bool? extendBodyBehindAppBar;
-  final Widget content;
+  final int bottomNavIndex;
 
   const XMobileScaffold({
     Key? key,
+    required this.body,
+    required this.bottomNavIndex,
     this.isShowBottomNavigationBar = true,
     this.floatingActionButton,
     this.appBar,
@@ -37,86 +37,74 @@ class XMobileScaffold extends StatefulWidget {
     this.titleStyle,
     this.leadingWidget,
     this.extendBodyBehindAppBar,
-    required this.content,
   }) : super(key: key);
 
   @override
   State<XMobileScaffold> createState() => _XMobileScaffoldState();
 }
 
-class _XMobileScaffoldState extends State<XMobileScaffold>
-    with TickerProviderStateMixin {
-  late final AnimationController animationController;
-  List<IconData> iconList = [
-    dashboardIcon,
-    calendarIcon,
-    profileIcon,
-    Icons.dangerous,
-  ];
-
-  Widget tabBody = Container(
-    color: BottomTheme.background,
-  );
-
+class _XMobileScaffoldState extends State<XMobileScaffold> {
   late final GlobalKey<ScaffoldState> scaffoldKey;
-  List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   @override
   void initState() {
     scaffoldKey = GlobalKey<ScaffoldState>();
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
-    for (final TabIconData tab in tabIconsList) {
-      tab.isSelected = false;
+    if (widget.onLoad != null) {
+      widget.onLoad!(scaffoldKey);
     }
-    tabIconsList[0].isSelected = true;
-    tabBody = DashboardView();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    int bottomNavIndex = widget.bottomNavIndex;
     return Scaffold(
       bottomSheet: widget.bottomSheet,
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
-          widget.content,
-        ],
-      ),
-      appBar: widget.appBar,
-      bottomNavigationBar: customBottomBar(),
-      extendBodyBehindAppBar: widget.extendBodyBehindAppBar ?? false,
-    );
-  }
-
-  Widget customBottomBar() {
-    return SizedBox(
-      height: 100,
-      child: Column(
-        children: <Widget>[
-          BottomBarView(
-            tabIconsList: tabIconsList,
-            addClick: () {},
-            changeIndex: (int index) {
-              if (index == 0 || index == 2) {
-                animationController.reverse().then<dynamic>((_) {
-                  if (mounted) {
-                    return Get.offAllNamed(Routes.dashboard);
-                  }
-                });
-              } else if (index == 1 || index == 3) {
-                animationController.reverse().then<dynamic>((_) {
-                  if (mounted) {
-                    return Get.offAllNamed(Routes.profil);
-                  }
-                });
-              }
-            },
+          Expanded(
+            child: widget.body,
           ),
         ],
       ),
+      appBar: widget.appBar,
+      floatingActionButton: widget.floatingActionButton,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      extendBody: widget.extendBodyBehindAppBar ?? false,
+      bottomNavigationBar: widget.isShowBottomNavigationBar
+          ? AnimatedBottomNavigationBar(
+              icons: [
+                dashboardIcon,
+                calendarIcon,
+                profileIcon,
+              ],
+              inactiveColor: Colors.white,
+              activeColor: Colors.red,
+              activeIndex: bottomNavIndex,
+              gapLocation: GapLocation.end,
+              notchSmoothness: NotchSmoothness.defaultEdge,
+              onTap: (index) {
+                // Handle bottom navigation bar taps here
+                // You may want to update the state or navigate to different screens
+                setState(() {
+                  bottomNavIndex = index;
+                });
+                if (index == 0) {
+                  Get.offAndToNamed(Routes.dashboard);
+                } else if (index == 1) {
+                  Get.offAndToNamed(Routes.profil);
+                } else {
+                  Get.offAndToNamed(Routes.profil);
+                }
+              },
+              backgroundColor: Colors.black,
+            )
+          : null,
     );
   }
 }

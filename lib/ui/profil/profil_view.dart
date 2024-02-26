@@ -18,7 +18,8 @@ class ProfilView extends GetView<ProfilViewController> {
         title: '',
         imagePath: logo,
       ),
-      content: controller.obx(
+      bottomNavIndex: 2,
+      body: controller.obx(
         (state) => const SingleChildScrollView(
           child: Column(
             children: [
