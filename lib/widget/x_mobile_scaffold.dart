@@ -86,8 +86,8 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
               inactiveColor: Colors.white,
               activeColor: Colors.red,
               activeIndex: bottomNavIndex,
-              gapLocation: GapLocation.end,
-              notchSmoothness: NotchSmoothness.defaultEdge,
+              gapLocation: GapLocation.none,
+              notchSmoothness: NotchSmoothness.verySmoothEdge,
               onTap: (index) {
                 // Handle bottom navigation bar taps here
                 // You may want to update the state or navigate to different screens

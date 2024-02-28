@@ -50,3 +50,100 @@ ThemeData xMyTheme = ThemeData(
   // Couleur d'accentuation utilisée pour les éléments interactifs
   fontFamily: 'ProtestRiot-Regular', // Police de caractères par défaut
 );
+
+InputDecoration textFormDecoration({
+  String hintText = '',
+  TextStyle? hintStyle,
+  bool? isPassword,
+  bool hidePassword = false,
+  Function? onVisibilityIconPressed,
+  required Color fillColor,
+  Widget? suffixIcon,
+  Widget? prefixIcon,
+  String? helperText,
+  TextStyle? helperStyle,
+  bool enabled = true,
+  EdgeInsetsGeometry? contentPadding,
+  bool? isCollapsed,
+  double? borderRadius = 10,
+  TextStyle? errorStyle,
+}) {
+  return InputDecoration(
+    hintText: hintText,
+    hintStyle: hintStyle ?? xMyTheme.textTheme.bodyMedium,
+    helperText: helperText,
+    helperStyle: helperStyle ?? xMyTheme.textTheme.bodySmall,
+    floatingLabelBehavior: FloatingLabelBehavior.never,
+    errorStyle: errorStyle,
+    filled: true,
+    border: InputBorder.none,
+    fillColor: fillColor,
+    enabled: enabled,
+    contentPadding: contentPadding,
+    isCollapsed: isCollapsed ?? false,
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          borderRadius ?? 10,
+        ),
+      ),
+      borderSide: const BorderSide(
+        color: inputActive,
+      ),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          borderRadius ?? 10,
+        ),
+      ),
+      borderSide: const BorderSide(
+        color: inputActive,
+      ),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          borderRadius ?? 10,
+        ),
+      ),
+      borderSide: const BorderSide(
+        color: inputError,
+      ),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          borderRadius ?? 10,
+        ),
+      ),
+      borderSide: const BorderSide(
+        color: inputDisabled,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          borderRadius ?? 10,
+        ),
+      ),
+      borderSide: const BorderSide(
+        color: Colors.transparent,
+      ),
+    ),
+    prefixIcon: prefixIcon,
+    suffixIcon: (isPassword == true)
+        ? IconButton(
+            icon: Icon(
+              hidePassword
+                  ? Icons.visibility_off_outlined
+                  : Icons.visibility_outlined,
+              color: black,
+            ),
+            onPressed: () => onVisibilityIconPressed != null
+                ? onVisibilityIconPressed()
+                : null,
+          )
+        : suffixIcon,
+  );
+}

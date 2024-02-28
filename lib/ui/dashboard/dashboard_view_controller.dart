@@ -13,6 +13,7 @@ class DashboardViewController extends GetxController with StateMixin {
   ];
 
   User currentUser = const User(firstname: "Julien", pseudo: "Virtuor");
+  TextEditingController searchController = TextEditingController();
 
   DashboardViewController();
 
@@ -57,6 +58,34 @@ class DashboardViewController extends GetxController with StateMixin {
           label: "Aucun status".tr.capitalizeFirst!,
           chipColor: XChipColor.red,
         );
+    }
+  }
+
+  XChipColor getColorChipByStatusTag(String tag) {
+    switch (tag) {
+      case "Passed":
+        return XChipColor.yellow;
+      case "inComming":
+        return XChipColor.red;
+      case "inProgress":
+        return XChipColor.blue;
+
+      default:
+        return XChipColor.red;
+    }
+  }
+
+  String getStringByStatusTag(String tag) {
+    switch (tag) {
+      case "Passed":
+        return 'Passée';
+      case "inComming":
+        return 'A venir';
+      case "inProgress":
+        return 'En cours';
+
+      default:
+        return '';
     }
   }
 }
