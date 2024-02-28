@@ -6,3 +6,4 @@ const String four = 'assets/background/4.png';
 const String five = 'assets/background/5.png';
 const String six = 'assets/background/6.png';
 const String microsoftLogo = 'assets/background/microsoft.png';
+const String coinLogo = 'assets/images/coin.png';

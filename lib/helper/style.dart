@@ -27,6 +27,11 @@ const titleText1 = TextStyle(
   package: "xefi_flutter_ui_kit",
 );
 
+const titleArvo = TextStyle(
+  fontSize: 24,
+  fontFamily: "ArvoBold",
+);
+
 ThemeData xMyTheme = ThemeData(
   primaryColor: Colors.red, // Couleur principale de l'application
   colorScheme: const ColorScheme(

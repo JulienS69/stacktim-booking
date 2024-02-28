@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/logic/status/status.dart';
+import 'package:stacktim_booking/logic/user/user.dart';
 import 'package:stacktim_booking/widget/x_chip.dart';
 
 class DashboardViewController extends GetxController with StateMixin {
@@ -10,6 +11,8 @@ class DashboardViewController extends GetxController with StateMixin {
     Status(id: 1, statusName: "Passed"),
     Status(id: 2, statusName: "inComming"),
   ];
+
+  User currentUser = const User(firstname: "Julien", pseudo: "Virtuor");
 
   DashboardViewController();
 

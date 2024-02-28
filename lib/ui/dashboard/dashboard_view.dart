@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
 import 'package:stacktim_booking/widget/x_chevron.dart';
@@ -23,8 +25,64 @@ class DashboardView extends GetView<DashboardViewController> {
         (state) => SingleChildScrollView(
           child: Column(
             children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 15.0, top: 15.0, right: 20),
+                child: Row(
+                  children: [
+                    Text(
+                      "Bonjour ${controller.currentUser.pseudo},",
+                      style: titleText1,
+                    ),
+                    const Spacer(),
+                    Text('6', style: titleArvo.copyWith(color: primary)),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Image.asset(
+                      coinLogo,
+                      height: 15,
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(right: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Stack crédits \nrestant",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Mes réservations :",
+                      style: titleText1.copyWith(
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
+                      ),
+                    )
+                  ],
+                ),
+              ),
               const SizedBox(
-                height: 150,
+                height: 50,
               ),
               Padding(
                 padding: const EdgeInsets.only(
