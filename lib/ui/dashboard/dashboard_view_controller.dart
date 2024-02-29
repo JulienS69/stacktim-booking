@@ -12,6 +12,8 @@ class DashboardViewController extends GetxController with StateMixin {
     Status(id: 2, statusName: "inComming"),
   ];
 
+  RxBool isNotFree = false.obs;
+
   User currentUser = const User(firstname: "Julien", pseudo: "Virtuor");
   TextEditingController searchController = TextEditingController();
 
@@ -86,6 +88,14 @@ class DashboardViewController extends GetxController with StateMixin {
 
       default:
         return '';
+    }
+  }
+
+  checkIsFree(String date) {
+    if (date == "2024-02-01 00:00:00.000") {
+      isNotFree.value = true;
+    } else {
+      isNotFree.value = false;
     }
   }
 }

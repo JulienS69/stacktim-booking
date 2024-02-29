@@ -5,6 +5,7 @@ const Color grey6 = Color(0xFF494C5D);
 const Color grey13 = Color(0xFF808080);
 const Color black = Color(0xFF000000);
 const Color primary = Color(0xFFe02d13);
+const Color backgroundColor = Color.fromRGBO(61, 61, 61, 1);
 
 // SECTION - Chip/tags
 const Color yellowChip = Color(0XFFFFBE0B);
