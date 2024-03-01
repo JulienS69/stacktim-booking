@@ -17,8 +17,8 @@ class NewBookingView extends GetView<NewBookingViewController> {
         title: 'Prendre une réservation',
       ),
       body: controller.obx(
-        (state) => SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
+        (state) => const SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
           child: Column(
             children: [],
           ),
