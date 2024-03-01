@@ -23,23 +23,27 @@ class ReservationListing extends StatelessWidget {
                 margin: const EdgeInsets.all(20.0),
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.grey[900]!,
-                      Colors.white,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(3, 5),
+                      color: Colors.grey[500]!,
+                      offset: const Offset(0, 20),
+                      blurRadius: 20,
+                      spreadRadius: -5,
                     ),
                   ],
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black45,
+                      Colors.black26,
+                      Colors.black26,
+                      Colors.black26,
+                    ],
+                    transform: GradientRotation(1.5),
+                    stops: [0.9, 0.2, 0.2, 0.5],
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

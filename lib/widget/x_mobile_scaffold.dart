@@ -19,12 +19,13 @@ class XMobileScaffold extends StatefulWidget {
   final TextStyle? titleStyle;
   final Widget? leadingWidget;
   final bool? extendBodyBehindAppBar;
-  final int bottomNavIndex;
+  final int? bottomNavIndex;
+  final GapLocation? gapLocation;
 
   const XMobileScaffold({
     Key? key,
     required this.body,
-    required this.bottomNavIndex,
+    this.bottomNavIndex,
     this.isShowBottomNavigationBar = true,
     this.floatingActionButton,
     this.appBar,
@@ -37,6 +38,7 @@ class XMobileScaffold extends StatefulWidget {
     this.titleStyle,
     this.leadingWidget,
     this.extendBodyBehindAppBar,
+    this.gapLocation,
   }) : super(key: key);
 
   @override
@@ -58,7 +60,7 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    int bottomNavIndex = widget.bottomNavIndex;
+    int bottomNavIndex = widget.bottomNavIndex ?? 0;
     return Scaffold(
       bottomSheet: widget.bottomSheet,
       key: scaffoldKey,
@@ -72,8 +74,7 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
       ),
       appBar: widget.appBar,
       floatingActionButton: widget.floatingActionButton,
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       extendBody: widget.extendBodyBehindAppBar ?? false,
       bottomNavigationBar: widget.isShowBottomNavigationBar
@@ -86,11 +87,9 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
               inactiveColor: Colors.white,
               activeColor: Colors.red,
               activeIndex: bottomNavIndex,
-              gapLocation: GapLocation.none,
+              gapLocation: widget.gapLocation ?? GapLocation.none,
               notchSmoothness: NotchSmoothness.verySmoothEdge,
               onTap: (index) {
-                // Handle bottom navigation bar taps here
-                // You may want to update the state or navigate to different screens
                 setState(() {
                   bottomNavIndex = index;
                 });

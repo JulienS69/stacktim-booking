@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/style.dart';
 
+// ignore: must_be_immutable
 class XInputTextField extends StatefulWidget {
   /// controller du champ
   final TextEditingController? controller;

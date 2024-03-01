@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,7 +25,6 @@ class DashboardView extends GetView<DashboardViewController> {
   @override
   Widget build(BuildContext context) {
     final pageIndexNotifier = ValueNotifier(0);
-
     SliverWoltModalSheetPage datePicker(BuildContext modalSheetContext) {
       DashboardViewController controller = DashboardViewController();
       Rx<DateTime> selectedDate = DateTime.now().obs;
@@ -133,8 +133,6 @@ class DashboardView extends GetView<DashboardViewController> {
     }
 
     SliverWoltModalSheetPage datePicker2(BuildContext modalSheetContext) {
-      DashboardViewController controller = DashboardViewController();
-      Rx<DateTime> selectedDate = DateTime.now().obs;
       const double pagePadding = 16.0;
       const double buttonHeight = 56.0;
       const double bottomPaddingForButton = 150.0;
@@ -206,6 +204,7 @@ class DashboardView extends GetView<DashboardViewController> {
 
     return XMobileScaffold(
       bottomNavIndex: 0,
+      gapLocation: GapLocation.end,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           const double pageBreakpoint = 768.0;
@@ -213,7 +212,6 @@ class DashboardView extends GetView<DashboardViewController> {
             pageIndexNotifier: pageIndexNotifier,
             context: context,
             pageListBuilder: (modalSheetContext) {
-              final textTheme = Theme.of(context).textTheme;
               return [
                 datePicker(
                   modalSheetContext,
@@ -240,6 +238,11 @@ class DashboardView extends GetView<DashboardViewController> {
             maxPageHeight: 0.9,
           );
         },
+        backgroundColor: Colors.black,
+        child: Image.asset(
+          logo,
+          height: 35,
+        ),
       ),
       appBar: const XPageHeader(
         title: '',

@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:stacktim_booking/navigation/route.dart';
+import 'package:stacktim_booking/ui/booking/new_booking_view.dart';
+import 'package:stacktim_booking/ui/booking/new_booking_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/login/login_view.dart';
@@ -28,6 +30,12 @@ class Nav {
       name: Routes.dashboard,
       page: () => const DashboardView(),
       binding: DashboardViewControllerBindings(),
+    ),
+    GetPage(
+      title: 'newBooking'.tr,
+      name: Routes.newBooking,
+      page: () => const NewBookingView(),
+      binding: NewBookingViewControllerBindings(),
     ),
     GetPage(
       title: 'profil'.tr,

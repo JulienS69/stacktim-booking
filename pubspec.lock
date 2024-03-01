@@ -638,7 +638,7 @@ packages:
     source: hosted
     version: "2.4.0"
   wolt_modal_sheet:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: wolt_modal_sheet
       sha256: "0a04f1a11bbeeb4847bdea17707ab68fffaaa656a5ce75323939647952d696c4"
