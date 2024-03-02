@@ -36,7 +36,7 @@ class DashboardView extends GetView<DashboardViewController> {
           "Réservation de la salle",
           style: titleArvo.copyWith(fontSize: 18),
         ),
-        backgroundColor: backgroundColor,
+        backgroundColor: grey6,
         hasSabGradient: false,
         isTopBarLayerAlwaysVisible: true,
         trailingNavBarWidget: IconButton(
@@ -191,9 +191,10 @@ class DashboardView extends GetView<DashboardViewController> {
                   height: buttonHeight,
                   width: double.infinity,
                   child: Center(
-                      child: Text(
-                    "Retour",
-                  )),
+                    child: Text(
+                      "Retour",
+                    ),
+                  ),
                 ),
               ),
             ],
