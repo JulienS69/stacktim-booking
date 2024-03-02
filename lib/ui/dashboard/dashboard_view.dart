@@ -250,16 +250,13 @@ class DashboardView extends GetView<DashboardViewController> {
         imagePath: logo,
       ),
       body: controller.obx(
-        (state) => SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              StackCredit(controller: controller),
-              SearchBarReservation(controller: controller),
-              ChipFilter(controller: controller),
-              ReservationListing(controller: controller),
-            ],
-          ),
+        (state) => Column(
+          children: [
+            StackCredit(controller: controller),
+            SearchBarReservation(controller: controller),
+            ChipFilter(controller: controller),
+            Expanded(child: ReservationListing(controller: controller,),),
+          ],
         ),
       ),
     );
