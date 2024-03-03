@@ -6,7 +6,18 @@ const Color grey13 = Color(0xFF808080);
 const Color black = Color(0xFF000000);
 const Color primary = Color(0xFFe02d13);
 const Color backgroundColor = Color.fromRGBO(61, 61, 61, 1);
-
+const Color backgroundColorSheet = Color.fromARGB(255, 76, 81, 84);
+const Color grey1 = Color(0xFFF5F5F5);
+const Color grey2 = Color(0xFFEEEEEE);
+const Color grey3 = Color(0xFFE0E0E0);
+const Color grey4 = Color(0xFFBDBDBD);
+const Color grey5 = Color(0xFF9E9E9E);
+const Color grey7 = Color(0xFF757575);
+const Color grey8 = Color(0xFF616161);
+const Color grey9 = Color(0xFF424242);
+const Color grey10 = Color(0xFF303030);
+const Color grey11 = Color(0xFF212121);
+const Color grey12 = Color(0xFF181818);
 // SECTION - Chip/tags
 const Color yellowChip = Color(0XFFFFBE0B);
 const Color redChip = Color(0XFFC1040A);

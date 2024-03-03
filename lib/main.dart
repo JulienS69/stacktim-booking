@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 import 'helper/style.dart';
@@ -24,6 +25,15 @@ class MyApp extends StatelessWidget {
       getPages: Nav.routes,
       defaultTransition: Transition.fadeIn,
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('fr'),
+        Locale('en'),
+      ],
       logWriterCallback: (text, {bool isError = false}) {
         log(
           name: '-',

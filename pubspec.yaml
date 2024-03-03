@@ -40,6 +40,12 @@ dependencies:
   scroll_date_picker: ^3.7.3
   wolt_modal_sheet: ^0.4.1
   syncfusion_flutter_calendar: ^24.2.8
+  syncfusion_flutter_datepicker: ^24.2.8
+  flutter_localization: ^0.2.0
+  flutter_vibrate: ^1.3.0
+  intl: ^0.18.1
+  awesome_dialog: ^3.2.0
+  day_night_time_picker: ^1.3.0+1
 
 dev_dependencies:
   flutter_test:
