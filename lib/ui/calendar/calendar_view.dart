@@ -17,16 +17,36 @@ class CalendarPage extends GetView<CalendarViewController> {
         title: 'Calendrier',
         centerTitle: true,
       ),
-      body: SfCalendar(
-        view: CalendarView.month,
-        cellBorderColor: Colors.transparent,
-        monthViewSettings: MonthViewSettings(
-          showAgenda: true,
-          appointmentDisplayMode: MonthAppointmentDisplayMode.none,
-          agendaViewHeight: Get.height * 0.4,
-          agendaItemHeight: 170,
-        ),
-        showNavigationArrow: true,
+      body: Column(
+        children: [
+          Expanded(
+            flex: 3,
+            child: SfCalendar(
+              view: CalendarView.month,
+              cellBorderColor: Colors.transparent,
+              monthViewSettings: MonthViewSettings(
+                dayFormat: 'EEE',
+                appointmentDisplayMode: MonthAppointmentDisplayMode.none,
+                agendaViewHeight: Get.height * 0.3,
+                agendaItemHeight: 170,
+              ),
+              showNavigationArrow: true,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 18,right: 18,bottom: 18),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(18)),
+                height: 300,
+                width: double.infinity,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
