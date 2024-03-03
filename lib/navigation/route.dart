@@ -8,4 +8,5 @@ class Routes {
   static String dashboard = '/dashboard';
   static String newBooking = '/new-booking';
   static String profil = '/profil';
+  static String calendar = '/calendar';
 }

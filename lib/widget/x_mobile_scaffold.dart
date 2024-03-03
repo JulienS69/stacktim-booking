@@ -96,7 +96,7 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
                 if (index == 0) {
                   Get.offAndToNamed(Routes.dashboard);
                 } else if (index == 1) {
-                  Get.offAndToNamed(Routes.profil);
+                  Get.offAndToNamed(Routes.calendar);
                 } else {
                   Get.offAndToNamed(Routes.profil);
                 }
