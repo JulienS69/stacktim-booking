@@ -1,4 +1,5 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -107,29 +108,30 @@ SliverWoltModalSheetPage scrollDatePicker({
     hasSabGradient: false,
     isTopBarLayerAlwaysVisible: true,
     leadingNavBarWidget: IconButton(
-        padding: const EdgeInsets.all(pagePadding),
-        icon: const Icon(Icons.close),
-        onPressed: () {
-          if (!controller.checkFormIsEmpty()) {
-            AwesomeDialog(
-              context: modalSheetContext,
-              dialogType: DialogType.QUESTION,
-              dialogBackgroundColor: backgroundColor,
-              animType: AnimType.RIGHSLIDE,
-              title: 'Attention',
-              desc:
-                  'Voulez-vous vraiment supprimer les informations que vous avez saisies ?',
-              btnOkText: 'Oui',
-              btnCancelText: 'Annuler',
-              btnCancelOnPress: () {},
-              btnOkOnPress: () {
-                Navigator.of(modalSheetContext).pop();
-              },
-            ).show();
-          } else {
-            Navigator.of(modalSheetContext).pop();
-          }
-        }),
+      padding: const EdgeInsets.all(pagePadding),
+      icon: const Icon(Icons.close),
+      onPressed: () {
+        if (!controller.checkFormIsEmpty()) {
+          AwesomeDialog(
+            context: modalSheetContext,
+            dialogType: DialogType.question,
+            dialogBackgroundColor: backgroundColor,
+            animType: AnimType.rightSlide,
+            title: 'Attention',
+            desc:
+                'Voulez-vous vraiment supprimer les informations que vous avez saisies ?',
+            btnOkText: 'Oui',
+            btnCancelText: 'Annuler',
+            btnCancelOnPress: () {},
+            btnOkOnPress: () {
+              Navigator.of(modalSheetContext).pop();
+            },
+          ).show();
+        } else {
+          Navigator.of(modalSheetContext).pop();
+        }
+      },
+    ),
     trailingNavBarWidget: IconButton(
       padding: const EdgeInsets.all(pagePadding),
       icon: const Icon(Icons.check),
@@ -162,11 +164,11 @@ SliverWoltModalSheetPage scrollDatePicker({
             height: 25,
           ),
           Obx(
-            () => controller.timeSelected.isNotEmpty ||
-                    controller.dateSelected.isNotEmpty
+            () => controller.timeSelected.isNotEmpty
                 ? InkWell(
                     onTap: () {
-                      controller.showBeginningTimePicker(modalSheetContext);
+                      controller.showTimePicker(
+                          context: modalSheetContext, isEndingTime: true);
                     },
                     child: Row(
                       children: [
@@ -178,9 +180,9 @@ SliverWoltModalSheetPage scrollDatePicker({
                           width: 5,
                         ),
                         Text(
-                            controller.timeSelected.isEmpty
+                            controller.endingHourSelected.isEmpty
                                 ? "Aucunes"
-                                : "${controller.hourSelected} heures"
+                                : "${controller.endingHourSelected.value} heures"
                                     "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
                             style: arvoStyle.copyWith(
                               color: controller.timeSelected.isEmpty
@@ -242,7 +244,8 @@ class BookingBeginningTime extends StatelessWidget {
               controller.dateSelected.isNotEmpty
           ? InkWell(
               onTap: () {
-                controller.showBeginningTimePicker(modalSheetContext);
+                controller.showTimePicker(
+                    context: modalSheetContext, isEndingTime: false);
               },
               child: Row(
                 children: [

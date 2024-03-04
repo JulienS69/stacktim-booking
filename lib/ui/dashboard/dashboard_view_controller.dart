@@ -32,6 +32,7 @@ class DashboardViewController extends GetxController with StateMixin {
   DateRangePickerController? dateController = DateRangePickerController();
   RxString dateSelected = "".obs;
   String hourSelected = "";
+  RxString endingHourSelected = "".obs;
   String minutesSelected = "";
   RxString timeSelected = "".obs;
   DashboardViewController();
@@ -61,16 +62,27 @@ class DashboardViewController extends GetxController with StateMixin {
         DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(datePicked);
     isShowLoading.value = false;
     if (timeSelected.isEmpty) {
-      showBeginningTimePicker(context);
+      showTimePicker(context: context, isEndingTime: false);
     }
   }
 
-  showBeginningTimePicker(BuildContext context) {
+  showTimePicker({
+    required BuildContext context,
+    required bool isEndingTime,
+  }) {
     Navigator.of(context).push(
       showPicker(
         context: context,
+        dialogInsetPadding: const EdgeInsets.all(5),
         value: Time.fromTimeOfDay(
-            TimeOfDay(hour: TimeOfDay.now().hour, minute: 0), 0),
+            TimeOfDay(
+                hour: hourSelected.isNotEmpty
+                    ? int.parse(hourSelected)
+                    : endingHourSelected.value.isNotEmpty
+                        ? int.parse(endingHourSelected.value)
+                        : TimeOfDay.now().hour,
+                minute: minutesSelected == "30" ? 30 : 0),
+            0),
         sunrise: const TimeOfDay(hour: 6, minute: 0),
         sunset: const TimeOfDay(hour: 18, minute: 0),
         is24HrFormat: true,
@@ -78,7 +90,11 @@ class DashboardViewController extends GetxController with StateMixin {
         themeData: ThemeData.dark(),
         blurredBackground: true,
         duskSpanInMinutes: 120,
-        okText: "Je confirme l'heure de début",
+        disableMinute: isEndingTime ? true : false,
+        disableAutoFocusToNextInput: isEndingTime ? true : false,
+        okText: isEndingTime
+            ? "Je confirme l'heure de fin"
+            : "Je confirme l'heure de début",
         okStyle: const TextStyle(fontFamily: "ArvoBold", color: Colors.green),
         hourLabel: 'Heures',
         iosStylePicker: true,
@@ -96,13 +112,17 @@ class DashboardViewController extends GetxController with StateMixin {
         },
         onChange: (time) {
           HapticFeedback.vibrate();
-          hourSelected = time.hour.toString();
-          if (time.minute.toString() == "59") {
-            minutesSelected = "30";
+          if (!isEndingTime) {
+            hourSelected = time.hour.toString();
+            if (time.minute.toString() == "59") {
+              minutesSelected = "30";
+            } else {
+              minutesSelected = time.minute.toString();
+            }
+            timeSelected.value = time.format(Get.context!);
           } else {
-            minutesSelected = time.minute.toString();
+            endingHourSelected.value = time.hour.toString();
           }
-          timeSelected.value = time.format(Get.context!);
         },
       ),
     );

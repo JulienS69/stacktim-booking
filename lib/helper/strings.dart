@@ -7,3 +7,4 @@ const String five = 'assets/background/5.png';
 const String six = 'assets/background/6.png';
 const String microsoftLogo = 'assets/background/microsoft.png';
 const String coinLogo = 'assets/images/coin.png';
+const String riveCharacter = 'assets/riv/logo.riv';
