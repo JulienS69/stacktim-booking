@@ -1,5 +1,4 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -114,9 +113,9 @@ SliverWoltModalSheetPage scrollDatePicker({
           if (!controller.checkFormIsEmpty()) {
             AwesomeDialog(
               context: modalSheetContext,
-              dialogType: DialogType.question,
+              dialogType: DialogType.QUESTION,
               dialogBackgroundColor: backgroundColor,
-              animType: AnimType.rightSlide,
+              animType: AnimType.RIGHSLIDE,
               title: 'Attention',
               desc:
                   'Voulez-vous vraiment supprimer les informations que vous avez saisies ?',
@@ -155,37 +154,44 @@ SliverWoltModalSheetPage scrollDatePicker({
           const SizedBox(
             height: 20,
           ),
+          BookingBeginningTime(
+            controller: controller,
+            modalSheetContext: modalSheetContext,
+          ),
+          const SizedBox(
+            height: 25,
+          ),
           Obx(
-            () => controller.timeSelected.isNotEmpty
+            () => controller.timeSelected.isNotEmpty ||
+                    controller.dateSelected.isNotEmpty
                 ? InkWell(
                     onTap: () {
-                      controller.showTimePicker(modalSheetContext);
+                      controller.showBeginningTimePicker(modalSheetContext);
                     },
                     child: Row(
                       children: [
                         const Text(
-                          "Horraire choisie : ",
-                          style: TextStyle(
-                              color: Colors.white, fontFamily: 'ArvoBold'),
+                          "Heure de fin choisie : ",
+                          style: arvoStyle,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
                         Text(
-                          "${controller.hourSelected} heures et ${controller.minutesSelected} minutes",
-                          style: const TextStyle(
-                            color: Colors.white60,
-                            decoration: TextDecoration.underline,
-                            fontFamily: 'ArvoBold',
-                          ),
-                        ),
+                            controller.timeSelected.isEmpty
+                                ? "Aucunes"
+                                : "${controller.hourSelected} heures"
+                                    "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
+                            style: arvoStyle.copyWith(
+                              color: controller.timeSelected.isEmpty
+                                  ? Colors.red
+                                  : Colors.white60,
+                              decoration: TextDecoration.underline,
+                            )),
                         const Spacer(),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Icon(
-                            Icons.schedule,
-                            color: Colors.white,
-                          ),
+                        const Icon(
+                          Icons.schedule,
+                          color: Colors.white,
                         )
                       ],
                     ),
@@ -219,6 +225,58 @@ SliverWoltModalSheetPage scrollDatePicker({
   );
 }
 
+class BookingBeginningTime extends StatelessWidget {
+  BuildContext modalSheetContext;
+  BookingBeginningTime({
+    super.key,
+    required this.modalSheetContext,
+    required this.controller,
+  });
+
+  final DashboardViewController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => controller.timeSelected.isNotEmpty ||
+              controller.dateSelected.isNotEmpty
+          ? InkWell(
+              onTap: () {
+                controller.showBeginningTimePicker(modalSheetContext);
+              },
+              child: Row(
+                children: [
+                  const Text(
+                    "Heure de début choisie : ",
+                    style: arvoStyle,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                      controller.timeSelected.isEmpty
+                          ? "Aucunes"
+                          : "${controller.hourSelected} heures"
+                              "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
+                      style: arvoStyle.copyWith(
+                        color: controller.timeSelected.isEmpty
+                            ? Colors.red
+                            : Colors.white60,
+                        decoration: TextDecoration.underline,
+                      )),
+                  const Spacer(),
+                  const Icon(
+                    Icons.schedule,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            )
+          : const SizedBox.shrink(),
+    );
+  }
+}
+
 class BookingDatePicker extends StatelessWidget {
   const BookingDatePicker({
     super.key,
@@ -238,7 +296,7 @@ class BookingDatePicker extends StatelessWidget {
               children: [
                 const Text(
                   "Date choisie : ",
-                  style: TextStyle(color: Colors.white, fontFamily: 'ArvoBold'),
+                  style: arvoStyle,
                 ),
                 const SizedBox(
                   width: 5,
@@ -254,10 +312,9 @@ class BookingDatePicker extends StatelessWidget {
                         },
                         child: Text(
                           controller.dateSelected.value.capitalizeFirst!,
-                          style: const TextStyle(
+                          style: arvoStyle.copyWith(
                             color: Colors.white60,
                             decoration: TextDecoration.underline,
-                            fontFamily: 'ArvoBold',
                           ),
                         ),
                       )
@@ -276,12 +333,9 @@ class BookingDatePicker extends StatelessWidget {
                         },
                         overlayColor:
                             const MaterialStatePropertyAll(Colors.transparent),
-                        child: const Padding(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Icon(
-                            Icons.date_range,
-                            color: Colors.white,
-                          ),
+                        child: const Icon(
+                          Icons.date_range,
+                          color: Colors.white,
                         ),
                       )
                     : const SizedBox.shrink()
@@ -387,10 +441,7 @@ class BookingTitle extends StatelessWidget {
           },
           decoration: const InputDecoration(
             hintText: 'Titre de la réservation',
-            hintStyle: TextStyle(
-              color: Colors.white,
-              fontFamily: 'ArvoBold',
-            ),
+            hintStyle: arvoStyle,
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 0.0),
             ),

@@ -27,6 +27,9 @@ const titleText1 = TextStyle(
   package: "xefi_flutter_ui_kit",
 );
 
+const arvoStyle =
+    TextStyle(color: Colors.white, fontFamily: 'ArvoBold', fontSize: 12);
+
 const titleArvo = TextStyle(
   fontSize: 24,
   fontFamily: "ArvoBold",

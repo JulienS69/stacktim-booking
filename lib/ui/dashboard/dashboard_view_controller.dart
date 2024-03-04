@@ -3,7 +3,6 @@ import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:stacktim_booking/helper/functions.dart';
@@ -29,7 +28,6 @@ class DashboardViewController extends GetxController with StateMixin {
   TextEditingController titleController = TextEditingController();
   FixedExtentScrollController fixedScrollController =
       FixedExtentScrollController();
-  bool canVibrate = false;
 
   DateRangePickerController? dateController = DateRangePickerController();
   RxString dateSelected = "".obs;
@@ -58,24 +56,21 @@ class DashboardViewController extends GetxController with StateMixin {
     await Future.delayed(const Duration(seconds: 2));
     isShowingDatePicker.value = false;
     isDatePicked.value = true;
-    canVibrate = await Vibrate.canVibrate;
-    if (canVibrate) {
-      Vibrate.feedback(FeedbackType.heavy);
-    }
+    HapticFeedback.heavyImpact();
     dateSelected.value =
         DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(datePicked);
     isShowLoading.value = false;
     if (timeSelected.isEmpty) {
-      showTimePicker(context);
+      showBeginningTimePicker(context);
     }
   }
 
-  showTimePicker(BuildContext context) {
+  showBeginningTimePicker(BuildContext context) {
     Navigator.of(context).push(
       showPicker(
         context: context,
         value: Time.fromTimeOfDay(
-            TimeOfDay(hour: TimeOfDay.now().hour, minute: 30), 0),
+            TimeOfDay(hour: TimeOfDay.now().hour, minute: 0), 0),
         sunrise: const TimeOfDay(hour: 6, minute: 0),
         sunset: const TimeOfDay(hour: 18, minute: 0),
         is24HrFormat: true,
@@ -83,26 +78,30 @@ class DashboardViewController extends GetxController with StateMixin {
         themeData: ThemeData.dark(),
         blurredBackground: true,
         duskSpanInMinutes: 120,
-        disableAutoFocusToNextInput: true,
-        okText: 'Valider',
-        okStyle: const TextStyle(
-          fontFamily: "ArvoBold",
-        ),
+        okText: "Je confirme l'heure de début",
+        okStyle: const TextStyle(fontFamily: "ArvoBold", color: Colors.green),
+        hourLabel: 'Heures',
+        iosStylePicker: true,
         cancelStyle: const TextStyle(
           fontFamily: "ArvoBold",
         ),
         cancelText: 'Retour',
         isOnChangeValueMode: false,
-        onChangeDateTime: (time) async {
-          await HapticFeedback.vibrate();
+        onChangeDateTime: (time) {
+          HapticFeedback.heavyImpact();
         },
         onCancel: () {
           Navigator.pop(context);
+          HapticFeedback.heavyImpact();
         },
-        onChange: (time) async {
-          await HapticFeedback.vibrate();
+        onChange: (time) {
+          HapticFeedback.vibrate();
           hourSelected = time.hour.toString();
-          minutesSelected = time.minute.toString();
+          if (time.minute.toString() == "59") {
+            minutesSelected = "30";
+          } else {
+            minutesSelected = time.minute.toString();
+          }
           timeSelected.value = time.format(Get.context!);
         },
       ),
