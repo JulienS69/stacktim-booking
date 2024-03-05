@@ -260,7 +260,7 @@ class BookingCard extends StatelessWidget {
       case "Passed":
         return XChip.chipStatus(
           label: "Passée".tr.capitalizeFirst!,
-          chipColor: XChipColor.yellow,
+          chipColor: XChipColor.green,
         );
       case "inComming":
         return XChip.chipStatus(

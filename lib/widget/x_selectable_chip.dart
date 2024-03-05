@@ -41,8 +41,8 @@ class XSelectableChip extends StatefulWidget {
 
 class _XSelectableChipState extends State<XSelectableChip> {
   Color getChipColor() {
-    return widget.chipColor == XChipColor.yellow
-        ? yellowChip
+    return widget.chipColor == XChipColor.green
+        ? greenChip
         : widget.chipColor == XChipColor.red
             ? redChip
             : widget.chipColor == XChipColor.blue
@@ -51,8 +51,8 @@ class _XSelectableChipState extends State<XSelectableChip> {
   }
 
   Color getChipColorWithOpacity() {
-    return widget.chipColor == XChipColor.yellow
-        ? yellowChip.withOpacity(0.2)
+    return widget.chipColor == XChipColor.green
+        ? greenChip.withOpacity(0.2)
         : widget.chipColor == XChipColor.red
             ? redChip.withOpacity(0.2)
             : widget.chipColor == XChipColor.blue

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/logic/status/status.dart';
 import 'package:stacktim_booking/logic/user/user.dart';
@@ -30,11 +31,13 @@ class DashboardViewController extends GetxController with StateMixin {
       FixedExtentScrollController();
 
   DateRangePickerController? dateController = DateRangePickerController();
+  RxString titleSelected = "".obs;
   RxString dateSelected = "".obs;
-  String hourSelected = "";
+  RxString beginingHourSelected = "".obs;
   RxString endingHourSelected = "".obs;
   String minutesSelected = "";
   RxString timeSelected = "".obs;
+  RxInt seatSelected = 0.obs;
   DashboardViewController();
 
   @override
@@ -76,8 +79,8 @@ class DashboardViewController extends GetxController with StateMixin {
         dialogInsetPadding: const EdgeInsets.all(5),
         value: Time.fromTimeOfDay(
             TimeOfDay(
-                hour: hourSelected.isNotEmpty
-                    ? int.parse(hourSelected)
+                hour: beginingHourSelected.isNotEmpty
+                    ? int.parse(beginingHourSelected.value)
                     : endingHourSelected.value.isNotEmpty
                         ? int.parse(endingHourSelected.value)
                         : TimeOfDay.now().hour,
@@ -95,11 +98,12 @@ class DashboardViewController extends GetxController with StateMixin {
         okText: isEndingTime
             ? "Je confirme l'heure de fin"
             : "Je confirme l'heure de début",
-        okStyle: const TextStyle(fontFamily: "ArvoBold", color: Colors.green),
+        okStyle: const TextStyle(fontFamily: "ArvoBold", color: Colors.white60),
         hourLabel: 'Heures',
         iosStylePicker: true,
         cancelStyle: const TextStyle(
           fontFamily: "ArvoBold",
+          color: Colors.red,
         ),
         cancelText: 'Retour',
         isOnChangeValueMode: false,
@@ -113,7 +117,7 @@ class DashboardViewController extends GetxController with StateMixin {
         onChange: (time) {
           HapticFeedback.vibrate();
           if (!isEndingTime) {
-            hourSelected = time.hour.toString();
+            beginingHourSelected.value = time.hour.toString();
             if (time.minute.toString() == "59") {
               minutesSelected = "30";
             } else {
@@ -132,11 +136,11 @@ class DashboardViewController extends GetxController with StateMixin {
     required String statusTag,
   }) {
     if (statusTag == "inProgress") {
-      return const Color(0xFF4fc3f7);
+      return greenChip;
     } else if (statusTag == "Passed") {
-      return const Color(0xFFFFEB3B);
+      return redChip;
     } else {
-      return const Color(0xFFE53935);
+      return blueChip;
     }
   }
 
@@ -145,17 +149,17 @@ class DashboardViewController extends GetxController with StateMixin {
       case "Passed":
         return XChip.chipStatus(
           label: "Passée".tr.capitalizeFirst!,
-          chipColor: XChipColor.yellow,
+          chipColor: XChipColor.red,
         );
       case "inComming":
         return XChip.chipStatus(
           label: "A venir".tr.capitalizeFirst!,
-          chipColor: XChipColor.red,
+          chipColor: XChipColor.blue,
         );
       case "inProgress":
         return XChip.chipStatus(
           label: "En cours".tr.capitalizeFirst!,
-          chipColor: XChipColor.blue,
+          chipColor: XChipColor.green,
         );
       default:
         return XChip.chipStatus(
@@ -168,11 +172,11 @@ class DashboardViewController extends GetxController with StateMixin {
   XChipColor getColorChipByStatusTag(String tag) {
     switch (tag) {
       case "Passed":
-        return XChipColor.yellow;
-      case "inComming":
         return XChipColor.red;
-      case "inProgress":
+      case "inComming":
         return XChipColor.blue;
+      case "inProgress":
+        return XChipColor.green;
 
       default:
         return XChipColor.red;

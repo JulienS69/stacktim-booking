@@ -24,23 +24,10 @@ class ReservationListing extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: Colors.grey[500]!,
-                offset: const Offset(0, 20),
-                blurRadius: 20,
-                spreadRadius: -5,
+                blurRadius: 10,
+                blurStyle: BlurStyle.outer,
               ),
             ],
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black45,
-                Colors.black26,
-                Colors.black26,
-                Colors.black26,
-              ],
-              transform: GradientRotation(1.5),
-              stops: [0.9, 0.2, 0.2, 0.5],
-            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

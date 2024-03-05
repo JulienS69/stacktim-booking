@@ -1,1 +1,1 @@
-enum XChipColor { yellow, red, blue }
+enum XChipColor { green, red, blue }

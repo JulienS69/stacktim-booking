@@ -7,4 +7,7 @@ const String five = 'assets/background/5.png';
 const String six = 'assets/background/6.png';
 const String microsoftLogo = 'assets/background/microsoft.png';
 const String coinLogo = 'assets/images/coin.png';
+const String seat = 'assets/images/seat.png';
+const String emergencyEscape = 'assets/images/emergency_escape.png';
 const String riveCharacter = 'assets/riv/logo.riv';
+const String lottieCheck = 'assets/lotties/check.json';

@@ -51,16 +51,16 @@ class XChip<T> extends StatelessWidget {
                 bodyText2.copyWith(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: chipColor == XChipColor.yellow
-                        ? yellowChip
+                    color: chipColor == XChipColor.green
+                        ? greenChip
                         : chipColor == XChipColor.red
                             ? redChip
                             : chipColor == XChipColor.blue
                                 ? blueChip
                                 : redChip),
           ),
-      backgroundColor: chipColor == XChipColor.yellow
-          ? yellowChip.withOpacity(0.2)
+      backgroundColor: chipColor == XChipColor.green
+          ? greenChip.withOpacity(0.2)
           : chipColor == XChipColor.red
               ? redChip.withOpacity(0.2)
               : chipColor == XChipColor.blue

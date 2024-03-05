@@ -3,6 +3,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
@@ -13,6 +14,7 @@ import 'package:stacktim_booking/ui/dashboard/section/header/search_bar_reservat
 import 'package:stacktim_booking/ui/dashboard/section/header/stack_credit.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
+import 'package:stacktim_booking/widget/x_selection_seat.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -39,9 +41,10 @@ class DashboardView extends GetView<DashboardViewController> {
                   modalSheetContext: modalSheetContext,
                   pageIndexNotifier: pageIndexNotifier,
                 ),
-                datePicker2(
+                seatPicker(
                   modalSheetContext: modalSheetContext,
                   pageIndexNotifier: pageIndexNotifier,
+                  controller: controller,
                 )
               ];
             },
@@ -97,6 +100,7 @@ SliverWoltModalSheetPage scrollDatePicker({
 }) {
   DashboardViewController controller = DashboardViewController();
   const double pagePadding = 16.0;
+  const double buttonHeight = 56.0;
   const double bottomPaddingForButton = 150.0;
   return WoltModalSheetPage(
     forceMaxHeight: true,
@@ -153,9 +157,6 @@ SliverWoltModalSheetPage scrollDatePicker({
             modalSheetContext: modalSheetContext,
           ),
           BookingDatePicker(controller: controller),
-          const SizedBox(
-            height: 20,
-          ),
           BookingBeginningTime(
             controller: controller,
             modalSheetContext: modalSheetContext,
@@ -163,68 +164,117 @@ SliverWoltModalSheetPage scrollDatePicker({
           const SizedBox(
             height: 25,
           ),
-          Obx(
-            () => controller.timeSelected.isNotEmpty
-                ? InkWell(
-                    onTap: () {
-                      controller.showTimePicker(
-                          context: modalSheetContext, isEndingTime: true);
-                    },
-                    child: Row(
-                      children: [
-                        const Text(
-                          "Heure de fin choisie : ",
-                          style: arvoStyle,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                            controller.endingHourSelected.isEmpty
-                                ? "Aucunes"
-                                : "${controller.endingHourSelected.value} heures"
-                                    "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
-                            style: arvoStyle.copyWith(
-                              color: controller.timeSelected.isEmpty
-                                  ? Colors.red
-                                  : Colors.white60,
-                              decoration: TextDecoration.underline,
-                            )),
-                        const Spacer(),
-                        const Icon(
-                          Icons.schedule,
-                          color: Colors.white,
-                        )
-                      ],
+          BookingEndingTime(
+            controller: controller,
+            modalSheetContext: modalSheetContext,
+          ),
+          // SHOW LOTTIE
+          Obx(() => controller.titleSelected.value.isNotEmpty &&
+                  controller.isDatePicked.value &&
+                  controller.beginingHourSelected.isNotEmpty &&
+                  controller.endingHourSelected.value.isNotEmpty
+              ? Column(
+                  children: [
+                    const SizedBox(
+                      height: 50,
                     ),
-                  )
-                : const SizedBox.shrink(),
-          )
+                    Lottie.asset(
+                      'assets/lotties/check.json',
+                      fit: BoxFit.fill,
+                      height: 200,
+                    ),
+                  ],
+                )
+              : const SizedBox.shrink())
         ],
       ),
     ),
-    stickyActionBar: const Padding(
-      padding: EdgeInsets.all(pagePadding),
-      child: Column(
-        children: [
-          // ElevatedButton(
-          //   onPressed: () {
-          //     HapticFeedback.vibrate();
-          //     pageIndexNotifier.value = pageIndexNotifier.value + 1;
-          //   },
-          //   child: const SizedBox(
-          //     height: buttonHeight,
-          //     width: double.infinity,
-          //     child: Center(
-          //         child: Text(
-          //       "J'ai choisi ma date !",
-          //     )),
-          //   ),
-          // ),
-        ],
-      ),
+    stickyActionBar: Obx(
+      () => controller.titleSelected.value.isNotEmpty &&
+              controller.isDatePicked.value &&
+              controller.beginingHourSelected.isNotEmpty &&
+              controller.endingHourSelected.value.isNotEmpty
+          ? Padding(
+              padding: const EdgeInsets.all(pagePadding),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      HapticFeedback.vibrate();
+                      pageIndexNotifier.value = pageIndexNotifier.value + 1;
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(Colors.black),
+                      foregroundColor: MaterialStatePropertyAll(Colors.white),
+                      textStyle: MaterialStatePropertyAll(arvoStyle),
+                    ),
+                    child: const SizedBox(
+                      height: buttonHeight,
+                      width: double.infinity,
+                      child: Center(
+                          child: Text(
+                        "Choisir ma place dans la salle",
+                      )),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : const SizedBox.shrink(),
     ),
   );
+}
+
+class BookingEndingTime extends StatelessWidget {
+  BuildContext modalSheetContext;
+  BookingEndingTime({
+    super.key,
+    required this.modalSheetContext,
+    required this.controller,
+  });
+
+  final DashboardViewController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => controller.timeSelected.isNotEmpty
+          ? InkWell(
+              onTap: () {
+                controller.showTimePicker(
+                    context: modalSheetContext, isEndingTime: true);
+              },
+              child: Row(
+                children: [
+                  const Text(
+                    "Heure de fin choisie : ",
+                    style: arvoStyle,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                      controller.endingHourSelected.isEmpty
+                          ? "Aucunes"
+                          : "${controller.endingHourSelected.value} heures"
+                              "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
+                      style: arvoStyle.copyWith(
+                        color: controller.timeSelected.isEmpty
+                            ? Colors.red
+                            : Colors.white60,
+                        decoration: TextDecoration.underline,
+                      )),
+                  const Spacer(),
+                  const Icon(
+                    Icons.schedule,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            )
+          : const SizedBox.shrink(),
+    );
+  }
 }
 
 class BookingBeginningTime extends StatelessWidget {
@@ -259,7 +309,7 @@ class BookingBeginningTime extends StatelessWidget {
                   Text(
                       controller.timeSelected.isEmpty
                           ? "Aucunes"
-                          : "${controller.hourSelected} heures"
+                          : "${controller.beginingHourSelected} heures"
                               "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
                       style: arvoStyle.copyWith(
                         color: controller.timeSelected.isEmpty
@@ -293,7 +343,7 @@ class BookingDatePicker extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(
-          height: 10,
+          height: 20,
         ),
         Obx(() => Row(
               children: [
@@ -344,9 +394,6 @@ class BookingDatePicker extends StatelessWidget {
                     : const SizedBox.shrink()
               ],
             )),
-        const SizedBox(
-          height: 20,
-        ),
         Obx(
           () => controller.isShowingDatePicker.value
               ? SfDateRangePicker(
@@ -373,6 +420,12 @@ class BookingDatePicker extends StatelessWidget {
                 )
               : const SizedBox.shrink(),
         ),
+        Visibility(
+          visible: !controller.isDatePicked.value,
+          child: const SizedBox(
+            height: 25,
+          ),
+        ),
         Obx(
           () => SizedBox(
             height: 50,
@@ -389,6 +442,8 @@ class BookingDatePicker extends StatelessWidget {
                     },
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.black),
+                      foregroundColor: MaterialStatePropertyAll(Colors.white),
+                      textStyle: MaterialStatePropertyAll(arvoStyle),
                     ),
                     child: !controller.isDatePicked.value &&
                             !controller.isShowLoading.value
@@ -453,11 +508,13 @@ class BookingTitle extends StatelessWidget {
             ),
           ),
           style: const TextStyle(
-            color: Colors.green,
+            color: Colors.white60,
             fontFamily: 'ArvoBold',
             decoration: TextDecoration.none,
           ),
-          onChanged: (value) {},
+          onChanged: (title) {
+            controller.titleSelected.value = title;
+          },
           controller: controller.titleController,
         ),
         const SizedBox(
@@ -468,68 +525,56 @@ class BookingTitle extends StatelessWidget {
   }
 }
 
-SliverWoltModalSheetPage datePicker2({
+SliverWoltModalSheetPage seatPicker({
   required BuildContext modalSheetContext,
   required ValueNotifier pageIndexNotifier,
+  required DashboardViewController controller,
 }) {
   const double pagePadding = 16.0;
-  const double buttonHeight = 56.0;
-  const double bottomPaddingForButton = 150.0;
+  const double buttonHeight = 20.0;
+  DashboardViewController controller = DashboardViewController();
+
   return WoltModalSheetPage(
     topBarTitle: Text(
-      "Réservation de la salle",
+      "Choisi ton siège",
       style: titleArvo.copyWith(fontSize: 18),
     ),
-    backgroundColor: backgroundColor,
+    backgroundColor: backgroundColorSheet,
     hasSabGradient: false,
+    forceMaxHeight: true,
     isTopBarLayerAlwaysVisible: true,
     trailingNavBarWidget: IconButton(
       padding: const EdgeInsets.all(pagePadding),
       icon: const Icon(Icons.close),
       onPressed: Navigator.of(modalSheetContext).pop,
     ),
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(
-        pagePadding,
-        pagePadding,
-        pagePadding,
-        bottomPaddingForButton,
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                "Etape 2 : ",
-                style: titleArvo.copyWith(
-                  fontSize: 18,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-              Text(
-                "Selectionner un horaire",
-                style: titleArvo.copyWith(
-                  fontSize: 16,
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
+    child: Column(
+      children: [
+        SizedBox(
+          height: 650,
+          child: SeatSelectionScreen(),
+        ),
+      ],
     ),
     stickyActionBar: Padding(
       padding: const EdgeInsets.all(pagePadding),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
             onPressed: () {
               HapticFeedback.vibrate();
               pageIndexNotifier.value = pageIndexNotifier.value - 1;
             },
-            child: const SizedBox(
+            style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(Colors.black),
+              foregroundColor: MaterialStatePropertyAll(Colors.white),
+              textStyle: MaterialStatePropertyAll(arvoStyle),
+            ),
+            child: SizedBox(
               height: buttonHeight,
-              width: double.infinity,
-              child: Center(
+              width: controller.seatSelected.value != 0 ? 100 : 150,
+              child: const Center(
                 child: Text(
                   "Retour",
                 ),

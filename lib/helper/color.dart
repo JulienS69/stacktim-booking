@@ -19,7 +19,7 @@ const Color grey10 = Color(0xFF303030);
 const Color grey11 = Color(0xFF212121);
 const Color grey12 = Color(0xFF181818);
 // SECTION - Chip/tags
-const Color yellowChip = Color(0XFFFFBE0B);
+const Color greenChip = Color.fromARGB(255, 32, 192, 14);
 const Color redChip = Color(0XFFC1040A);
 const Color blueChip = Color(0XFF5FAEDB);
 const Color backgroundChip = Color(0xFF686363);
@@ -29,3 +29,5 @@ const Color inputDefault = Color(0xFFF2F2F2);
 const Color inputActive = Color(0xFF5666D3);
 const Color inputError = primary;
 const Color inputDisabled = Color(0xFFF5F5F5);
+
+const Color redStackTim = Color.fromRGBO(225, 6, 0, 1);
