@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: xMyTheme,
       initialRoute: Routes.initialRoute,
       getPages: Nav.routes,
-      defaultTransition: Transition.fadeIn,
+      defaultTransition: Transition.circularReveal,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
