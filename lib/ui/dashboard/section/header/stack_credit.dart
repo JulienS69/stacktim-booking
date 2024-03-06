@@ -22,7 +22,11 @@ class StackCredit extends StatelessWidget {
             children: [
               Text(
                 "Bonjour ${controller.currentUser.pseudo} 👋",
-                style: titleText1,
+                style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
+                    fontFamily: 'Anta'),
               ),
               const Spacer(),
               Text(

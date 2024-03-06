@@ -335,7 +335,7 @@ class _XTextFieldState extends State<XInputTextField> {
           ? 1
           : widget.minLines,
       controller: widget.controller,
-      style: widget.style ?? bodyText2,
+      style: widget.style ?? bodyText2.copyWith(fontFamily: 'Anta'),
       focusNode: widget.focusNode ?? _fieldFocus,
       validator: widget.validator,
       autovalidateMode: widget.autoValidateMode,

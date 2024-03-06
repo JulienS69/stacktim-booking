@@ -6,8 +6,6 @@ const bodyText2 = TextStyle(
   color: black,
   fontWeight: FontWeight.w400,
   fontStyle: FontStyle.normal,
-  fontFamily: "Roboto",
-  package: "xefi_flutter_ui_kit",
 );
 
 const bodyTextMonserat14 = TextStyle(
@@ -15,24 +13,20 @@ const bodyTextMonserat14 = TextStyle(
   color: black,
   fontWeight: FontWeight.w400,
   fontStyle: FontStyle.normal,
-  fontFamily: "Montserrat",
-  package: "xefi_flutter_ui_kit",
 );
 
 const titleText1 = TextStyle(
   fontSize: 24,
   fontWeight: FontWeight.w700,
   fontStyle: FontStyle.normal,
-  fontFamily: "Montserrat",
-  package: "xefi_flutter_ui_kit",
 );
 
 const arvoStyle =
-    TextStyle(color: Colors.white, fontFamily: 'ArvoBold', fontSize: 12);
+    TextStyle(color: Colors.white, fontFamily: 'Anta', fontSize: 12);
 
 const titleArvo = TextStyle(
   fontSize: 24,
-  fontFamily: "ArvoBold",
+  fontFamily: "Anta",
 );
 
 ThemeData xMyTheme = ThemeData(
@@ -51,7 +45,7 @@ ThemeData xMyTheme = ThemeData(
       surface: Colors.white,
       onSurface: Colors.white),
   // Couleur d'accentuation utilisée pour les éléments interactifs
-  fontFamily: 'ProtestRiot-Regular', // Police de caractères par défaut
+  fontFamily: 'Anta', // Police de caractères par défaut
 );
 
 InputDecoration textFormDecoration({

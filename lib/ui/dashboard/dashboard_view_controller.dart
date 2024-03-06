@@ -98,11 +98,11 @@ class DashboardViewController extends GetxController with StateMixin {
         okText: isEndingTime
             ? "Je confirme l'heure de fin"
             : "Je confirme l'heure de début",
-        okStyle: const TextStyle(fontFamily: "ArvoBold", color: Colors.white60),
+        okStyle: const TextStyle(fontFamily: "Anta", color: Colors.white60),
         hourLabel: 'Heures',
         iosStylePicker: true,
         cancelStyle: const TextStyle(
-          fontFamily: "ArvoBold",
+          fontFamily: "Anta",
           color: Colors.red,
         ),
         cancelText: 'Retour',

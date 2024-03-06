@@ -1,3 +1,4 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/strings.dart';
@@ -17,6 +18,15 @@ class ProfilView extends GetView<ProfilViewController> {
       appBar: const XPageHeader(
         title: '',
         imagePath: logo,
+      ),
+      gapLocation: GapLocation.end,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.black,
+        child: Image.asset(
+          logo,
+          height: 35,
+        ),
       ),
       bottomNavIndex: 2,
       body: controller.obx(

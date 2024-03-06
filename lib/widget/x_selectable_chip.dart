@@ -102,6 +102,7 @@ class _XSelectableChipState extends State<XSelectableChip> {
             widget.label,
             style: bodyText2.copyWith(
               fontSize: 12,
+              fontFamily: 'Anta',
               fontWeight: FontWeight.w500,
               color: isSelected
                   ? widget.selectedLabelColor ?? getChipColor()

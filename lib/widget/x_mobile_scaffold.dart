@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter/services.dart';
+import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/icons.dart';
 
 import '../navigation/route.dart';
@@ -19,10 +20,15 @@ class XMobileScaffold extends StatefulWidget {
   final TextStyle? titleStyle;
   final Widget? leadingWidget;
   final bool? extendBodyBehindAppBar;
-  final int? bottomNavIndex;
+  int? bottomNavIndex;
   final GapLocation? gapLocation;
+  final List<String> routeNames = [
+    Routes.dashboard,
+    Routes.calendar,
+    Routes.profil,
+  ];
 
-  const XMobileScaffold({
+  XMobileScaffold({
     Key? key,
     required this.body,
     this.bottomNavIndex,
@@ -84,22 +90,19 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
                 calendarIcon,
                 profileIcon,
               ],
-              inactiveColor: Colors.white,
-              activeColor: Colors.red,
+              splashColor: redStackTim,
+              inactiveColor: backgroundColor,
+              activeColor: Colors.white,
               activeIndex: bottomNavIndex,
               gapLocation: widget.gapLocation ?? GapLocation.none,
               notchSmoothness: NotchSmoothness.verySmoothEdge,
               onTap: (index) {
+                HapticFeedback.vibrate();
                 setState(() {
-                  bottomNavIndex = index;
+                  widget.bottomNavIndex = index;
                 });
-                if (index == 0) {
-                  Get.offAndToNamed(Routes.dashboard);
-                } else if (index == 1) {
-                  Get.offAndToNamed(Routes.calendar);
-                } else {
-                  Get.offAndToNamed(Routes.profil);
-                }
+                Navigator.pushReplacementNamed(
+                    context, widget.routeNames[index]);
               },
               backgroundColor: Colors.black,
             )

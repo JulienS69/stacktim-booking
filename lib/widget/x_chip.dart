@@ -50,6 +50,7 @@ class XChip<T> extends StatelessWidget {
             style: textStyle ??
                 bodyText2.copyWith(
                     fontSize: 12,
+                    fontFamily: 'Anta',
                     fontWeight: FontWeight.w500,
                     color: chipColor == XChipColor.green
                         ? greenChip

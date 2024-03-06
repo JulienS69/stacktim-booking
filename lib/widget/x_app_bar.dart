@@ -59,7 +59,9 @@ class XPageHeader extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 Text(
                   title,
-                  style: style ?? titleText1.copyWith(color: Colors.white),
+                  style: style ??
+                      titleText1.copyWith(
+                          color: Colors.white, fontFamily: 'Anta'),
                 ),
               ],
             )
@@ -67,7 +69,9 @@ class XPageHeader extends StatelessWidget implements PreferredSizeWidget {
               message: title,
               child: Text(
                 title,
-                style: style ?? titleText1.copyWith(color: Colors.white),
+                style: style ??
+                    titleText1.copyWith(
+                        color: Colors.white, fontFamily: 'Anta'),
               ),
             ),
       leading: leadingWidget,

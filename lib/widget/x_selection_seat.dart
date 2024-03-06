@@ -13,13 +13,15 @@ class SeatWidget extends StatefulWidget {
   final bool isSelected;
   final Function(bool) onSelect;
 
-  SeatWidget({
+  const SeatWidget({
+    super.key,
     required this.seatNumber,
     required this.isSelected,
     required this.onSelect,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _SeatWidgetState createState() => _SeatWidgetState();
 }
 
@@ -57,8 +59,16 @@ class _SeatWidgetState extends State<SeatWidget> {
   }
 }
 
+// ignore: must_be_immutable
 class SeatSelectionScreen extends StatefulWidget {
+  ValueNotifier<dynamic> pageIndexNotifier;
+
+  SeatSelectionScreen({
+    super.key,
+    required this.pageIndexNotifier,
+  });
   @override
+  // ignore: library_private_types_in_public_api
   _SeatSelectionScreenState createState() => _SeatSelectionScreenState();
 }
 
@@ -83,21 +93,19 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
       padding: const EdgeInsets.only(top: 15.0),
       child: Stack(
         children: [
-          Positioned.fill(
-            bottom: 80,
-            child: Center(
-              child: Container(
-                width: 100,
-                height: 500,
-                decoration: BoxDecoration(
-                  color: grey10, // Couleur du bureau
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Image.asset(
-                    logo,
-                    height: 65,
-                  ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              width: 100,
+              height: 500,
+              decoration: BoxDecoration(
+                color: grey10, // Couleur du bureau
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Image.asset(
+                  logo,
+                  height: 65,
                 ),
               ),
             ),
@@ -127,22 +135,74 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
             () => dashboardViewController.seatSelected.value != 0
                 ? Align(
                     alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.black),
-                        foregroundColor: MaterialStatePropertyAll(Colors.white),
-                        textStyle: MaterialStatePropertyAll(arvoStyle),
-                      ),
-                      child: const SizedBox(
-                        height: 50,
-                        width: 150,
-                        child: Center(
-                          child: Text(
-                            "J'ai choisi mon siège",
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                height: 60,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Vous avez sélectionné le siège numéro : ${dashboardViewController.seatSelected.value} ",
+                                      style: arvoStyle.copyWith(
+                                        color: backgroundColorSheet,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_circle_right_outlined,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        InkWell(
+                          onTap: () {
+                            widget.pageIndexNotifier.value =
+                                widget.pageIndexNotifier.value + 1;
+                          },
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      color: backgroundColor),
+                                  height: 60,
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "J'ai valide ce siège ",
+                                        style: arvoStyle,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.arrow_circle_right_outlined,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   )
                 : const SizedBox.shrink(),
