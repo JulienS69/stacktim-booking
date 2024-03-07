@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
+import 'package:stacktim_booking/helper/local_storage.dart';
+import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/logic/status/status.dart';
 import 'package:stacktim_booking/logic/user/user.dart';
 import 'package:stacktim_booking/widget/x_chip.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class DashboardViewController extends GetxController with StateMixin {
   List<Status> statusList = const [
@@ -18,6 +23,7 @@ class DashboardViewController extends GetxController with StateMixin {
     Status(id: 1, statusName: "Passed"),
     Status(id: 2, statusName: "inComming"),
   ];
+  List<TargetFocus> tutorialList = [];
 
   RxBool isNotFree = false.obs;
 
@@ -25,6 +31,8 @@ class DashboardViewController extends GetxController with StateMixin {
   RxBool isShowingDatePicker = false.obs;
   RxBool isDatePicked = false.obs;
   RxBool isShowLoading = false.obs;
+  RxBool isShowTutorial = false.obs;
+
   TextEditingController searchController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   FixedExtentScrollController fixedScrollController =
@@ -38,13 +46,29 @@ class DashboardViewController extends GetxController with StateMixin {
   String minutesSelected = "";
   RxString timeSelected = "".obs;
   RxInt seatSelected = 0.obs;
+
+  //KEY FOR TUTORIAL
+  final fabButtonKey = GlobalKey<FormState>(debugLabel: 'fabButtonKey');
+  final dashboardButtonKey =
+      GlobalKey<FormState>(debugLabel: 'dashboardButtonKey');
+  final calendardButtonKey =
+      GlobalKey<FormState>(debugLabel: 'calendardButtonKey');
+  final profilButtonKey = GlobalKey<FormState>(debugLabel: 'profilButtonKey');
+  final stackCreditButtonKey =
+      GlobalKey<FormState>(debugLabel: 'stackCreditButtonKey');
+
   DashboardViewController();
 
   @override
-  Future<void> onReady() async {
+  void onInit() async {
     change(null, status: RxStatus.loading());
-    change(null, status: RxStatus.success());
-    super.onReady();
+    try {
+      await getDataTutorial();
+      change(null, status: RxStatus.success());
+    } catch (e) {
+      change(null, status: RxStatus.error());
+    }
+    super.onInit();
   }
 
   bool checkFormIsEmpty() {
@@ -203,5 +227,115 @@ class DashboardViewController extends GetxController with StateMixin {
     } else {
       isNotFree.value = false;
     }
+  }
+
+  //SECTION TUTORIAL
+  void showTutorial(BuildContext context, List<TargetFocus> targets) {
+    TutorialCoachMark(
+      targets: targets,
+      colorShadow: const Color.fromARGB(255, 22, 22, 22),
+      paddingFocus: 0,
+      hideSkip: false,
+      alignSkip: AlignmentDirectional.topStart,
+      textSkip: 'Passer le tutoriel',
+      textStyleSkip: const TextStyle(decoration: TextDecoration.underline),
+      onFinish: () async {
+        await closeTutorial();
+      },
+    ).show(context: context);
+  }
+
+  void showTutorialOnDashboard(context) async {
+    if (tutorialList.isNotEmpty && isShowTutorial.value == true) {
+      showTutorial(context, tutorialList);
+    }
+  }
+
+  Future<void> getDataTutorial() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? getTutoBool = prefs.getBool(LocalStorageKeyEnum.isShowTutorial.name);
+    //TODO A RECOMMENTER UNE FOIS LE TUTO TERMINÉ
+    // if (getTutoBool == null || getTutoBool == true) {
+    fillTutorialList();
+    isShowTutorial.value = true;
+    // }
+  }
+
+  Future<void> closeTutorial() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isShowTutorial.value = false;
+    await prefs.setBool(LocalStorageKeyEnum.isShowTutorial.name, false);
+  }
+
+  fillTutorialList() {
+    //FAB
+    tutorialList.add(
+      TargetFocus(
+        identify: "FAB",
+        keyTarget: fabButtonKey,
+        enableOverlayTab: true,
+        shape: ShapeLightFocus.Circle,
+        contents: [
+          TargetContent(
+              align: ContentAlign.top,
+              child: const Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  'Prend ta réservation ici',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    overflow: TextOverflow.clip,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ))
+        ],
+      ),
+    );
+    //STACKCREDITS
+    tutorialList.add(
+      TargetFocus(
+        identify: "Stack Crédit",
+        keyTarget: stackCreditButtonKey,
+        enableOverlayTab: true,
+        shape: ShapeLightFocus.Circle,
+        contents: [
+          TargetContent(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    coinLogo,
+                    height: 50,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "Stack Crédits",
+                style: titleText1,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Retrouve ton nombre de crédits restant',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  overflow: TextOverflow.clip,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ))
+        ],
+      ),
+    );
   }
 }

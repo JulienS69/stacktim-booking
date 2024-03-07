@@ -29,21 +29,26 @@ class StackCredit extends StatelessWidget {
                     fontFamily: 'Anta'),
               ),
               const Spacer(),
-              Text(
-                '6',
-                style: titleArvo.copyWith(
-                  color: primary,
-                ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Image.asset(
-                coinLogo,
-                height: 15,
-              ),
-              const SizedBox(
-                width: 15,
+              Row(
+                key: controller.stackCreditButtonKey,
+                children: [
+                  Text(
+                    '6',
+                    style: titleArvo.copyWith(
+                      color: primary,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Image.asset(
+                    coinLogo,
+                    height: 15,
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                ],
               ),
             ],
           ),

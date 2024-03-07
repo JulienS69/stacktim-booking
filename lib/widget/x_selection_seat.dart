@@ -151,7 +151,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Vous avez sélectionné le siège numéro : ${dashboardViewController.seatSelected.value} ",
+                                      "Siège sélectionné : N°${dashboardViewController.seatSelected.value} ",
                                       style: arvoStyle.copyWith(
                                         color: backgroundColorSheet,
                                       ),

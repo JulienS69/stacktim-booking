@@ -24,6 +24,7 @@ class DashboardView extends GetView<DashboardViewController> {
       bottomNavIndex: 0,
       gapLocation: GapLocation.end,
       floatingActionButton: FloatingActionButton(
+        key: controller.fabButtonKey,
         onPressed: () {
           NewBookingSheet().showModalSheet(context, pageIndexNotifier);
         },
@@ -38,18 +39,23 @@ class DashboardView extends GetView<DashboardViewController> {
         imagePath: logo,
       ),
       body: controller.obx(
-        (state) => Column(
-          children: [
-            StackCredit(controller: controller),
-            SearchBarReservation(controller: controller),
-            ChipFilter(controller: controller),
-            Expanded(
-              child: ReservationListing(
+        (state) {
+          controller.showTutorialOnDashboard(context);
+          return Column(
+            children: [
+              StackCredit(
                 controller: controller,
               ),
-            ),
-          ],
-        ),
+              SearchBarReservation(controller: controller),
+              ChipFilter(controller: controller),
+              Expanded(
+                child: ReservationListing(
+                  controller: controller,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
