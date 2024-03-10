@@ -18,6 +18,7 @@ const Color grey9 = Color(0xFF424242);
 const Color grey10 = Color(0xFF303030);
 const Color grey11 = Color(0xFF212121);
 const Color grey12 = Color(0xFF181818);
+const Color grey15 = Color(0xFF828282);
 // SECTION - Chip/tags
 const Color greenChip = Color.fromARGB(255, 32, 192, 14);
 const Color redChip = Color(0XFFC1040A);
@@ -29,5 +30,16 @@ const Color inputDefault = Color(0xFFF2F2F2);
 const Color inputActive = Color(0xFF5666D3);
 const Color inputError = primary;
 const Color inputDisabled = Color(0xFFF5F5F5);
+
+// SECTION - Snackbars
+const Color snackSimple = Color(0xFF586C9D);
+const Color snackSucces = Color(0xFFd9f3ec);
+const Color snackWarning = Color(0xFFfff2ce);
+const Color snackUpdate = Color(0xFFfeddcd);
+const Color snackError = Color(0xFFf3cdce);
+const Color buttonHover = Color(0xFF303030);
+const Color iconClose = Color(0xFF74858b);
+const Color yellowChip = Color(0XFFFFBE0B);
+const Color orangeChip = Color(0XFFFB5607);
 
 const Color redStackTim = Color.fromRGBO(225, 6, 0, 1);

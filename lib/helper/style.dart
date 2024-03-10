@@ -29,6 +29,14 @@ const titleArvo = TextStyle(
   fontFamily: "Anta",
 );
 
+const styleWidget = TextStyle(
+  fontSize: 15,
+  color: grey15,
+  fontWeight: FontWeight.w400,
+  fontStyle: FontStyle.normal,
+  overflow: TextOverflow.ellipsis,
+);
+
 ThemeData xMyTheme = ThemeData(
   primaryColor: Colors.red, // Couleur principale de l'application
   colorScheme: const ColorScheme(

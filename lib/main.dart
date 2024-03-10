@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
+import 'core/api_client/stacktim_api_client.dart';
 import 'helper/style.dart';
 import 'navigation/navigation.dart';
 import 'navigation/route.dart';
@@ -12,6 +14,8 @@ import 'navigation/route.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Get.putAsync<Dio>(() => StacktimHttpClient().init(),
+      tag: 'stacktimApi');
   runApp(const MyApp());
 }
 

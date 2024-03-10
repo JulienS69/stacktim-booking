@@ -3,6 +3,7 @@ class Routes {
     return login;
   }
 
+  static String offline = '/offline';
   static String login = '/login';
   static String welcome = '/welcome';
   static String dashboard = '/dashboard';

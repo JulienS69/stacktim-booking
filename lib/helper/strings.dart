@@ -12,3 +12,15 @@ const String riveCharacter = 'assets/riv/logo.riv';
 const String lottieCheck = 'assets/lotties/check.json';
 const String reload = 'assets/images/reload.png';
 const String document = 'assets/images/document.png';
+const String urlBaseStackTim =
+    'https://rd-stacktim-booking-api.xefi-apps.fr/api';
+
+//ENV
+// RD
+// https://rd-stacktim-booking-api.xefi-apps.fr/api
+//RC
+//https://rc-stacktim-booking-api.xefi-apps.fr/api
+//DEMO
+//https://demo-stacktim-booking-api.xefi-apps.fr/api
+//PROD
+// https://stacktim-booking-api.dailyapps.fr/api
