@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/strings.dart';
-import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/login/login_view_controller.dart';
+
+import '../../helper/snackbar.dart';
 
 class LoginView extends GetView<LoginViewController> {
   const LoginView({
@@ -116,14 +117,14 @@ class LoginView extends GetView<LoginViewController> {
                 child: InkWell(
                   onTap: () async {
                     HapticFeedback.heavyImpact();
-                    Get.offAllNamed(Routes.welcome);
-                    // if (controller.microsoftUrl.value.isEmpty) {
-                    //   showSnackbar(
-                    //       "Impossible de lancer la connexion à Microsoft",
-                    //       SnackStatusEnum.error);
-                    // } else {
-                    //   controller.initialWebView();
-                    // }
+                    // Get.offAllNamed(Routes.welcome);
+                    if (controller.microsoftUrl.value.isEmpty) {
+                      showSnackbar(
+                          "Impossible de lancer la connexion à Microsoft",
+                          SnackStatusEnum.error);
+                    } else {
+                      controller.initialWebView();
+                    }
                   },
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,

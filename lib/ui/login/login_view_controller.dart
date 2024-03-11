@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/logic/repository/login_repository.dart';
 import 'package:stacktim_booking/navigation/route.dart';
@@ -31,6 +30,7 @@ class LoginViewController extends GetxController with StateMixin {
   @override
   void onInit() async {
     try {
+      checkToken();
       await getMicrosftUrl();
     } catch (e) {}
     change(null, status: RxStatus.success());
@@ -42,6 +42,14 @@ class LoginViewController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     change(null, status: RxStatus.success());
     super.onReady();
+  }
+
+  void checkToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString(LocalStorageKey.jwt.name) ?? "";
+    if (token.isNotEmpty) {
+      Get.offAllNamed(Routes.welcome);
+    }
   }
 
   Future getMicrosftUrl() async {
@@ -70,13 +78,18 @@ class LoginViewController extends GetxController with StateMixin {
             currentUrl = url;
             final cookies = await webViewController
                 .runJavaScriptReturningResult('document.cookie');
-            log("ffffffffffffffffffffffffffffff" + cookies.toString());
             // If the JWT is successfully retrieved from the cookies of the webAppView, then redirect to the login page with the JWT.
-            if (cookies.toString().contains(LocalStorageKey.jwt.name)) {
+            if (cookies.toString().contains('access_token')) {
               String cookiesResult = cookies.toString();
-              List<String> jwtList = cookiesResult.split("jwt=");
+              List<String> jwtList = cookiesResult.split("access_token=");
               if (jwtList.isNotEmpty) {
-                // currentJwt = jwtList.last.replaceAll('"', '');
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                String currentJwt = "";
+                currentJwt = jwtList.last.replaceAll('"', '');
+                if (currentJwt.isNotEmpty) {
+                  await prefs.setString(LocalStorageKey.jwt.name, currentJwt);
+                  Get.offAllNamed(Routes.welcome);
+                }
               }
             }
           },

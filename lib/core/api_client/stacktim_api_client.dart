@@ -12,7 +12,7 @@ class StacktimHttpClient extends GetxService {
     client.options.connectTimeout = const Duration(seconds: 15);
     client.options.headers["Accept"] = "application/json";
     client.options.contentType = 'application/json; charset=utf-8';
-    client.interceptors.add(RestApiInterceptor(withAuth: false));
+    client.interceptors.add(RestApiInterceptor(withAuth: true));
     return client;
   }
 }

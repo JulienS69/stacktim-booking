@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 
 class RestApiInterceptor extends Interceptor {
   bool withAuth;
@@ -23,7 +25,9 @@ class RestApiInterceptor extends Interceptor {
     }
 
     if (withAuth) {
-      options.headers["Authorization"] = 'currentJwt';
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      options.headers["Authorization"] =
+          prefs.getString(LocalStorageKey.jwt.name) ?? "";
     }
     return super.onRequest(options, handler);
   }

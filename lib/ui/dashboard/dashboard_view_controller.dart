@@ -254,11 +254,10 @@ class DashboardViewController extends GetxController with StateMixin {
   Future<void> getDataTutorial() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? getTutoBool = prefs.getBool(LocalStorageKeyEnum.isShowTutorial.name);
-    //TODO A RECOMMENTER UNE FOIS LE TUTO TERMINÉ
-    // if (getTutoBool == null || getTutoBool == true) {
-    fillTutorialList();
-    isShowTutorial.value = true;
-    // }
+    if (getTutoBool == null || getTutoBool == true) {
+      fillTutorialList();
+      isShowTutorial.value = true;
+    }
   }
 
   Future<void> closeTutorial() async {
