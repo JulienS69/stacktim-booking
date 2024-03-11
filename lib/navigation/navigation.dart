@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:stacktim_booking/navigation/route.dart';
+import 'package:stacktim_booking/ui/calendar/calendar_detail/calendar_detail_view.dart';
+import 'package:stacktim_booking/ui/calendar/calendar_detail/calendar_detail_view_controller_binding.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_view.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view.dart';
@@ -38,10 +40,16 @@ class Nav {
       binding: ProfilViewControllerBindings(),
     ),
     GetPage(
-      title: 'profil'.tr,
+      title: 'calendar'.tr,
       name: Routes.calendar,
       page: () => const CalendarPage(),
       binding: CalendarViewControllerBindings(),
+    ),
+    GetPage(
+      title: 'calendarDetail'.tr,
+      name: Routes.calendarDetail,
+      page: () => const CalendarDetailView(),
+      binding: CalendarDetailViewControllerBindings(),
     ),
   ];
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_view_controller.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
@@ -36,6 +37,9 @@ class CalendarPage extends GetView<CalendarViewController> {
               view: CalendarView.month,
               todayHighlightColor: Colors.transparent,
               todayTextStyle: const TextStyle(color: Colors.white),
+              onTap: (calendarTapDetails) {
+                Get.toNamed(Routes.calendarDetail);
+              },
               monthCellBuilder: (context, details) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,

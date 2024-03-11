@@ -10,4 +10,5 @@ class Routes {
   static String newBooking = '/new-booking';
   static String profil = '/profil';
   static String calendar = '/calendar';
+  static String calendarDetail = '/calendar-detail';
 }
