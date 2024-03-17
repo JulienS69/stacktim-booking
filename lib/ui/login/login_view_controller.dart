@@ -87,7 +87,9 @@ class LoginViewController extends GetxController with StateMixin {
                 String currentJwt = "";
                 currentJwt = jwtList.last.replaceAll('"', '');
                 if (currentJwt.isNotEmpty) {
-                  await prefs.setString(LocalStorageKey.jwt.name, currentJwt);
+                  int endIndex = currentJwt.indexOf("; XSRF-");
+                  String accessToken = currentJwt.substring(0, endIndex);
+                  await prefs.setString(LocalStorageKey.jwt.name, accessToken);
                   Get.offAllNamed(Routes.welcome);
                 }
               }

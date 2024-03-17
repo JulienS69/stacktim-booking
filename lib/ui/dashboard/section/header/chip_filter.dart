@@ -27,9 +27,9 @@ class ChipFilter extends StatelessWidget {
                   controller.statusList.length,
                   (index) => XSelectableChip(
                       label: controller.getStringByStatusTag(
-                          controller.statusList[index].statusName ?? ''),
+                          controller.statusList[index].slug ?? ''),
                       chipColor: controller.getColorChipByStatusTag(
-                          controller.statusList[index].statusName ?? "")),
+                          controller.statusList[index].slug ?? "")),
                 ),
               ))
             ],

@@ -109,7 +109,7 @@ class LoginView extends GetView<LoginViewController> {
                 ),
               ),
               const SizedBox(
-                height: 35,
+                height: 60,
               ),
               //BUTTON CONNEXION WITH MICROSOFT
               Padding(
@@ -140,38 +140,27 @@ class LoginView extends GetView<LoginViewController> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Se connecter avec Microsoft".toUpperCase(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Se connecter avec Microsoft".toUpperCase(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                          Image.asset(
+                            microsoftLogo,
+                            height: 60,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    microsoftLogo,
-                    height: 60,
-                  ),
-                  const Text(
-                    "Microsoft",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 20,
-                      letterSpacing: 0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )
-                ],
-              )
             ],
           ),
         ),

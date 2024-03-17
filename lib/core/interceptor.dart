@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,8 +28,9 @@ class RestApiInterceptor extends Interceptor {
 
     if (withAuth) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      log(prefs.getString(LocalStorageKey.jwt.name).toString());
       options.headers["Authorization"] =
-          prefs.getString(LocalStorageKey.jwt.name) ?? "";
+          'Bearer ${prefs.getString(LocalStorageKey.jwt.name)}';
     }
     return super.onRequest(options, handler);
   }

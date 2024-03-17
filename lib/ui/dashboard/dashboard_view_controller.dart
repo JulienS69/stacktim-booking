@@ -7,22 +7,27 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
+import 'package:stacktim_booking/helper/date_time_helper.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
-import 'package:stacktim_booking/logic/status/status.dart';
-import 'package:stacktim_booking/logic/user/user.dart';
+import 'package:stacktim_booking/logic/models/booking/booking.dart';
+import 'package:stacktim_booking/logic/models/status/status.dart';
+import 'package:stacktim_booking/logic/models/user/user.dart';
+import 'package:stacktim_booking/logic/repository/booking_repository.dart';
+import 'package:stacktim_booking/logic/repository/status_repository.dart';
 import 'package:stacktim_booking/widget/x_chip.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class DashboardViewController extends GetxController with StateMixin {
-  List<Status> statusList = const [
-    Status(id: 0, statusName: "inProgress"),
-    Status(id: 1, statusName: "Passed"),
-    Status(id: 2, statusName: "inComming"),
-  ];
+  BookingRepository bookingRepository = BookingRepository();
+  StatusRepository statusRepository = StatusRepository();
+
+  RxList<Status> statusList = <Status>[].obs;
+  RxList<Booking> bookingList = <Booking>[].obs;
+
   List<TargetFocus> tutorialList = [];
 
   RxBool isNotFree = false.obs;
@@ -64,11 +69,67 @@ class DashboardViewController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     try {
       await getDataTutorial();
+      await getMyBookings();
+      await getStatusList();
       change(null, status: RxStatus.success());
     } catch (e) {
       change(null, status: RxStatus.error());
     }
     super.onInit();
+  }
+
+  Future<void> getMyBookings() async {
+    return await bookingRepository.getMyBookings().then(
+          (value) => value.fold(
+            (l) {},
+            (r) {
+              bookingList.value = r;
+            },
+          ),
+        );
+  }
+
+  Future<void> getStatusList() async {
+    return await statusRepository.getStatusList().then(
+          (value) => value.fold(
+            (l) {},
+            (r) {
+              statusList.value = r;
+            },
+          ),
+        );
+  }
+
+  String formatDateAndTime(
+      {required String bookedAt,
+      required String beginAt,
+      required String endAt}) {
+    // Convertir la date réservée en DateTime
+    DateTime bookedDateTime = DateTime.parse(bookedAt);
+
+    // Séparer les heures, minutes et secondes du début et de la fin
+    List<String> beginTimeParts = beginAt.split(':');
+    List<String> endTimeParts = endAt.split(':');
+
+    // Convertir les parties d'heures en entiers
+    int beginHour = int.parse(beginTimeParts[0]);
+    int beginMinute = int.parse(beginTimeParts[1]);
+    int endHour = int.parse(endTimeParts[0]);
+    int endMinute = int.parse(endTimeParts[1]);
+
+    // Créer les objets DateTime pour le début et la fin
+    DateTime beginDateTime = DateTime(bookedDateTime.year, bookedDateTime.month,
+        bookedDateTime.day, beginHour, beginMinute);
+    DateTime endDateTime = DateTime(bookedDateTime.year, bookedDateTime.month,
+        bookedDateTime.day, endHour, endMinute);
+
+    // Formater les dates et heures dans le format souhaité
+    String formattedBookedDate =
+        "${bookedDateTime.day} ${getMonthName(bookedDateTime.month)}";
+    String formattedTimeRange =
+        "${formatTime(beginDateTime)} à ${formatTime(endDateTime)}";
+
+    return "Le $formattedBookedDate de $formattedTimeRange";
   }
 
   bool checkFormIsEmpty() {
@@ -159,9 +220,9 @@ class DashboardViewController extends GetxController with StateMixin {
   Color getColorsByStatusTag({
     required String statusTag,
   }) {
-    if (statusTag == "inProgress") {
+    if (statusTag == StatusSlugs.inProgress) {
       return greenChip;
-    } else if (statusTag == "Passed") {
+    } else if (statusTag == StatusSlugs.passee) {
       return redChip;
     } else {
       return blueChip;
@@ -170,17 +231,17 @@ class DashboardViewController extends GetxController with StateMixin {
 
   XChip getChipByStatusTag(String? tag) {
     switch (tag) {
-      case "Passed":
+      case StatusSlugs.passee:
         return XChip.chipStatus(
           label: "Passée".tr.capitalizeFirst!,
           chipColor: XChipColor.red,
         );
-      case "inComming":
+      case StatusSlugs.inComming:
         return XChip.chipStatus(
           label: "A venir".tr.capitalizeFirst!,
           chipColor: XChipColor.blue,
         );
-      case "inProgress":
+      case StatusSlugs.inProgress:
         return XChip.chipStatus(
           label: "En cours".tr.capitalizeFirst!,
           chipColor: XChipColor.green,
@@ -195,11 +256,11 @@ class DashboardViewController extends GetxController with StateMixin {
 
   XChipColor getColorChipByStatusTag(String tag) {
     switch (tag) {
-      case "Passed":
+      case StatusSlugs.passee:
         return XChipColor.red;
-      case "inComming":
+      case StatusSlugs.inComming:
         return XChipColor.blue;
-      case "inProgress":
+      case StatusSlugs.inProgress:
         return XChipColor.green;
 
       default:
@@ -209,11 +270,11 @@ class DashboardViewController extends GetxController with StateMixin {
 
   String getStringByStatusTag(String tag) {
     switch (tag) {
-      case "Passed":
+      case StatusSlugs.passee:
         return 'Passée';
-      case "inComming":
-        return 'A venir';
-      case "inProgress":
+      case StatusSlugs.inComming:
+        return "A venir";
+      case StatusSlugs.inProgress:
         return 'En cours';
 
       default:
