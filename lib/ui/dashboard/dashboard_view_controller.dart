@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
-import 'package:stacktim_booking/helper/date_time_helper.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/strings.dart';
@@ -17,6 +16,7 @@ import 'package:stacktim_booking/logic/models/status/status.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/logic/repository/booking_repository.dart';
 import 'package:stacktim_booking/logic/repository/status_repository.dart';
+import 'package:stacktim_booking/logic/repository/user_repository.dart';
 import 'package:stacktim_booking/widget/x_chip.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -24,15 +24,16 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 class DashboardViewController extends GetxController with StateMixin {
   BookingRepository bookingRepository = BookingRepository();
   StatusRepository statusRepository = StatusRepository();
+  UserRepository userRepository = UserRepository();
 
   RxList<Status> statusList = <Status>[].obs;
   RxList<Booking> bookingList = <Booking>[].obs;
+  User currentUser = const User();
 
   List<TargetFocus> tutorialList = [];
 
   RxBool isNotFree = false.obs;
 
-  User currentUser = const User(firstname: "Julien", pseudo: "Virtuor");
   RxBool isShowingDatePicker = false.obs;
   RxBool isDatePicked = false.obs;
   RxBool isShowLoading = false.obs;
@@ -68,6 +69,7 @@ class DashboardViewController extends GetxController with StateMixin {
   void onInit() async {
     change(null, status: RxStatus.loading());
     try {
+      await getCurrentUser();
       await getDataTutorial();
       await getMyBookings();
       await getStatusList();
@@ -100,36 +102,15 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
-  String formatDateAndTime(
-      {required String bookedAt,
-      required String beginAt,
-      required String endAt}) {
-    // Convertir la date réservée en DateTime
-    DateTime bookedDateTime = DateTime.parse(bookedAt);
-
-    // Séparer les heures, minutes et secondes du début et de la fin
-    List<String> beginTimeParts = beginAt.split(':');
-    List<String> endTimeParts = endAt.split(':');
-
-    // Convertir les parties d'heures en entiers
-    int beginHour = int.parse(beginTimeParts[0]);
-    int beginMinute = int.parse(beginTimeParts[1]);
-    int endHour = int.parse(endTimeParts[0]);
-    int endMinute = int.parse(endTimeParts[1]);
-
-    // Créer les objets DateTime pour le début et la fin
-    DateTime beginDateTime = DateTime(bookedDateTime.year, bookedDateTime.month,
-        bookedDateTime.day, beginHour, beginMinute);
-    DateTime endDateTime = DateTime(bookedDateTime.year, bookedDateTime.month,
-        bookedDateTime.day, endHour, endMinute);
-
-    // Formater les dates et heures dans le format souhaité
-    String formattedBookedDate =
-        "${bookedDateTime.day} ${getMonthName(bookedDateTime.month)}";
-    String formattedTimeRange =
-        "${formatTime(beginDateTime)} à ${formatTime(endDateTime)}";
-
-    return "Le $formattedBookedDate de $formattedTimeRange";
+  Future<void> getCurrentUser() async {
+    return await userRepository.getCurrentUser().then(
+          (value) => value.fold(
+            (l) {},
+            (r) {
+              currentUser = r;
+            },
+          ),
+        );
   }
 
   bool checkFormIsEmpty() {

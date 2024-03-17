@@ -1,10 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 
-Widget showLottieEmptyBooking() {
+Widget showLottieEmptyBooking({
+  double? size,
+  String? lottie,
+  BoxFit? boxfit,
+}) {
   return Lottie.asset(
-    'assets/lotties/next.json',
-    fit: BoxFit.fill,
-    height: 150,
+    lottie ?? 'assets/lotties/next.json',
+    fit: boxfit ?? BoxFit.fill,
+    height: size ?? 150,
   );
 }
