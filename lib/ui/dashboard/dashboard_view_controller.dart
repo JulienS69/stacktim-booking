@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:day_night_time_picker/lib/constants.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
@@ -12,6 +14,7 @@ import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
+import 'package:stacktim_booking/logic/models/computer/computer.dart';
 import 'package:stacktim_booking/logic/models/status/status.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/logic/repository/booking_repository.dart';
@@ -21,13 +24,17 @@ import 'package:stacktim_booking/widget/x_chip.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
+import '../../logic/repository/computer_repository.dart';
+
 class DashboardViewController extends GetxController with StateMixin {
   BookingRepository bookingRepository = BookingRepository();
   StatusRepository statusRepository = StatusRepository();
   UserRepository userRepository = UserRepository();
+  ComputerRepository computerRepository = ComputerRepository();
 
   RxList<Status> statusList = <Status>[].obs;
   RxList<Booking> bookingList = <Booking>[].obs;
+  RxList<Computer> computersList = <Computer>[].obs;
   User currentUser = const User();
 
   List<TargetFocus> tutorialList = [];
@@ -52,6 +59,8 @@ class DashboardViewController extends GetxController with StateMixin {
   String minutesSelected = "";
   RxString timeSelected = "".obs;
   RxInt seatSelected = 0.obs;
+  Rx<double> progressValue = 0.0.obs;
+  Rx<bool> isConfirmed = false.obs;
 
   //KEY FOR TUTORIAL
   final fabButtonKey = GlobalKey<FormState>(debugLabel: 'fabButtonKey');
@@ -71,6 +80,7 @@ class DashboardViewController extends GetxController with StateMixin {
       await getDataTutorial();
       await getMyBookings();
       await getStatusList();
+      await getComputersList();
       change(null, status: RxStatus.success());
     } catch (e) {
       change(null, status: RxStatus.error());
@@ -100,6 +110,17 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
+  Future<void> getComputersList() async {
+    return await computerRepository.getComputersList().then(
+          (value) => value.fold(
+            (l) {},
+            (r) {
+              computersList.value = r;
+            },
+          ),
+        );
+  }
+
   Future<void> getCurrentUser() async {
     return await userRepository.getCurrentUser().then(
           (value) => value.fold(
@@ -119,7 +140,22 @@ class DashboardViewController extends GetxController with StateMixin {
     }
   }
 
-  checkDateAvalaible(DateTime datePicked, BuildContext context) async {
+  void startIncrementing() {
+    Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      if (progressValue.value < 100) {
+        progressValue.value += 1;
+      } else {
+        timer.cancel();
+        isConfirmed.value = true;
+      }
+    });
+  }
+
+  checkDateAvalaible({
+    required DateTime datePicked,
+    required BuildContext context,
+    required ValueNotifier pageIndexNotifier,
+  }) async {
     isShowLoading.value = true;
     await Future.delayed(const Duration(seconds: 2));
     isShowingDatePicker.value = false;
@@ -129,13 +165,17 @@ class DashboardViewController extends GetxController with StateMixin {
         DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(datePicked);
     isShowLoading.value = false;
     if (timeSelected.isEmpty) {
-      showTimePicker(context: context, isEndingTime: false);
+      showTimePicker(
+          context: context,
+          isEndingTime: false,
+          pageIndexNotifier: pageIndexNotifier);
     }
   }
 
   showTimePicker({
     required BuildContext context,
     required bool isEndingTime,
+    required ValueNotifier pageIndexNotifier,
   }) {
     Navigator.of(context).push(
       showPicker(
@@ -190,6 +230,7 @@ class DashboardViewController extends GetxController with StateMixin {
             timeSelected.value = time.format(Get.context!);
           } else {
             endingHourSelected.value = time.hour.toString();
+            pageIndexNotifier.value = pageIndexNotifier.value + 1;
           }
         },
       ),

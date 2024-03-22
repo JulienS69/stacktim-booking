@@ -10,7 +10,9 @@ import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarPage extends GetView<CalendarViewController> {
-  const CalendarPage({super.key});
+  const CalendarPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

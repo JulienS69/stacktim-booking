@@ -6,9 +6,11 @@ import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class BookingDatePicker extends StatelessWidget {
+  final ValueNotifier pageIndexNotifier;
   const BookingDatePicker({
     super.key,
     required this.controller,
+    required this.pageIndexNotifier,
   });
 
   final DashboardViewController controller;
@@ -89,7 +91,11 @@ class BookingDatePicker extends StatelessWidget {
                   selectionTextStyle: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                   onSelectionChanged: (date) async {
-                    await controller.checkDateAvalaible(date.value, context);
+                    await controller.checkDateAvalaible(
+                      datePicked: date.value,
+                      context: context,
+                      pageIndexNotifier: pageIndexNotifier,
+                    );
                   },
                   showNavigationArrow: true,
                 )

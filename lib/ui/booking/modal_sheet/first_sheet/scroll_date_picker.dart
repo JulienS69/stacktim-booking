@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/style.dart';
@@ -19,7 +18,6 @@ SliverWoltModalSheetPage scrollDatePicker({
   DashboardViewController controller = Get.find<DashboardViewController>();
 
   return WoltModalSheetPage(
-    forceMaxHeight: true,
     topBarTitle: Text(
       "Réservation de la salle",
       style: titleArvo.copyWith(fontSize: 18),
@@ -65,10 +63,14 @@ SliverWoltModalSheetPage scrollDatePicker({
             controller: controller,
             modalSheetContext: modalSheetContext,
           ),
-          BookingDatePicker(controller: controller),
+          BookingDatePicker(
+            controller: controller,
+            pageIndexNotifier: pageIndexNotifier,
+          ),
           BookingBeginningTime(
             controller: controller,
             modalSheetContext: modalSheetContext,
+            pageIndexNotifier: pageIndexNotifier,
           ),
           const SizedBox(
             height: 25,
@@ -76,34 +78,8 @@ SliverWoltModalSheetPage scrollDatePicker({
           BookingEndingTime(
             controller: controller,
             modalSheetContext: modalSheetContext,
+            pageIndexNotifier: pageIndexNotifier,
           ),
-          // SHOW LOTTIE
-          Obx(() => controller.titleSelected.value.isNotEmpty &&
-                  controller.isDatePicked.value &&
-                  controller.beginingHourSelected.isNotEmpty &&
-                  controller.endingHourSelected.value.isNotEmpty
-              ? Column(
-                  children: [
-                    const SizedBox(
-                      height: 80,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        HapticFeedback.vibrate();
-                        pageIndexNotifier.value = pageIndexNotifier.value + 1;
-                      },
-                      splashColor: Colors.transparent,
-                      overlayColor:
-                          const MaterialStatePropertyAll(Colors.transparent),
-                      child: Lottie.asset(
-                        'assets/lotties/next.json',
-                        fit: BoxFit.fill,
-                        height: 150,
-                      ),
-                    ),
-                  ],
-                )
-              : const SizedBox.shrink())
         ],
       ),
     ),

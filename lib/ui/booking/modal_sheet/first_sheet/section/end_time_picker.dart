@@ -6,11 +6,13 @@ import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 class BookingEndingTime extends StatelessWidget {
   final BuildContext modalSheetContext;
   final DashboardViewController controller;
+  final ValueNotifier pageIndexNotifier;
 
   const BookingEndingTime({
     super.key,
     required this.modalSheetContext,
     required this.controller,
+    required this.pageIndexNotifier,
   });
 
   @override
@@ -20,7 +22,9 @@ class BookingEndingTime extends StatelessWidget {
           ? InkWell(
               onTap: () {
                 controller.showTimePicker(
-                    context: modalSheetContext, isEndingTime: true);
+                    context: modalSheetContext,
+                    isEndingTime: true,
+                    pageIndexNotifier: pageIndexNotifier);
               },
               child: Row(
                 children: [
