@@ -21,9 +21,13 @@ Status _$StatusFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Status {
   @JsonKey(name: 'id')
-  int? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'status_name')
-  String? get statusName => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'slug')
+  String? get slug => throw _privateConstructorUsedError;
+  @JsonKey(name: 'label')
+  String? get label => throw _privateConstructorUsedError;
+  @JsonKey(name: 'color')
+  String? get color => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,8 +40,10 @@ abstract class $StatusCopyWith<$Res> {
       _$StatusCopyWithImpl<$Res, Status>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'status_name') String? statusName});
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'slug') String? slug,
+      @JsonKey(name: 'label') String? label,
+      @JsonKey(name: 'color') String? color});
 }
 
 /// @nodoc
@@ -54,16 +60,26 @@ class _$StatusCopyWithImpl<$Res, $Val extends Status>
   @override
   $Res call({
     Object? id = freezed,
-    Object? statusName = freezed,
+    Object? slug = freezed,
+    Object? label = freezed,
+    Object? color = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      statusName: freezed == statusName
-          ? _value.statusName
-          : statusName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      slug: freezed == slug
+          ? _value.slug
+          : slug // ignore: cast_nullable_to_non_nullable
+              as String?,
+      label: freezed == label
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -77,8 +93,10 @@ abstract class _$$StatusImplCopyWith<$Res> implements $StatusCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'status_name') String? statusName});
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'slug') String? slug,
+      @JsonKey(name: 'label') String? label,
+      @JsonKey(name: 'color') String? color});
 }
 
 /// @nodoc
@@ -93,16 +111,26 @@ class __$$StatusImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? statusName = freezed,
+    Object? slug = freezed,
+    Object? label = freezed,
+    Object? color = freezed,
   }) {
     return _then(_$StatusImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      statusName: freezed == statusName
-          ? _value.statusName
-          : statusName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      slug: freezed == slug
+          ? _value.slug
+          : slug // ignore: cast_nullable_to_non_nullable
+              as String?,
+      label: freezed == label
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -113,21 +141,29 @@ class __$$StatusImplCopyWithImpl<$Res>
 class _$StatusImpl implements _Status {
   const _$StatusImpl(
       {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'status_name') this.statusName});
+      @JsonKey(name: 'slug') this.slug,
+      @JsonKey(name: 'label') this.label,
+      @JsonKey(name: 'color') this.color});
 
   factory _$StatusImpl.fromJson(Map<String, dynamic> json) =>
       _$$StatusImplFromJson(json);
 
   @override
   @JsonKey(name: 'id')
-  final int? id;
+  final String? id;
   @override
-  @JsonKey(name: 'status_name')
-  final String? statusName;
+  @JsonKey(name: 'slug')
+  final String? slug;
+  @override
+  @JsonKey(name: 'label')
+  final String? label;
+  @override
+  @JsonKey(name: 'color')
+  final String? color;
 
   @override
   String toString() {
-    return 'Status(id: $id, statusName: $statusName)';
+    return 'Status(id: $id, slug: $slug, label: $label, color: $color)';
   }
 
   @override
@@ -136,13 +172,14 @@ class _$StatusImpl implements _Status {
         (other.runtimeType == runtimeType &&
             other is _$StatusImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.statusName, statusName) ||
-                other.statusName == statusName));
+            (identical(other.slug, slug) || other.slug == slug) &&
+            (identical(other.label, label) || other.label == label) &&
+            (identical(other.color, color) || other.color == color));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, statusName);
+  int get hashCode => Object.hash(runtimeType, id, slug, label, color);
 
   @JsonKey(ignore: true)
   @override
@@ -160,17 +197,25 @@ class _$StatusImpl implements _Status {
 
 abstract class _Status implements Status {
   const factory _Status(
-      {@JsonKey(name: 'id') final int? id,
-      @JsonKey(name: 'status_name') final String? statusName}) = _$StatusImpl;
+      {@JsonKey(name: 'id') final String? id,
+      @JsonKey(name: 'slug') final String? slug,
+      @JsonKey(name: 'label') final String? label,
+      @JsonKey(name: 'color') final String? color}) = _$StatusImpl;
 
   factory _Status.fromJson(Map<String, dynamic> json) = _$StatusImpl.fromJson;
 
   @override
   @JsonKey(name: 'id')
-  int? get id;
+  String? get id;
   @override
-  @JsonKey(name: 'status_name')
-  String? get statusName;
+  @JsonKey(name: 'slug')
+  String? get slug;
+  @override
+  @JsonKey(name: 'label')
+  String? get label;
+  @override
+  @JsonKey(name: 'color')
+  String? get color;
   @override
   @JsonKey(ignore: true)
   _$$StatusImplCopyWith<_$StatusImpl> get copyWith =>

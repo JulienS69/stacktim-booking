@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/strings.dart';
-import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/login/login_view_controller.dart';
+
+import '../../helper/snackbar.dart';
 
 class LoginView extends GetView<LoginViewController> {
   const LoginView({
@@ -108,7 +109,7 @@ class LoginView extends GetView<LoginViewController> {
                 ),
               ),
               const SizedBox(
-                height: 35,
+                height: 60,
               ),
               //BUTTON CONNEXION WITH MICROSOFT
               Padding(
@@ -116,14 +117,14 @@ class LoginView extends GetView<LoginViewController> {
                 child: InkWell(
                   onTap: () async {
                     HapticFeedback.heavyImpact();
-                    Get.offAllNamed(Routes.welcome);
-                    // if (controller.microsoftUrl.value.isEmpty) {
-                    //   showSnackbar(
-                    //       "Impossible de lancer la connexion à Microsoft",
-                    //       SnackStatusEnum.error);
-                    // } else {
-                    //   controller.initialWebView();
-                    // }
+                    // Get.offAllNamed(Routes.welcome);
+                    if (controller.microsoftUrl.value.isEmpty) {
+                      showSnackbar(
+                          "Impossible de lancer la connexion à Microsoft",
+                          SnackStatusEnum.error);
+                    } else {
+                      controller.initialWebView();
+                    }
                   },
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
@@ -139,38 +140,27 @@ class LoginView extends GetView<LoginViewController> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Se connecter avec Microsoft".toUpperCase(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Se connecter avec Microsoft".toUpperCase(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                          Image.asset(
+                            microsoftLogo,
+                            height: 60,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    microsoftLogo,
-                    height: 60,
-                  ),
-                  const Text(
-                    "Microsoft",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 20,
-                      letterSpacing: 0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )
-                ],
-              )
             ],
           ),
         ),

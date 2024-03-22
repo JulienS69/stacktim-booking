@@ -249,8 +249,9 @@ class ProfilView extends GetView<ProfilViewController> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       HapticFeedback.vibrate();
+                      await controller.logout();
                       Get.offAllNamed(Routes.login);
                     },
                     child: const Text("Se déconnecter"),

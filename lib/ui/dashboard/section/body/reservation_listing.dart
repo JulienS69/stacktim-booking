@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stacktim_booking/helper/date_time_helper.dart';
+import 'package:stacktim_booking/logic/models/booking/booking.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:stacktim_booking/widget/x_chevron.dart';
 
@@ -14,8 +16,9 @@ class ReservationListing extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: controller.statusList.length,
+      itemCount: controller.bookingList.length,
       itemBuilder: (context, index) {
+        Booking currentBooking = controller.bookingList[index];
         return Container(
           margin: const EdgeInsets.all(20.0),
           padding: const EdgeInsets.all(16.0),
@@ -32,10 +35,10 @@ class ReservationListing extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Training rocket league',
-                style: TextStyle(
-                  fontSize: 20,
+              Text(
+                currentBooking.title ?? "Aucun titre",
+                style: const TextStyle(
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -43,17 +46,21 @@ class ReservationListing extends StatelessWidget {
               const SizedBox(height: 8.0),
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Crédit utilisé : 2 unités',
-                      style: TextStyle(
+                      currentBooking.duration != null
+                          ? currentBooking.duration! > 1
+                              ? 'Stack crédit utilisé : ${currentBooking.duration ?? 0} unités'
+                              : 'Stack crédit utilisé : ${currentBooking.duration ?? 0} unité'
+                          : "Aucun crédit utilisé",
+                      style: const TextStyle(
                         color: Colors.white70,
                         overflow: TextOverflow.clip,
                       ),
                     ),
                   ),
-                  controller.getChipByStatusTag(
-                      controller.statusList[index].statusName!),
+                  controller
+                      .getChipByStatusTag(currentBooking.status?.slug ?? ""),
                   const SizedBox(
                     width: 10,
                   ),
@@ -61,17 +68,20 @@ class ReservationListing extends StatelessWidget {
                     direction: ChevronDirection.right,
                     size: 10.0,
                     color: controller.getColorsByStatusTag(
-                      statusTag: controller.statusList[index].statusName!,
+                      statusTag: currentBooking.status?.slug ?? "",
                     ),
                   ),
                 ],
               ),
-              const Row(
+              Row(
                 children: [
                   Expanded(
                     child: Text(
-                      'Le 18 octobre de 17h à 18h',
-                      style: TextStyle(
+                      formatDateAndTime(
+                          beginAt: currentBooking.beginAt ?? "",
+                          bookedAt: currentBooking.bookedAt ?? "",
+                          endAt: currentBooking.endAt ?? ""),
+                      style: const TextStyle(
                         color: Colors.white70,
                         overflow: TextOverflow.clip,
                       ),

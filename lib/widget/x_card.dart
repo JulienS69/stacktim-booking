@@ -258,17 +258,17 @@ class BookingCard extends StatelessWidget {
 
   static XChip getChipByStatusTag(String? tag) {
     switch (tag) {
-      case "Passed":
+      case StatusSlugs.passee:
         return XChip.chipStatus(
           label: "Passée".tr.capitalizeFirst!,
           chipColor: XChipColor.green,
         );
-      case "inComming":
+      case StatusSlugs.inComming:
         return XChip.chipStatus(
           label: "A venir".tr.capitalizeFirst!,
           chipColor: XChipColor.red,
         );
-      case "inProgress":
+      case StatusSlugs.inProgress:
         return XChip.chipStatus(
           label: "En cours".tr.capitalizeFirst!,
           chipColor: XChipColor.blue,
