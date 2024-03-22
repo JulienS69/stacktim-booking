@@ -63,8 +63,6 @@ class DashboardViewController extends GetxController with StateMixin {
   final stackCreditButtonKey =
       GlobalKey<FormState>(debugLabel: 'stackCreditButtonKey');
 
-  DashboardViewController();
-
   @override
   void onInit() async {
     change(null, status: RxStatus.loading());

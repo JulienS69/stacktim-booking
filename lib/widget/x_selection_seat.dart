@@ -62,10 +62,12 @@ class _SeatWidgetState extends State<SeatWidget> {
 // ignore: must_be_immutable
 class SeatSelectionScreen extends StatefulWidget {
   ValueNotifier<dynamic> pageIndexNotifier;
+  final DashboardViewController dashboardViewController;
 
   SeatSelectionScreen({
     super.key,
     required this.pageIndexNotifier,
+    required this.dashboardViewController,
   });
   @override
   // ignore: library_private_types_in_public_api
@@ -74,7 +76,6 @@ class SeatSelectionScreen extends StatefulWidget {
 
 class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
   int? selectedSeat;
-  DashboardViewController dashboardViewController = DashboardViewController();
   void toggleSeatSelection(int seatNumber) {
     setState(
       () {
@@ -124,15 +125,16 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                 onSelect: (isSelected) {
                   HapticFeedback.selectionClick();
                   toggleSeatSelection(seatNumber);
-                  dashboardViewController.seatSelected.value =
+                  widget.dashboardViewController.seatSelected.value =
                       selectedSeat ?? 0;
-                  log(dashboardViewController.seatSelected.value.toString());
+                  log(widget.dashboardViewController.seatSelected.value
+                      .toString());
                 },
               );
             }),
           ),
           Obx(
-            () => dashboardViewController.seatSelected.value != 0
+            () => widget.dashboardViewController.seatSelected.value != 0
                 ? Align(
                     alignment: Alignment.bottomCenter,
                     child: Column(
@@ -151,7 +153,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Siège sélectionné : N°${dashboardViewController.seatSelected.value} ",
+                                      "Siège sélectionné : N°${widget.dashboardViewController.seatSelected.value} ",
                                       style: arvoStyle.copyWith(
                                         color: backgroundColorSheet,
                                       ),

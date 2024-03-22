@@ -6,12 +6,12 @@ import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class BookingDatePicker extends StatelessWidget {
-  BookingDatePicker({
+  const BookingDatePicker({
     super.key,
     required this.controller,
   });
 
-  DashboardViewController controller = DashboardViewController();
+  final DashboardViewController controller;
 
   @override
   Widget build(BuildContext context) {

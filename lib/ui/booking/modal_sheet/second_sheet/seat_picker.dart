@@ -61,6 +61,7 @@ SliverWoltModalSheetPage seatPicker({
           height: modalSheetContext.height * 0.8,
           child: SeatSelectionScreen(
             pageIndexNotifier: pageIndexNotifier,
+            dashboardViewController: controller,
           ),
         ),
       ],

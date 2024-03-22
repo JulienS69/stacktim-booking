@@ -4,14 +4,14 @@ import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 
 class BookingEndingTime extends StatelessWidget {
-  BuildContext modalSheetContext;
-  BookingEndingTime({
+  final BuildContext modalSheetContext;
+  final DashboardViewController controller;
+
+  const BookingEndingTime({
     super.key,
     required this.modalSheetContext,
     required this.controller,
   });
-
-  DashboardViewController controller = DashboardViewController();
 
   @override
   Widget build(BuildContext context) {

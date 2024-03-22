@@ -27,7 +27,8 @@ class DashboardView extends GetView<DashboardViewController> {
       floatingActionButton: FloatingActionButton(
         key: controller.fabButtonKey,
         onPressed: () {
-          NewBookingSheet().showModalSheet(context, pageIndexNotifier);
+          NewBookingSheet(controller: controller)
+              .showModalSheet(context, pageIndexNotifier);
         },
         backgroundColor: Colors.black,
         child: Image.asset(
@@ -62,7 +63,7 @@ class DashboardView extends GetView<DashboardViewController> {
                   : Expanded(
                       child: EmptyBooking(
                         onPressed: () {
-                          NewBookingSheet()
+                          NewBookingSheet(controller: controller)
                               .showModalSheet(context, pageIndexNotifier);
                         },
                       ),

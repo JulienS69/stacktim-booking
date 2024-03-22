@@ -5,14 +5,14 @@ import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 
 class BookingTitle extends StatelessWidget {
-  BuildContext modalSheetContext;
-  BookingTitle({
+  final BuildContext modalSheetContext;
+  final DashboardViewController controller;
+
+  const BookingTitle({
     super.key,
     required this.modalSheetContext,
     required this.controller,
   });
-
-  DashboardViewController controller = DashboardViewController();
 
   @override
   Widget build(BuildContext context) {

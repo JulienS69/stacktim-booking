@@ -16,7 +16,7 @@ SliverWoltModalSheetPage scrollDatePicker({
   required BuildContext modalSheetContext,
   required ValueNotifier pageIndexNotifier,
 }) {
-  DashboardViewController controller = DashboardViewController();
+  DashboardViewController controller = Get.find<DashboardViewController>();
 
   return WoltModalSheetPage(
     forceMaxHeight: true,
