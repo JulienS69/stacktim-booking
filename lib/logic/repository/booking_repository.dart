@@ -42,4 +42,40 @@ class BookingRepository extends RestApiRepository {
       ),
     );
   }
+
+  Future<Either<dynamic, Booking>> createBooking({
+    required Booking currentBooking,
+  }) async {
+    return await handlingPostResponse(
+      queryRoute: "$controller/mutate",
+      showError: false,
+      showSuccess: false,
+      body: {
+        "mutate": [
+          {
+            "operation": "create",
+            "attributes": {
+              "user_id": currentBooking.userId,
+              "status_id": currentBooking.statusId,
+              "computer_id": currentBooking.computerId,
+              "title": currentBooking.title,
+              "booked_at": currentBooking.bookedAt,
+              "begin_at": currentBooking.beginAt,
+              "end_at": currentBooking.endAt,
+              "duration": currentBooking.duration,
+            }
+          }
+        ]
+      },
+    ).then(
+      (value) => value.fold(
+        (l) async {
+          return left(l['message']);
+        },
+        (r) async {
+          return right(Booking.fromJson(r));
+        },
+      ),
+    );
+  }
 }

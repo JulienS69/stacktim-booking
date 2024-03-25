@@ -31,7 +31,7 @@ class BookingDatePicker extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                controller.dateSelected.isNotEmpty
+                controller.bookedAt.isNotEmpty
                     ? InkWell(
                         onTap: () {
                           if (controller.isShowingDatePicker.value) {
@@ -41,7 +41,7 @@ class BookingDatePicker extends StatelessWidget {
                           }
                         },
                         child: Text(
-                          controller.dateSelected.value.capitalizeFirst!,
+                          controller.bookedAt.value.capitalizeFirst!,
                           style: arvoStyle.copyWith(
                             color: Colors.white60,
                             decoration: TextDecoration.underline,
@@ -49,10 +49,10 @@ class BookingDatePicker extends StatelessWidget {
                         ),
                       )
                     : const SizedBox.shrink(),
-                controller.dateSelected.isNotEmpty
+                controller.bookedAt.isNotEmpty
                     ? const Spacer()
                     : const SizedBox.shrink(),
-                controller.dateSelected.isNotEmpty
+                controller.bookedAt.isNotEmpty
                     ? InkWell(
                         onTap: () {
                           if (controller.isShowingDatePicker.value) {

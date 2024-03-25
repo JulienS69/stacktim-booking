@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
+import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
@@ -53,14 +54,18 @@ class DashboardViewController extends GetxController with StateMixin {
 
   DateRangePickerController? dateController = DateRangePickerController();
   RxString titleSelected = "".obs;
-  RxString dateSelected = "".obs;
+  //DATE SELECTED
+  RxString bookedAt = "".obs;
+  RxString selectedDate = "".obs;
   RxString beginingHourSelected = "".obs;
   RxString endingHourSelected = "".obs;
   String minutesSelected = "";
-  RxString timeSelected = "".obs;
+  RxString startingtimeSelected = "".obs;
+  RxString endingtimeSelected = "".obs;
   RxInt seatSelected = 0.obs;
   Rx<double> progressValue = 0.0.obs;
   Rx<bool> isConfirmed = false.obs;
+  final pageIndexNotifier = ValueNotifier(0);
 
   //KEY FOR TUTORIAL
   final fabButtonKey = GlobalKey<FormState>(debugLabel: 'fabButtonKey');
@@ -71,6 +76,7 @@ class DashboardViewController extends GetxController with StateMixin {
   final profilButtonKey = GlobalKey<FormState>(debugLabel: 'profilButtonKey');
   final stackCreditButtonKey =
       GlobalKey<FormState>(debugLabel: 'stackCreditButtonKey');
+  Booking currentBooking = const Booking();
 
   @override
   void onInit() async {
@@ -132,8 +138,59 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
+  createBooking() async {
+    currentBooking = currentBooking.copyWith(
+      userId: currentUser.id,
+      statusId: "9ba62f76-6e59-4b40-a014-bafa1f01121d",
+      bookedAt: selectedDate.value,
+      computerId: '9ba62f77-1ace-4d31-be28-a75de3e79c2a',
+      title: titleSelected.value,
+      endAt: endingtimeSelected.value,
+      beginAt: startingtimeSelected.value,
+      duration: 1,
+    );
+
+    return await bookingRepository
+        .createBooking(currentBooking: currentBooking)
+        .then(
+          (value) => value.fold(
+            (l) {},
+            (r) async {
+              await getMyBookings();
+              bookingList.refresh();
+              Get.back();
+              clearForm();
+              showSnackbar(
+                  "Réservation prise avec succès !", SnackStatusEnum.success);
+            },
+          ),
+        );
+  }
+
+  clearForm() {
+    isNotFree.value = false;
+    isShowingDatePicker.value = false;
+    isDatePicked.value = false;
+    isShowLoading.value = false;
+    isShowTutorial.value = false;
+    searchController.clear();
+    titleController.clear();
+    dateController = DateRangePickerController();
+    titleSelected.value = "";
+    bookedAt.value = "";
+    selectedDate.value = "";
+    beginingHourSelected.value = "";
+    endingHourSelected.value = "";
+    minutesSelected = "";
+    startingtimeSelected.value = "";
+    endingtimeSelected.value = "";
+    seatSelected.value = 0;
+    progressValue.value = 0.0;
+    isConfirmed.value = false;
+  }
+
   bool checkFormIsEmpty() {
-    if (dateSelected.isNotEmpty || titleController.text.isNotEmpty) {
+    if (bookedAt.isNotEmpty || titleController.text.isNotEmpty) {
       return false;
     } else {
       return true;
@@ -161,10 +218,11 @@ class DashboardViewController extends GetxController with StateMixin {
     isShowingDatePicker.value = false;
     isDatePicked.value = true;
     HapticFeedback.heavyImpact();
-    dateSelected.value =
-        DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(datePicked);
+    // String formattedDate = DateFormat('yyyy-MM-dd').format(datePicked);
+    selectedDate.value = DateFormat('yyyy-MM-dd').format(datePicked);
+    bookedAt.value = DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(datePicked);
     isShowLoading.value = false;
-    if (timeSelected.isEmpty) {
+    if (startingtimeSelected.isEmpty) {
       showTimePicker(
           context: context,
           isEndingTime: false,
@@ -227,8 +285,9 @@ class DashboardViewController extends GetxController with StateMixin {
             } else {
               minutesSelected = time.minute.toString();
             }
-            timeSelected.value = time.format(Get.context!);
+            startingtimeSelected.value = time.format(Get.context!);
           } else {
+            endingtimeSelected.value = time.format(Get.context!);
             endingHourSelected.value = time.hour.toString();
             pageIndexNotifier.value = pageIndexNotifier.value + 1;
           }

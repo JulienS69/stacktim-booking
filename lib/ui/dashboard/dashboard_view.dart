@@ -20,7 +20,6 @@ class DashboardView extends GetView<DashboardViewController> {
 
   @override
   Widget build(BuildContext context) {
-    final pageIndexNotifier = ValueNotifier(0);
     return XMobileScaffold(
       bottomNavIndex: 0,
       gapLocation: GapLocation.end,
@@ -28,7 +27,7 @@ class DashboardView extends GetView<DashboardViewController> {
         key: controller.fabButtonKey,
         onPressed: () {
           NewBookingSheet(controller: controller)
-              .showModalSheet(context, pageIndexNotifier);
+              .showModalSheet(context, controller.pageIndexNotifier);
         },
         backgroundColor: Colors.black,
         child: Image.asset(
@@ -64,7 +63,8 @@ class DashboardView extends GetView<DashboardViewController> {
                       child: EmptyBooking(
                         onPressed: () {
                           NewBookingSheet(controller: controller)
-                              .showModalSheet(context, pageIndexNotifier);
+                              .showModalSheet(
+                                  context, controller.pageIndexNotifier);
                         },
                       ),
                     ),

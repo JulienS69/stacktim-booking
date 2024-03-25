@@ -18,7 +18,7 @@ class BookingEndingTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => controller.timeSelected.isNotEmpty
+      () => controller.startingtimeSelected.isNotEmpty
           ? InkWell(
               onTap: () {
                 controller.showTimePicker(
@@ -41,7 +41,7 @@ class BookingEndingTime extends StatelessWidget {
                           : "${controller.endingHourSelected.value} heures"
                               "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
                       style: arvoStyle.copyWith(
-                        color: controller.timeSelected.isEmpty
+                        color: controller.startingtimeSelected.isEmpty
                             ? Colors.red
                             : Colors.white60,
                         decoration: TextDecoration.underline,

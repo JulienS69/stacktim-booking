@@ -58,7 +58,7 @@ SliverWoltModalSheetPage bookingSummary({
                   style: arvoStyle,
                 ),
                 Text(
-                  controller.dateSelected.value.capitalizeFirst!,
+                  controller.bookedAt.value.capitalizeFirst!,
                   style: arvoStyle.copyWith(
                     decoration: TextDecoration.underline,
                   ),
@@ -109,7 +109,9 @@ SliverWoltModalSheetPage bookingSummary({
     stickyActionBar: Column(
       children: [
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            await controller.createBooking();
+          },
           style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.white),
             foregroundColor: MaterialStatePropertyAll(Colors.red),

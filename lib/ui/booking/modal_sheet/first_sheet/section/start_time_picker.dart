@@ -18,8 +18,8 @@ class BookingBeginningTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => controller.timeSelected.isNotEmpty ||
-              controller.dateSelected.isNotEmpty
+      () => controller.startingtimeSelected.isNotEmpty ||
+              controller.bookedAt.isNotEmpty
           ? InkWell(
               onTap: () {
                 controller.showTimePicker(
@@ -37,12 +37,12 @@ class BookingBeginningTime extends StatelessWidget {
                     width: 5,
                   ),
                   Text(
-                      controller.timeSelected.isEmpty
+                      controller.startingtimeSelected.isEmpty
                           ? "Aucunes"
                           : "${controller.beginingHourSelected} heures"
                               "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
                       style: arvoStyle.copyWith(
-                        color: controller.timeSelected.isEmpty
+                        color: controller.startingtimeSelected.isEmpty
                             ? Colors.red
                             : Colors.white60,
                         decoration: TextDecoration.underline,
