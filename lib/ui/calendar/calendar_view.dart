@@ -40,7 +40,12 @@ class CalendarPage extends GetView<CalendarViewController> {
               todayHighlightColor: Colors.transparent,
               todayTextStyle: const TextStyle(color: Colors.white),
               onTap: (calendarTapDetails) {
-                Get.toNamed(Routes.calendarDetail);
+                Get.toNamed(
+                  Routes.calendarDetail,
+                  arguments: {
+                    'date': calendarTapDetails.date,
+                  },
+                );
               },
               monthCellBuilder: (context, details) {
                 return Column(
