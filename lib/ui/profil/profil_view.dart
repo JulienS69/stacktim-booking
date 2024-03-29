@@ -21,7 +21,7 @@ class ProfilView extends GetView<ProfilViewController> {
     return XMobileScaffold(
       appBar: const XPageHeader(
         title: '',
-        imagePath: logo,
+        imagePath: logoOverSlug,
       ),
       gapLocation: GapLocation.end,
       floatingActionButton: FloatingActionButton(

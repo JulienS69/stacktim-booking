@@ -63,20 +63,11 @@ class LoginView extends GetView<LoginViewController> {
                     ),
                   ),
                   StaggeredGridTile.fit(
-                    crossAxisCellCount: 1,
+                    crossAxisCellCount: 2,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(8)),
                       child: Image.asset(
                         controller.imageList[4],
-                      ),
-                    ),
-                  ),
-                  StaggeredGridTile.fit(
-                    crossAxisCellCount: 1,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      child: Image.asset(
-                        controller.imageList[5],
                       ),
                     ),
                   ),

@@ -18,7 +18,7 @@ class MicrosoftView extends GetView<LoginViewController> {
       child: Scaffold(
         appBar: const XPageHeader(
           title: '',
-          imagePath: logo,
+          imagePath: logoOverSlug,
         ),
         body: WebViewWidget(
           controller: webViewController,

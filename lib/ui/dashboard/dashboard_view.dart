@@ -37,7 +37,7 @@ class DashboardView extends GetView<DashboardViewController> {
       ),
       appBar: const XPageHeader(
         title: '',
-        imagePath: logo,
+        imagePath: logoOverSlug,
       ),
       body: controller.obx(
         (state) {

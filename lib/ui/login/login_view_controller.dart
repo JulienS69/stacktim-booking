@@ -17,7 +17,6 @@ class LoginViewController extends GetxController with StateMixin {
     three,
     four,
     five,
-    five,
   ];
   RxString microsoftUrl = "".obs;
   LoginRepository loginRepository;
@@ -65,7 +64,6 @@ class LoginViewController extends GetxController with StateMixin {
 
   /// To initialize the web view with the retrieved Microsoft URL.
   void initialWebView() async {
-    String currentUrl = "";
     webViewController
       ..loadRequest(Uri.parse(
         microsoftUrl.value,
@@ -75,7 +73,6 @@ class LoginViewController extends GetxController with StateMixin {
         NavigationDelegate(
           onProgress: (int progress) {},
           onPageFinished: (url) async {
-            currentUrl = url;
             final cookies = await webViewController
                 .runJavaScriptReturningResult('document.cookie');
             // If the JWT is successfully retrieved from the cookies of the webAppView, then redirect to the login page with the JWT.

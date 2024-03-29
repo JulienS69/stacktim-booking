@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:stacktim_booking/helper/color.dart';
@@ -27,6 +26,7 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: 5,
                 itemBuilder: (context, index) {
+                  //TODO A METTRE DANS UN WIDGET GENERIQUE
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(

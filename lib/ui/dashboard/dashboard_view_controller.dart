@@ -86,7 +86,6 @@ class DashboardViewController extends GetxController with StateMixin {
       await getDataTutorial();
       await getMyBookings();
       await getStatusList();
-      await getComputersList();
       change(null, status: RxStatus.success());
     } catch (e) {
       change(null, status: RxStatus.error());
@@ -111,17 +110,6 @@ class DashboardViewController extends GetxController with StateMixin {
             (l) {},
             (r) {
               statusList.value = r;
-            },
-          ),
-        );
-  }
-
-  Future<void> getComputersList() async {
-    return await computerRepository.getComputersList().then(
-          (value) => value.fold(
-            (l) {},
-            (r) {
-              computersList.value = r;
             },
           ),
         );

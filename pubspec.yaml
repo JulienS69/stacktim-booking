@@ -59,6 +59,7 @@ dependencies:
   webview_flutter: ^4.7.0
   # awesome_dialog: ^3.2.0
   flutter_animation_progress_bar: ^2.3.1
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -67,13 +68,25 @@ dev_dependencies:
   freezed: ^2.4.2
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.0
   flutter_lints: ^2.0.0
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: 'assets/launcher_icon/black_launcher_2.png'
+  image_path_ios: 'assets/launcher_icon/black_launcher_2.png'
+  remove_alpha_ios: true
+
+# flutter pub run flutter_native_splash:create
+flutter_native_splash:
+  color: '#000000'
+  color_dark: '#000000'
+  fullscreen: true
+  background_image: "assets/launcher_icon/splash.png"
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -89,6 +102,7 @@ flutter:
     - assets/bottom/
     - assets/images/
     - assets/lotties/
+    - assets/svg/
     # To add assets to your application, add an assets section, like this:
     # assets:
     #   - images/a_dot_burr.jpeg
