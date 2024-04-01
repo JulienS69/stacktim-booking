@@ -12,6 +12,8 @@ import 'package:stacktim_booking/ui/login/login_view.dart';
 import 'package:stacktim_booking/ui/login/login_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/profil/profil_view.dart';
 import 'package:stacktim_booking/ui/profil/profil_view_controller_bindings.dart';
+import 'package:stacktim_booking/ui/splash_screen/splash_screen.dart';
+import 'package:stacktim_booking/ui/splash_screen/splash_screen_controller_bindings.dart';
 import 'package:stacktim_booking/ui/welcome/welcome_view.dart';
 import 'package:stacktim_booking/ui/welcome/welcome_view_controller_bindings.dart';
 
@@ -22,6 +24,12 @@ class Nav {
       name: Routes.login,
       page: () => const LoginView(),
       binding: LoginViewControllerBindings(),
+    ),
+    GetPage(
+      title: 'splash'.tr,
+      name: Routes.splash,
+      page: () => const SplashScreen(),
+      binding: SplashScreenControllerBindings(),
     ),
     GetPage(
       title: 'welcome'.tr,

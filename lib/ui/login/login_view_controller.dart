@@ -29,26 +29,12 @@ class LoginViewController extends GetxController with StateMixin {
   @override
   void onInit() async {
     try {
-      checkToken();
       await getMicrosftUrl();
-    } catch (e) {}
+    } catch (e) {
+      Sentry.captureException(e);
+    }
     change(null, status: RxStatus.success());
     super.onInit();
-  }
-
-  @override
-  Future<void> onReady() async {
-    change(null, status: RxStatus.loading());
-    change(null, status: RxStatus.success());
-    super.onReady();
-  }
-
-  void checkToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString(LocalStorageKey.jwt.name) ?? "";
-    if (token.isNotEmpty) {
-      Get.offAllNamed(Routes.welcome);
-    }
   }
 
   Future getMicrosftUrl() async {

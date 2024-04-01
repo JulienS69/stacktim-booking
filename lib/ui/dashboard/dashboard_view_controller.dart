@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
@@ -88,7 +89,8 @@ class DashboardViewController extends GetxController with StateMixin {
       await getStatusList();
       change(null, status: RxStatus.success());
     } catch (e) {
-      change(null, status: RxStatus.error());
+      Sentry.captureException(e);
+      change(null, status: RxStatus.success());
     }
     super.onInit();
   }

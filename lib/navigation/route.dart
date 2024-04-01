@@ -1,8 +1,9 @@
 class Routes {
   static String get initialRoute {
-    return login;
+    return splash;
   }
 
+  static String splash = '/splash';
   static String offline = '/offline';
   static String login = '/login';
   static String welcome = '/welcome';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/login/login_view_controller.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
+import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MicrosoftView extends GetView<LoginViewController> {
@@ -15,10 +15,10 @@ class MicrosoftView extends GetView<LoginViewController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: XMobileScaffold(
+        isShowBottomNavigationBar: false,
         appBar: const XPageHeader(
-          title: '',
-          imagePath: logoOverSlug,
+          title: 'Connexion Microsoft',
         ),
         body: WebViewWidget(
           controller: webViewController,

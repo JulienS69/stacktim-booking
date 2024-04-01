@@ -110,8 +110,7 @@ class LoginView extends GetView<LoginViewController> {
                     HapticFeedback.heavyImpact();
                     // Get.offAllNamed(Routes.welcome);
                     if (controller.microsoftUrl.value.isEmpty) {
-                      showSnackbar(
-                          "Impossible de lancer la connexion à Microsoft",
+                      showSnackbar("Le service est momentanément indisponible",
                           SnackStatusEnum.error);
                     } else {
                       controller.initialWebView();
