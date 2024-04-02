@@ -78,8 +78,8 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: 'assets/launcher_icon/definitive_black_white.png'
-  image_path_ios: 'assets/launcher_icon/definitive_black_white.png'
+  image_path: 'assets/launcher_icon/definitive_white_black.png'
+  image_path_ios: 'assets/launcher_icon/definitive_white_black.png'
   remove_alpha_ios: true
 
 # flutter pub run flutter_native_splash:create
