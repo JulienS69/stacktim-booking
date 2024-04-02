@@ -88,7 +88,7 @@ class LoginViewController extends GetxController with StateMixin {
       );
     microsoftUrl.value.isNotEmpty
         ? await Get.to(
-            MicrosoftView(webViewController: webViewController),
+            () => MicrosoftView(webViewController: webViewController),
           )
         : showSnackbar("cannotConnectWithMicrosoft", SnackStatusEnum.error);
   }

@@ -78,8 +78,8 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: 'assets/launcher_icon/black_launcher_2.png'
-  image_path_ios: 'assets/launcher_icon/black_launcher_2.png'
+  image_path: 'assets/launcher_icon/definitive_black_white.png'
+  image_path_ios: 'assets/launcher_icon/definitive_black_white.png'
   remove_alpha_ios: true
 
 # flutter pub run flutter_native_splash:create
@@ -87,9 +87,7 @@ flutter_native_splash:
   color: '#000000'
   color_dark: '#000000'
   fullscreen: true
-  background_image: "assets/launcher_icon/splash.png"
-
-
+  background_image: 'assets/launcher_icon/splash.png'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

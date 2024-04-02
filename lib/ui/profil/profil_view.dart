@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/ui/splash_screen/custom_page/agreement_view.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 
@@ -175,8 +176,8 @@ class ProfilView extends GetView<ProfilViewController> {
                 ),
                 //RELOAD TUTORIAL
                 InkWell(
-                  onTap: () {
-                    //TODO - RELOAD TUTORIAL
+                  onTap: () async {
+                    await controller.reloadTutorial();
                   },
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -214,7 +215,7 @@ class ProfilView extends GetView<ProfilViewController> {
                 // DOUMENTATION
                 InkWell(
                   onTap: () {
-                    //TODO - REDIRECT IN DOCUMENTATION RULES
+                    Get.to(() => const AgreementView());
                   },
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,

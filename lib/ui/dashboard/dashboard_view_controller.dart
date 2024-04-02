@@ -78,13 +78,15 @@ class DashboardViewController extends GetxController with StateMixin {
   final stackCreditButtonKey =
       GlobalKey<FormState>(debugLabel: 'stackCreditButtonKey');
   Booking currentBooking = const Booking();
+  SharedPreferences? sharedPreferences;
 
   @override
   void onInit() async {
     change(null, status: RxStatus.loading());
+    sharedPreferences = await SharedPreferences.getInstance();
+    await getDataTutorial();
     try {
       await getCurrentUser();
-      await getDataTutorial();
       await getMyBookings();
       await getStatusList();
       change(null, status: RxStatus.success());
@@ -367,8 +369,18 @@ class DashboardViewController extends GetxController with StateMixin {
       paddingFocus: 0,
       hideSkip: false,
       alignSkip: AlignmentDirectional.topStart,
-      textSkip: 'Passer le tutoriel',
-      textStyleSkip: const TextStyle(decoration: TextDecoration.underline),
+      skipWidget: const Text(
+        "Passer le tutoriel",
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
+      onSkip: () {
+        if (sharedPreferences != null) {
+          isShowTutorial.value = false;
+          sharedPreferences?.setBool(
+              LocalStorageKeyEnum.isShowTutorial.name, false);
+        }
+        return true;
+      },
       onFinish: () async {
         await closeTutorial();
       },

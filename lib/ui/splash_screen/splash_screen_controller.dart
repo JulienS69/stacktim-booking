@@ -10,8 +10,8 @@ class SplashScreenController extends GetxController with StateMixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString(LocalStorageKey.jwt.name) ?? "";
     String isAgree = prefs.getString(LocalStorageKey.agreement.name) ?? "";
-    if (isAgree.isNotEmpty) {
-      Get.to(LiquidSwipeView(), fullscreenDialog: true);
+    if (isAgree.isEmpty) {
+      Get.to(() => LiquidSwipeView(), fullscreenDialog: true);
     } else if (token.isNotEmpty) {
       Get.offAllNamed(Routes.welcome);
     } else {

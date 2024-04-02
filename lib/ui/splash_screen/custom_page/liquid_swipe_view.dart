@@ -33,6 +33,9 @@ class LiquidSwipeView extends GetView<SplashScreenController> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  const SizedBox(
+                    height: 30,
+                  ),
                   Image.asset(
                     liquidSwipeData[index].image,
                     height: 150,
@@ -140,7 +143,7 @@ class LiquidSwipeView extends GetView<SplashScreenController> {
                       index == 4
                           ? ElevatedButton(
                               onPressed: () {
-                                Get.to(const AgreementView());
+                                Get.to(() => const AgreementView());
                               },
                               child: const Text(
                                 "Lire le règlement de la salle",
