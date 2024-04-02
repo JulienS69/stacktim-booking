@@ -50,14 +50,19 @@ class ItemData {
 }
 
 List<ItemData> liquidSwipeData = [
-  ItemData(backgroundColor, logo, "Bienvenue sur", "l'application",
+  ItemData(blackLiquidSwipe, logo, "Bienvenue sur", "l'application",
       "Stacktim Booking"),
-  ItemData(redLiquidSwipe, logo, "L'application qui vous", "permet de réserver",
-      "vos sessions de jeu"),
-  ItemData(backgroundColor, logo, "Prêt à jouer", "à vos jeux", "préférés ?"),
-  ItemData(redLiquidSwipe, logo, "Avant d'accéder à ",
-      "l'application, veuillez accepter le", " règlement de la salle"),
-  ItemData(backgroundColor, logo, "J'accepte le ", "règlement de la salle", ""),
+  ItemData(backgroundColor, logo, "L'application qui te", "permet de réserver",
+      "tes sessions de jeu"),
+  ItemData(blackLiquidSwipe, logo, "Prêt à jouer", "à tes jeux", "préférés ?"),
+  ItemData(
+      backgroundColor,
+      logo,
+      "Avant d'accéder à ",
+      "l'application, il est nécéssaire",
+      "d'accepter le règlement de la salle"),
+  ItemData(
+      blackLiquidSwipe, logo, "J'accepte le ", "règlement de la salle", ""),
 ];
 
 List<Widget> gameListGenerate = List.generate(

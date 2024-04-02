@@ -22,7 +22,12 @@ class AgreementView extends GetView<SplashScreenController> {
           centerTitle: true,
           imagePath: logoOverSlug,
         ),
-        body: SfPdfViewer.asset(pdfAgreement),
+        body: SfPdfViewer.asset(
+          pdfAgreement,
+          canShowPaginationDialog: false,
+          canShowScrollStatus: false,
+          canShowScrollHead: false,
+        ),
       ),
     );
   }

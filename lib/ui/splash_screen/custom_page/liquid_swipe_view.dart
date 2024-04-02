@@ -10,10 +10,10 @@ import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/splash_screen/custom_page/agreement_view.dart';
 import 'package:stacktim_booking/ui/splash_screen/splash_screen_controller.dart';
 
-class PageReveal extends GetView<SplashScreenController> {
+class LiquidSwipeView extends GetView<SplashScreenController> {
   late LiquidController liquidController;
 
-  PageReveal({
+  LiquidSwipeView({
     super.key,
   });
 
@@ -26,6 +26,7 @@ class PageReveal extends GetView<SplashScreenController> {
           itemBuilder: (context, index) {
             return Container(
               width: double.infinity,
+              height: double.infinity,
               color: liquidSwipeData[index].color,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,36 +38,44 @@ class PageReveal extends GetView<SplashScreenController> {
                     height: 150,
                     fit: BoxFit.contain,
                   ),
-                  index == 0
-                      ? Column(
-                          children: [
-                            const SizedBox(
-                              height: 25,
-                            ),
-                            Lottie.asset(
-                              lottieGamepad,
-                              fit: BoxFit.fill,
-                              height: 250,
-                            ),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
-                  index == 1 ? Image.asset(seat) : const SizedBox.shrink(),
-                  index == 4
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            fit: BoxFit.scaleDown,
-                            salle,
-                            height: 300,
+                  Visibility(
+                      visible: index == 0,
+                      replacement: const SizedBox.shrink(),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 25,
                           ),
-                        )
-                      : const SizedBox.shrink(),
-                  index == 2
-                      ? CarouselSlider(
-                          items: gameListGenerate,
-                          options: CarouselOptions(
-                            height: 150,
+                          Lottie.asset(
+                            lottieGamepad,
+                            fit: BoxFit.fill,
+                            height: 250,
+                          ),
+                        ],
+                      )),
+                  Visibility(
+                    visible: index == 1,
+                    replacement: const SizedBox.shrink(),
+                    child: Image.asset(seat),
+                  ),
+                  Visibility(
+                      visible: index == 4,
+                      replacement: const SizedBox.shrink(),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.asset(
+                          fit: BoxFit.scaleDown,
+                          salle,
+                          height: 300,
+                        ),
+                      )),
+                  Visibility(
+                    visible: index == 2,
+                    replacement: const SizedBox.shrink(),
+                    child: CarouselSlider(
+                        items: gameListGenerate,
+                        options: CarouselOptions(
+                            height: 500,
                             aspectRatio: 16 / 9,
                             viewportFraction: 0.8,
                             initialPage: 0,
@@ -78,29 +87,33 @@ class PageReveal extends GetView<SplashScreenController> {
                                 const Duration(milliseconds: 800),
                             autoPlayCurve: Curves.fastOutSlowIn,
                             enlargeCenterPage: true,
-                            enlargeFactor: 0.3,
+                            enlargeFactor: 1,
                             scrollDirection: Axis.horizontal,
-                          ))
-                      : const SizedBox.shrink(),
-                  index == 3
-                      ? CarouselSlider(
-                          items: esportListGenerate,
-                          options: CarouselOptions(
-                            height: 200,
-                            aspectRatio: 16 / 9,
-                            initialPage: 0,
-                            enableInfiniteScroll: true,
-                            reverse: false,
-                            autoPlay: true,
-                            autoPlayInterval: const Duration(seconds: 2),
-                            autoPlayAnimationDuration:
-                                const Duration(milliseconds: 800),
-                            autoPlayCurve: Curves.decelerate,
-                            enlargeCenterPage: true,
-                            enlargeFactor: 0.3,
-                            scrollDirection: Axis.horizontal,
-                          ))
-                      : const SizedBox.shrink(),
+                            enlargeStrategy: CenterPageEnlargeStrategy.zoom)),
+                  ),
+                  Visibility(
+                    visible: index == 3,
+                    replacement: const SizedBox.shrink(),
+                    child: CarouselSlider(
+                      items: esportListGenerate,
+                      options: CarouselOptions(
+                          height: 500,
+                          aspectRatio: 16 / 9,
+                          viewportFraction: 0.8,
+                          initialPage: 0,
+                          enableInfiniteScroll: true,
+                          reverse: false,
+                          autoPlay: true,
+                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 800),
+                          autoPlayCurve: Curves.decelerate,
+                          enlargeCenterPage: true,
+                          enlargeFactor: 1,
+                          scrollDirection: Axis.horizontal,
+                          enlargeStrategy: CenterPageEnlargeStrategy.zoom),
+                    ),
+                  ),
                   Column(
                     children: <Widget>[
                       Text(
@@ -167,7 +180,7 @@ class PageReveal extends GetView<SplashScreenController> {
             Icons.arrow_back_ios,
             color: Colors.white,
           ),
-          waveType: WaveType.liquidReveal,
+          waveType: WaveType.circularReveal,
           fullTransitionValue: 880,
           enableSideReveal: true,
           preferDragFromRevealedArea: true,

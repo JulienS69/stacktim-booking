@@ -43,4 +43,5 @@ const Color yellowChip = Color(0XFFFFBE0B);
 const Color orangeChip = Color(0XFFFB5607);
 
 const Color redStackTim = Color.fromRGBO(225, 6, 0, 1);
-const Color redLiquidSwipe = Color.fromARGB(255, 156, 39, 31);
+const Color blackLiquidSwipe = Color.fromARGB(255, 22, 22, 22);
+const Color redLiquidSwipe = Color.fromARGB(255, 233, 28, 28);
