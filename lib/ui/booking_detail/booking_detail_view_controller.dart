@@ -11,6 +11,7 @@ class BookingDetailViewController extends GetxController with StateMixin {
 
   @override
   void onInit() async {
+    change(null, status: RxStatus.loading());
     try {
       await getBookingId();
       await getBooking();
@@ -19,13 +20,6 @@ class BookingDetailViewController extends GetxController with StateMixin {
     }
     change(null, status: RxStatus.success());
     super.onInit();
-  }
-
-  @override
-  Future<void> onReady() async {
-    change(null, status: RxStatus.loading());
-    change(null, status: RxStatus.success());
-    super.onReady();
   }
 
   Future<void> getBooking() async {

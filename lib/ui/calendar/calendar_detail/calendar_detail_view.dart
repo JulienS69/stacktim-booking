@@ -16,6 +16,7 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
     return controller.obx(
       onLoading: const XLoaderStacktim(),
       (state) => XMobileScaffold(
+        isShowBottomNavigationBar: false,
         appBar: XPageHeader(
           title: DateFormat.yMMMEd().format(controller.dateTimeSelected),
           centerTitle: true,
