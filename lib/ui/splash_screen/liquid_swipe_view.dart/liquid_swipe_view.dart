@@ -19,6 +19,7 @@ class LiquidSwipeView extends GetView<LiquidSwipeViewController> {
 
   @override
   Widget build(BuildContext context) {
+    Rx<double> rotationAngle = 0.0.obs;
     return controller.obx(
       (state) => Scaffold(
         //TODO TUTO SAME OF DASHBOARD
@@ -60,7 +61,22 @@ class LiquidSwipeView extends GetView<LiquidSwipeViewController> {
                   Visibility(
                     visible: index == 1,
                     replacement: const SizedBox.shrink(),
-                    child: Image.asset(seat),
+                    child: Obx(() => Transform.rotate(
+                          angle: rotationAngle.value,
+                          child: GestureDetector(
+                            onPanUpdate: (details) {
+                              rotationAngle += details.delta.dx / 150;
+                            },
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Image.asset(
+                                seat,
+                                width: 350,
+                                height: 350,
+                              ),
+                            ),
+                          ),
+                        )),
                   ),
                   Visibility(
                       visible: index == 4,

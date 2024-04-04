@@ -22,6 +22,7 @@ const String urlBaseStackTim =
     'https://rd-stacktim-booking-api.xefi-apps.fr/api';
 const String pdfAgreement = 'assets/pdf/agreement.pdf';
 const String errorLottie = 'assets/lotties/404.json';
+const String discord = 'assets/images/discord.png';
 
 // GAME JACKET PICTURES
 const String game1 = 'assets/game_jacket/1.jpg';
@@ -55,6 +56,10 @@ const String esport13 = 'assets/picture_esport/13.jpg';
 const String esport14 = 'assets/picture_esport/14.jpg';
 const String esport15 = 'assets/picture_esport/15.jpg';
 const String esport16 = 'assets/picture_esport/16.jpg';
+
+// URL Discord
+// Link that never expires
+String stacktimDiscordUrl = "https://discord.gg/HHvzYuZRC4";
 
 List<String> gameList = [
   game1,

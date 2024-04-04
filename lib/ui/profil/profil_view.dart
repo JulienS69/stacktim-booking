@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
+import 'package:stacktim_booking/ui/profil/widgets/discord_logo.dart';
 import 'package:stacktim_booking/ui/splash_screen/custom_page/agreement_view.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../navigation/route.dart';
 import 'profil_view_controller.dart';
@@ -20,23 +24,38 @@ class ProfilView extends GetView<ProfilViewController> {
 
   @override
   Widget build(BuildContext context) {
-    return XMobileScaffold(
-      appBar: const XPageHeader(
-        title: '',
-        imagePath: logoOverSlug,
-      ),
-      gapLocation: GapLocation.end,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.black,
-        child: Image.asset(
-          logo,
-          height: 35,
+    return controller.obx(
+      (state) => XMobileScaffold(
+        appBar: const XPageHeader(
+          title: '',
+          imagePath: logoOverSlug,
         ),
-      ),
-      bottomNavIndex: 2,
-      body: controller.obx(
-        (state) => Obx(
+        gapLocation: GapLocation.end,
+        floatingActionButton: Obx(() => controller.isEditing.value
+            ? FloatingActionButton(
+                onPressed: () async {
+                  controller.isEditing.value = false;
+                  await controller.updateCurrentUser();
+                },
+                backgroundColor: Colors.black,
+                child: const Icon(
+                  Icons.check,
+                  color: Colors.red,
+                ))
+            : FloatingActionButton(
+                onPressed: () {
+                  Get.offAndToNamed(Routes.dashboard, arguments: {
+                    'openSheet': true,
+                  });
+                },
+                backgroundColor: Colors.black,
+                child: Image.asset(
+                  logo,
+                  height: 35,
+                ),
+              )),
+        bottomNavIndex: 2,
+        body: Obx(
           () => Skeletonizer(
             enabled: controller.isSkeletonLoading.value,
             child: SingleChildScrollView(
@@ -119,31 +138,131 @@ class ProfilView extends GetView<ProfilViewController> {
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          controller.currentUser.nickName ?? "Pseudo",
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 98, 105, 109),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(
-                          width: 3,
-                        ),
-                        InkWell(
-                          //TODO EDITION du pseudonyme
-                          onTap: () {},
-                          child: const Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                            size: 15,
-                          ),
-                        )
-                      ],
-                    ),
+                    Obx(() => controller.isEditing.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 2.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    HapticFeedback.vibrate();
+                                    controller.isEditing.value = false;
+                                  },
+                                  child: const Icon(
+                                    Icons.cancel_outlined,
+                                    color: backgroundColorSheet,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 25,
+                                ),
+                                SizedBox(
+                                  width: 200,
+                                  child: TextField(
+                                    cursorColor: grey13,
+                                    textAlign: TextAlign.center,
+                                    autofocus: true,
+                                    onTapOutside: (d) {
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText:
+                                          controller.currentUser.nickName ??
+                                              "Nouveau pseudo",
+                                      hintStyle: arvoStyle,
+                                      border: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.white, width: 1.0),
+                                      ),
+                                      enabledBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.white, width: 1.0),
+                                      ),
+                                      focusedBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.white, width: 1.0),
+                                      ),
+                                      errorBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.white, width: 1.0),
+                                      ),
+                                    ),
+                                    style: const TextStyle(
+                                      color: Colors.white60,
+                                      fontFamily: 'Anta',
+                                      decoration: TextDecoration.none,
+                                    ),
+                                    onChanged: (newNickname) {
+                                      controller.nickName.value = newNickname;
+                                    },
+                                    controller: controller.nickNameController,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 25,
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    HapticFeedback.vibrate();
+
+                                    controller.isEditing.value = false;
+                                    await controller.updateCurrentUser();
+                                  },
+                                  child: const Icon(
+                                    Icons.check_circle_outline_outlined,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : InkWell(
+                            onTap: () {
+                              controller.isEditing.value =
+                                  !controller.isEditing.value;
+                            },
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Obx(
+                                  () => controller.nickName.value.isNotEmpty
+                                      ? Text(
+                                          controller.nickName.value,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Color.fromARGB(
+                                                255, 98, 105, 109),
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )
+                                      : Text(
+                                          controller.currentUser.nickName ??
+                                              "Pseudo",
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Color.fromARGB(
+                                                255, 98, 105, 109),
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                ),
+                                const SizedBox(
+                                  width: 3,
+                                ),
+                                const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 15,
+                                )
+                              ],
+                            ),
+                          )),
                     const SizedBox(
                       height: 50,
                     ),
@@ -219,15 +338,11 @@ class ProfilView extends GetView<ProfilViewController> {
                               color: const Color(0xffF2F2F2),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            child: Stack(
-                              children: [
-                                Center(
-                                  child: Image.asset(
-                                    height: 25,
-                                    reload,
-                                  ),
-                                ),
-                              ],
+                            child: Center(
+                              child: Image.asset(
+                                height: 25,
+                                reload,
+                              ),
                             ),
                           )
                         ],
@@ -247,7 +362,7 @@ class ProfilView extends GetView<ProfilViewController> {
                       child: Row(
                         children: [
                           const Text(
-                            "Documentation d’utilisation",
+                            "Règlement de la salle",
                           ),
                           const Spacer(),
                           Container(
@@ -257,17 +372,39 @@ class ProfilView extends GetView<ProfilViewController> {
                               color: const Color(0xffF2F2F2),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            child: Stack(
-                              children: [
-                                Center(
-                                  child: Image.asset(
-                                    height: 25,
-                                    document,
-                                  ),
-                                ),
-                              ],
+                            child: Center(
+                              child: Image.asset(
+                                height: 25,
+                                document,
+                              ),
                             ),
                           )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    // Discord
+                    InkWell(
+                      onTap: () async {
+                        await launchUrl(
+                          mode: LaunchMode.externalApplication,
+                          Uri.parse(
+                            stacktimDiscordUrl,
+                          ),
+                        );
+                      },
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      child: const Row(
+                        children: [
+                          Text(
+                            "Rejoindre le serveur Discord",
+                          ),
+                          Spacer(),
+                          DiscordRotating(),
                         ],
                       ),
                     ),

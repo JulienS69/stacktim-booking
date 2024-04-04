@@ -23,7 +23,11 @@ class CalendarPage extends GetView<CalendarViewController> {
         bottomNavIndex: 1,
         gapLocation: GapLocation.end,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.offAndToNamed(Routes.dashboard, arguments: {
+              'openSheet': true,
+            });
+          },
           backgroundColor: Colors.black,
           child: Image.asset(
             logo,
