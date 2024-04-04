@@ -15,11 +15,14 @@ class SplashScreen extends GetView<SplashScreenController> {
           color: Color(0xFF191919),
         ),
         child: Center(
-          child: Image.asset(
-            splash,
-            fit: BoxFit.contain,
-            height: 300,
-            width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: Image.asset(
+              splash,
+              fit: BoxFit.contain,
+              height: 300,
+              width: double.infinity,
+            ),
           ),
         ),
       ),

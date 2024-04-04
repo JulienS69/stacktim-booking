@@ -5,6 +5,7 @@ import 'package:stacktim_booking/logic/models/booking/booking.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:stacktim_booking/widget/x_chevron.dart';
 
+import '../../../../helper/color.dart';
 import '../../../../navigation/route.dart';
 
 class ReservationListing extends StatelessWidget {
@@ -24,7 +25,7 @@ class ReservationListing extends StatelessWidget {
         Booking currentBooking = controller.bookingList[index];
         return InkWell(
           onTap: () {
-            Get.offAndToNamed(
+            Get.toNamed(
               Routes.bookingDetail,
               arguments: {"bookingId": currentBooking.id},
             );
@@ -37,6 +38,7 @@ class ReservationListing extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
+              color: cardColor,
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey[500]!,

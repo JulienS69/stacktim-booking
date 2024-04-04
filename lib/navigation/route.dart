@@ -4,6 +4,7 @@ class Routes {
   }
 
   static String splash = '/splash';
+  static String intro = '/intro';
   static String offline = '/offline';
   static String login = '/login';
   static String welcome = '/welcome';

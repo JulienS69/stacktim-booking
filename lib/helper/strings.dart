@@ -17,9 +17,11 @@ const String svgLogo = 'assets/svg/logo.svg';
 const String logoOverSlug = 'assets/images/logo_over_slug.png';
 const String splash = 'assets/launcher_icon/splash.png';
 const String salle = 'assets/background/1.JPG';
+const String teams = 'assets/images/teams.png';
 const String urlBaseStackTim =
     'https://rd-stacktim-booking-api.xefi-apps.fr/api';
 const String pdfAgreement = 'assets/pdf/agreement.pdf';
+const String errorLottie = 'assets/lotties/404.json';
 
 // GAME JACKET PICTURES
 const String game1 = 'assets/game_jacket/1.jpg';

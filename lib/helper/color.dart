@@ -19,6 +19,8 @@ const Color grey10 = Color(0xFF303030);
 const Color grey11 = Color(0xFF212121);
 const Color grey12 = Color(0xFF181818);
 const Color grey15 = Color(0xFF828282);
+const Color cardColor = Color.fromRGBO(49, 49, 49, 1);
+
 // SECTION - Chip/tags
 const Color greenChip = Color.fromARGB(255, 32, 192, 14);
 const Color redChip = Color(0XFFC1040A);

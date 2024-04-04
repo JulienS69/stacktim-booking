@@ -40,7 +40,7 @@ const styleWidget = TextStyle(
 ThemeData xMyTheme = ThemeData(
   primaryColor: Colors.red, // Couleur principale de l'application
   colorScheme: const ColorScheme(
-      background: Color.fromRGBO(61, 61, 61, 1),
+      background: Color.fromRGBO(32, 32, 32, 1),
       brightness: Brightness.light,
       primary: Colors.red,
       onPrimary: Colors.orange,

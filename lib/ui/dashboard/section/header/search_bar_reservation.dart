@@ -53,13 +53,13 @@ class SearchBarReservation extends StatelessWidget {
                     hintText: 'Rechercher une réservation',
                     hintStyle: arvoStyle,
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                      borderSide: BorderSide(color: cardColor, width: 1.0),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                      borderSide: BorderSide(color: cardColor, width: 1.0),
                     ),
                     errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black45, width: 1.0),
+                      borderSide: BorderSide(color: cardColor, width: 1.0),
                     ),
                   ),
                   style: const TextStyle(

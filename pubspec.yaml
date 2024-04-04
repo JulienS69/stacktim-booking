@@ -63,6 +63,8 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^24.2.8
   liquid_swipe: ^3.1.0
   carousel_slider: ^4.2.1
+  skeletonizer: ^1.1.1
+  showcaseview: ^2.0.3
 
 dev_dependencies:
   flutter_test:

@@ -8,9 +8,9 @@ import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/splash_screen/custom_page/agreement_view.dart';
-import 'package:stacktim_booking/ui/splash_screen/splash_screen_controller.dart';
+import 'package:stacktim_booking/ui/splash_screen/liquid_swipe_view.dart/liquid_swipe_view_controller.dart';
 
-class LiquidSwipeView extends GetView<SplashScreenController> {
+class LiquidSwipeView extends GetView<LiquidSwipeViewController> {
   late LiquidController liquidController;
 
   LiquidSwipeView({
@@ -21,6 +21,7 @@ class LiquidSwipeView extends GetView<SplashScreenController> {
   Widget build(BuildContext context) {
     return controller.obx(
       (state) => Scaffold(
+        //TODO TUTO SAME OF DASHBOARD
         body: LiquidSwipe.builder(
           itemCount: liquidSwipeData.length,
           itemBuilder: (context, index) {
@@ -154,7 +155,7 @@ class LiquidSwipeView extends GetView<SplashScreenController> {
                           ? ElevatedButton(
                               onPressed: () {
                                 showSnackbar(
-                                    "Vous devez faire un appuie long pour accepter le règlement",
+                                    "Tu dois faire un appuie long pour accepter le règlement",
                                     SnackStatusEnum.warning);
                               },
                               onLongPress: () {
@@ -163,9 +164,9 @@ class LiquidSwipeView extends GetView<SplashScreenController> {
                               },
                               style: const ButtonStyle(
                                 backgroundColor:
-                                    MaterialStatePropertyAll(Colors.white),
+                                    MaterialStatePropertyAll(Colors.black),
                                 foregroundColor:
-                                    MaterialStatePropertyAll(Colors.green),
+                                    MaterialStatePropertyAll(Colors.white),
                               ),
                               child: const Text(
                                 "Je confirme avoir lu le règlement",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
+import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -21,6 +22,7 @@ class AgreementView extends StatelessWidget {
       ),
       body: SfPdfViewer.asset(
         pdfAgreement,
+        onDocumentLoaded: (s) => const XLoaderStacktim(),
         canShowPaginationDialog: false,
         canShowScrollStatus: false,
         canShowScrollHead: false,

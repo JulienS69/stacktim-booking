@@ -67,15 +67,21 @@ List<ItemData> liquidSwipeData = [
 
 List<Widget> gameListGenerate = List.generate(
   gameList.length,
-  (index) => Image.asset(
-    gameList[index],
+  (index) => ClipRRect(
+    borderRadius: BorderRadius.circular(12.0),
+    child: Image.asset(
+      gameList[index],
+    ),
   ),
 );
 
 List<Widget> esportListGenerate = List.generate(
   esportList.length,
-  (index) => Image.asset(
-    fit: BoxFit.scaleDown,
-    esportList[index],
+  (index) => ClipRRect(
+    borderRadius: BorderRadius.circular(12.0),
+    child: Image.asset(
+      fit: BoxFit.scaleDown,
+      esportList[index],
+    ),
   ),
 );

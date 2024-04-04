@@ -146,7 +146,20 @@ class DashboardViewController extends GetxController with StateMixin {
         .createBooking(currentBooking: currentBooking)
         .then(
           (value) => value.fold(
-            (l) {},
+            (l) {
+              //FIXME POUVOIR PUB GET AWESOME DIALOG
+              // AwesomeDialog(
+              //   context: Get.context!,
+              //   dialogType: DialogType.error,
+              //   dialogBackgroundColor: backgroundColor,
+              //   animType: AnimType.rightSlide,
+              //   title: 'Oups !',
+              //   desc:
+              //       "Quelque chose c'est mal passé pendant l'enregistrement de ta session",
+              //   btnCancelText: 'Retour',
+              //   btnCancelOnPress: () {},
+              // ).show();
+            },
             (r) async {
               await getMyBookings();
               bookingList.refresh();
@@ -244,7 +257,9 @@ class DashboardViewController extends GetxController with StateMixin {
         sunset: const TimeOfDay(hour: 18, minute: 0),
         is24HrFormat: true,
         minuteInterval: TimePickerInterval.THIRTY,
-        themeData: ThemeData.dark(),
+        themeData: xMyTheme,
+        backgroundColor: Colors.black,
+        accentColor: Colors.white,
         blurredBackground: true,
         duskSpanInMinutes: 120,
         disableMinute: isEndingTime ? true : false,

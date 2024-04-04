@@ -122,7 +122,7 @@ SliverWoltModalSheetPage bookingSummary({
             width: double.infinity,
             child: Center(
               child: Text(
-                "Je valide ma place",
+                "Je valide ma réservation",
               ),
             ),
           ),
@@ -142,7 +142,7 @@ SliverWoltModalSheetPage bookingSummary({
             width: 250,
             child: Center(
               child: Text(
-                "J'annule ma place'",
+                "J'annule ma réservation'",
               ),
             ),
           ),

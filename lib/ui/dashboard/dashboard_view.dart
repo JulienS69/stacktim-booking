@@ -7,10 +7,10 @@ import 'package:stacktim_booking/ui/booking/new_booking_view.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:stacktim_booking/ui/dashboard/section/body/empty_booking.dart';
 import 'package:stacktim_booking/ui/dashboard/section/body/reservation_listing.dart';
-import 'package:stacktim_booking/ui/dashboard/section/header/chip_filter.dart';
 import 'package:stacktim_booking/ui/dashboard/section/header/search_bar_reservation.dart';
 import 'package:stacktim_booking/ui/dashboard/section/header/stack_credit.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
+import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 
 class DashboardView extends GetView<DashboardViewController> {
@@ -40,6 +40,7 @@ class DashboardView extends GetView<DashboardViewController> {
         imagePath: logoOverSlug,
       ),
       body: controller.obx(
+        onLoading: const XLoaderStacktim(),
         (state) {
           controller.showTutorialOnDashboard(context);
           return Column(
@@ -50,23 +51,21 @@ class DashboardView extends GetView<DashboardViewController> {
               controller.bookingList.isNotEmpty
                   ? SearchBarReservation(controller: controller)
                   : const SizedBox.shrink(),
-              controller.bookingList.isNotEmpty
-                  ? ChipFilter(controller: controller)
-                  : const SizedBox.shrink(),
+              //SECTION - FILTERS
+              // controller.bookingList.isNotEmpty
+              //     ? ChipFilter(controller: controller)
+              //     : const SizedBox.shrink(),
               controller.bookingList.isNotEmpty
                   ? Expanded(
                       child: ReservationListing(
                         controller: controller,
                       ),
                     )
-                  : Expanded(
-                      child: EmptyBooking(
-                        onPressed: () {
-                          NewBookingSheet(controller: controller)
-                              .showModalSheet(
-                                  context, controller.pageIndexNotifier);
-                        },
-                      ),
+                  : EmptyBooking(
+                      onPressed: () {
+                        NewBookingSheet(controller: controller).showModalSheet(
+                            context, controller.pageIndexNotifier);
+                      },
                     ),
             ],
           );
