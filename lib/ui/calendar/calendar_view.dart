@@ -10,8 +10,6 @@ import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import '../../logic/models/booking/booking.dart';
-
 class CalendarPage extends GetView<CalendarViewController> {
   const CalendarPage({
     super.key,
@@ -23,7 +21,11 @@ class CalendarPage extends GetView<CalendarViewController> {
       bottomNavIndex: 1,
       gapLocation: GapLocation.end,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.offAndToNamed(Routes.dashboard, arguments: {
+            'openSheet': true,
+          });
+        },
         backgroundColor: Colors.black,
         child: Image.asset(
           logo,

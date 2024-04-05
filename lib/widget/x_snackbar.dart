@@ -68,7 +68,7 @@ class XSnackbar extends SnackBar {
                 style: textStyle ??
                     styleWidget.copyWith(
                       fontSize: 14,
-                      color: buttonHover,
+                      color: Colors.white,
                       overflow: TextOverflow.clip,
                     ),
                 maxLines: 4,
@@ -131,7 +131,7 @@ class XSnackbar extends SnackBar {
                 style: textStyle ??
                     styleWidget.copyWith(
                       fontSize: 14,
-                      color: buttonHover,
+                      color: Colors.white,
                       overflow: TextOverflow.clip,
                     ),
                 maxLines: 4,
@@ -193,7 +193,7 @@ class XSnackbar extends SnackBar {
                 style: textStyle ??
                     styleWidget.copyWith(
                       fontSize: 14,
-                      color: buttonHover,
+                      color: Colors.white,
                       overflow: TextOverflow.clip,
                     ),
                 maxLines: 4,
@@ -255,7 +255,7 @@ class XSnackbar extends SnackBar {
                 style: textStyle ??
                     styleWidget.copyWith(
                       fontSize: 14,
-                      color: buttonHover,
+                      color: Colors.white,
                       overflow: TextOverflow.clip,
                     ),
                 maxLines: 4,
@@ -317,7 +317,7 @@ class XSnackbar extends SnackBar {
                 style: textStyle ??
                     styleWidget.copyWith(
                       fontSize: 14,
-                      color: buttonHover,
+                      color: Colors.white,
                       overflow: TextOverflow.clip,
                     ),
                 maxLines: 4,

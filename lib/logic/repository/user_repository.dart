@@ -26,4 +26,35 @@ class UserRepository extends RestApiRepository {
       ),
     );
   }
+
+  Future<Either<dynamic, User>> updateNickName({
+    required String userUuid,
+    required String nickName,
+  }) async {
+    return await handlingPostResponse(
+      queryRoute: "$controller/mutate",
+      showError: false,
+      showSuccess: false,
+      body: {
+        "mutate": [
+          {
+            "operation": "update",
+            "key": userUuid,
+            "attributes": {
+              "nickname": nickName,
+            }
+          }
+        ]
+      },
+    ).then(
+      (value) => value.fold(
+        (l) async {
+          return left(l['message']);
+        },
+        (r) async {
+          return right(User.fromJson(r));
+        },
+      ),
+    );
+  }
 }

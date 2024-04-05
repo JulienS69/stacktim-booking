@@ -34,11 +34,11 @@ const Color inputError = primary;
 const Color inputDisabled = Color(0xFFF5F5F5);
 
 // SECTION - Snackbars
-const Color snackSimple = Color(0xFF586C9D);
-const Color snackSucces = Color(0xFFd9f3ec);
-const Color snackWarning = Color(0xFFfff2ce);
-const Color snackUpdate = Color(0xFFfeddcd);
-const Color snackError = Color(0xFFf3cdce);
+const Color snackSimple = Color.fromARGB(255, 34, 33, 33);
+const Color snackSucces = Color.fromARGB(255, 34, 33, 33);
+const Color snackWarning = Color.fromARGB(255, 34, 33, 33);
+const Color snackUpdate = Color.fromARGB(255, 34, 33, 33);
+const Color snackError = Color.fromARGB(255, 34, 33, 33);
 const Color buttonHover = Color(0xFF303030);
 const Color iconClose = Color(0xFF74858b);
 const Color yellowChip = Color(0XFFFFBE0B);
