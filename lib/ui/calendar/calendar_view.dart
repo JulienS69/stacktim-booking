@@ -17,28 +17,28 @@ class CalendarPage extends GetView<CalendarViewController> {
 
   @override
   Widget build(BuildContext context) {
-    return controller.obx(
-      onLoading: const XLoaderStacktim(),
-      (state) => XMobileScaffold(
-        bottomNavIndex: 1,
-        gapLocation: GapLocation.end,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.offAndToNamed(Routes.dashboard, arguments: {
-              'openSheet': true,
-            });
-          },
-          backgroundColor: Colors.black,
-          child: Image.asset(
-            logo,
-            height: 35,
-          ),
+    return XMobileScaffold(
+      bottomNavIndex: 1,
+      gapLocation: GapLocation.end,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.offAndToNamed(Routes.dashboard, arguments: {
+            'openSheet': true,
+          });
+        },
+        backgroundColor: Colors.black,
+        child: Image.asset(
+          logo,
+          height: 35,
         ),
-        appBar: const XPageHeader(
-          title: 'Calendrier',
-          centerTitle: true,
-        ),
-        body: Column(
+      ),
+      appBar: const XPageHeader(
+        title: 'Calendrier',
+        centerTitle: true,
+      ),
+      body: controller.obx(
+        onLoading: const XLoaderStacktim(),
+        (state) => Column(
           children: [
             Expanded(
               flex: 3,
@@ -50,6 +50,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                 ],
                 initialDisplayDate: DateTime.now(),
                 dataSource: controller.getDataSource(),
+                firstDayOfWeek: 1,
                 todayTextStyle: const TextStyle(color: Colors.white),
                 onViewChanged: (viewChangedDetails) {
                   controller.getMonthlyBookings(

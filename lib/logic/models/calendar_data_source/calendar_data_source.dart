@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -8,12 +9,20 @@ class XCalendarDataSource extends CalendarDataSource<Booking> {
 
   @override
   DateTime getStartTime(int index) {
-    return appointments![index].beginAt.toLocal();
+    DateFormat inputFormat = DateFormat('yyyy-MM-dd hh:mm:ss');
+
+    DateTime dateTime = inputFormat.parse(
+        '${appointments![index].bookedAt} ${appointments![index].beginAt}');
+    return dateTime;
   }
 
   @override
   DateTime getEndTime(int index) {
-    return appointments![index].endAt.toLocal();
+    DateFormat inputFormat = DateFormat('yyyy-MM-dd hh:mm:ss');
+
+    DateTime dateTime = inputFormat.parse(
+        '${appointments![index].bookedAt} ${appointments![index].endAt}');
+    return dateTime;
   }
 
   @override
