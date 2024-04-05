@@ -77,6 +77,7 @@ class BookingRepository extends RestApiRepository {
       queryRoute: "$controller/search",
       showError: false,
       showSuccess: false,
+      isCustomResponse: true,
       body: {
         "limit": 1000,
         "search": {
@@ -100,7 +101,7 @@ class BookingRepository extends RestApiRepository {
         },
         (r) async {
           return right(
-            r.map<Booking>((e) => Booking.fromJson(e)).toList(),
+            r['data'].map<Booking>((e) => Booking.fromJson(e)).toList(),
           );
         },
       ),
