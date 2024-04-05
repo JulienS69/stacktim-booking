@@ -71,6 +71,42 @@ class BookingRepository extends RestApiRepository {
     );
   }
 
+  Future<Either<dynamic, List<Booking>>> getCalendarMonthlyBooking(
+      {required int monthNumber}) async {
+    return await handlingPostResponse(
+      queryRoute: "$controller/search",
+      showError: false,
+      showSuccess: false,
+      body: {
+        "limit": 1000,
+        "search": {
+          "scopes": [
+            {
+              "name": "monthBookings",
+              "parameters": [monthNumber],
+            }
+          ],
+          "includes": [
+            {"relation": "user"},
+            {"relation": "computer"},
+            {"relation": "status"},
+          ]
+        }
+      },
+    ).then(
+      (value) => value.fold(
+        (l) async {
+          return left(l['message']);
+        },
+        (r) async {
+          return right(
+            r.map<Booking>((e) => Booking.fromJson(e)).toList(),
+          );
+        },
+      ),
+    );
+  }
+
   Future<Either<dynamic, Booking>> createBooking({
     required Booking currentBooking,
   }) async {

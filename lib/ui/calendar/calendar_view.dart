@@ -41,12 +41,23 @@ class CalendarPage extends GetView<CalendarViewController> {
               child: SfCalendar(
                 view: CalendarView.month,
                 todayHighlightColor: Colors.transparent,
+                allowedViews: const [
+                  CalendarView.month,
+                ],
+                initialDisplayDate: DateTime.now(),
+                dataSource: controller.getDataSource(),
                 todayTextStyle: const TextStyle(color: Colors.white),
+                onViewChanged: (viewChangedDetails) {
+                  controller.getMonthlyBookings(
+                    viewChangedDetails.visibleDates.first.month,
+                  );
+                },
                 onTap: (calendarTapDetails) {
                   Get.toNamed(
                     Routes.calendarDetail,
                     arguments: {
                       'date': calendarTapDetails.date,
+                      'booking': calendarTapDetails.appointments
                     },
                   );
                 },
