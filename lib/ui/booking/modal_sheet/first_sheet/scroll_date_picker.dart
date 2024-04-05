@@ -94,9 +94,9 @@ SliverWoltModalSheetPage scrollDatePicker({
               child: Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       HapticFeedback.vibrate();
-                      pageIndexNotifier.value = pageIndexNotifier.value + 1;
+                      await controller.checkAvailbilityComputer();
                     },
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.black),

@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
@@ -21,12 +21,12 @@ class StackCredit extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                "Bonjour ${controller.currentUser.nickName ?? "Virtuor"} 👋",
+                "Bonjour ${controller.currentUser.nickName ?? "[PSEUDO]"} 👋",
                 style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                    fontFamily: 'Anta'),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  fontStyle: FontStyle.normal,
+                ),
               ),
               const Spacer(),
               Row(

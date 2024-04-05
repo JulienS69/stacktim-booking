@@ -23,6 +23,7 @@ const String urlBaseStackTim =
 const String pdfAgreement = 'assets/pdf/agreement.pdf';
 const String errorLottie = 'assets/lotties/404.json';
 const String discord = 'assets/images/discord.png';
+const String arrow = 'assets/images/arrow.png';
 
 // GAME JACKET PICTURES
 const String game1 = 'assets/game_jacket/1.jpg';

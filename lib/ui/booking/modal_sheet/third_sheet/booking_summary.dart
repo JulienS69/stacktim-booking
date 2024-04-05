@@ -92,7 +92,7 @@ SliverWoltModalSheetPage bookingSummary({
                   style: arvoStyle,
                 ),
                 Text(
-                  "Siège numéro ${controller.seatSelected.value}",
+                  "Siège numéro ${controller.computerSelected.value}",
                   style: arvoStyle.copyWith(
                     decoration: TextDecoration.underline,
                   ),
@@ -131,7 +131,11 @@ SliverWoltModalSheetPage bookingSummary({
           height: 5,
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            pageIndexNotifier.value = pageIndexNotifier.value - 3;
+            Get.back();
+            controller.clearForm();
+          },
           style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.black),
             foregroundColor: MaterialStatePropertyAll(Colors.white),

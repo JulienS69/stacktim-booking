@@ -26,8 +26,7 @@ class DashboardView extends GetView<DashboardViewController> {
       floatingActionButton: FloatingActionButton(
         key: controller.fabButtonKey,
         onPressed: () {
-          NewBookingSheet(controller: controller)
-              .showModalSheet(context, controller.pageIndexNotifier);
+          controller.checkCreditBeforeCreateBooking();
         },
         backgroundColor: Colors.black,
         child: Image.asset(

@@ -64,10 +64,14 @@ class DashboardViewController extends GetxController with StateMixin {
   String minutesSelected = "";
   RxString startingtimeSelected = "".obs;
   RxString endingtimeSelected = "".obs;
-  RxInt seatSelected = 0.obs;
+  RxInt computerSelected = 0.obs;
+  String computerUuidSelected = "";
   Rx<double> progressValue = 0.0.obs;
   Rx<bool> isConfirmed = false.obs;
   final pageIndexNotifier = ValueNotifier(0);
+  Rx<bool> isInProgress = false.obs;
+  Booking bookingInProgress = Booking();
+  String statusIdSelected = '';
 
   //KEY FOR TUTORIAL
   final fabButtonKey = GlobalKey<FormState>(debugLabel: 'fabButtonKey');
@@ -88,7 +92,7 @@ class DashboardViewController extends GetxController with StateMixin {
     await getDataTutorial();
     try {
       await getCurrentUser();
-      // await getMyBookings();
+      await getMyBookings();
       await getStatusList();
       await checkArgument();
       change(null, status: RxStatus.success());
@@ -102,9 +106,25 @@ class DashboardViewController extends GetxController with StateMixin {
   checkArgument() {
     if (Get.arguments != null) {
       if (Get.arguments['openSheet'] != null) {
-        return NewBookingSheet(controller: this)
-            .showModalSheet(Get.context!, pageIndexNotifier);
+        checkCreditBeforeCreateBooking();
       }
+    }
+  }
+
+  checkCreditBeforeCreateBooking() {
+    if (currentUser.credit != null) {
+      if (currentUser.credit?.creditAvailable != 0) {
+        NewBookingSheet(controller: this)
+            .showModalSheet(Get.context!, pageIndexNotifier);
+      } else {
+        showSnackbar(
+            "Impossible de réserver une séssion, tu n'as plus assez de crédits",
+            SnackStatusEnum.error);
+      }
+    } else {
+      showSnackbar(
+          "Impossible de réserver une séssion, tu n'as plus assez de crédits",
+          SnackStatusEnum.error);
     }
   }
 
@@ -114,6 +134,13 @@ class DashboardViewController extends GetxController with StateMixin {
             (l) {},
             (r) {
               bookingList.value = r;
+              isInProgress.value = false;
+              for (var booking in bookingList) {
+                if (booking.status?.slug == StatusSlugs.inProgress) {
+                  bookingInProgress = booking;
+                  isInProgress.value = true;
+                }
+              }
             },
           ),
         );
@@ -125,6 +152,11 @@ class DashboardViewController extends GetxController with StateMixin {
             (l) {},
             (r) {
               statusList.value = r;
+              for (var status in statusList) {
+                if (status.slug == StatusSlugs.inComming) {
+                  statusIdSelected = status.id ?? "";
+                }
+              }
             },
           ),
         );
@@ -141,12 +173,34 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
+  Future<void> checkAvailbilityComputer() async {
+    return await computerRepository
+        .checkComputerAvailable(
+          beginHourPicked: startingtimeSelected.value,
+          datePicked: selectedDate.value,
+          endHourPicked: endingtimeSelected.value,
+        )
+        .then(
+          (value) => value.fold(
+            (l) {
+              showSnackbar('Plus de places disponible à cette date',
+                  SnackStatusEnum.error);
+            },
+            (r) {
+              pageIndexNotifier.value = pageIndexNotifier.value + 1;
+              computersList.value = r;
+            },
+          ),
+        );
+  }
+
   createBooking() async {
+    HapticFeedback.vibrate();
     currentBooking = currentBooking.copyWith(
       userId: currentUser.id,
-      statusId: "9ba62f76-6e59-4b40-a014-bafa1f01121d",
+      statusId: statusIdSelected,
       bookedAt: selectedDate.value,
-      computerId: '9ba62f77-1ace-4d31-be28-a75de3e79c2a',
+      computerId: computerUuidSelected,
       title: titleSelected.value,
       endAt: endingtimeSelected.value,
       beginAt: startingtimeSelected.value,
@@ -200,9 +254,10 @@ class DashboardViewController extends GetxController with StateMixin {
     minutesSelected = "";
     startingtimeSelected.value = "";
     endingtimeSelected.value = "";
-    seatSelected.value = 0;
+    computerSelected.value = 0;
     progressValue.value = 0.0;
     isConfirmed.value = false;
+    pageIndexNotifier.value = pageIndexNotifier.value - 3;
   }
 
   bool checkFormIsEmpty() {
@@ -294,7 +349,7 @@ class DashboardViewController extends GetxController with StateMixin {
           Navigator.pop(context);
           HapticFeedback.heavyImpact();
         },
-        onChange: (time) {
+        onChange: (time) async {
           HapticFeedback.vibrate();
           if (!isEndingTime) {
             beginingHourSelected.value = time.hour.toString();
@@ -307,7 +362,7 @@ class DashboardViewController extends GetxController with StateMixin {
           } else {
             endingtimeSelected.value = time.format(Get.context!);
             endingHourSelected.value = time.hour.toString();
-            pageIndexNotifier.value = pageIndexNotifier.value + 1;
+            await checkAvailbilityComputer();
           }
         },
       ),

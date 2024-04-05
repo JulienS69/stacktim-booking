@@ -9,6 +9,8 @@ class Computer with _$Computer {
     @JsonKey(name: 'id') String? id,
     @JsonKey(name: 'number') int? number,
     @JsonKey(name: 'slug') String? slug,
+    @JsonKey(name: 'is_under_maintenance') bool? isUnderMaintenance,
+    @JsonKey(name: 'is_available') bool? isAvailable,
   }) = _Computer;
 
   factory Computer.fromJson(Map<String, dynamic> json) =>

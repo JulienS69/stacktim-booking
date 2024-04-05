@@ -29,4 +29,31 @@ class ComputerRepository extends RestApiRepository {
       ),
     );
   }
+
+  Future<Either<dynamic, List<Computer>>> checkComputerAvailable({
+    required String datePicked,
+    required String beginHourPicked,
+    required String endHourPicked,
+  }) async {
+    return await handlingGetResponse(
+        queryRoute: "$controller/availableBetweenDates",
+        showError: false,
+        showSuccess: false,
+        isCustomResponse: true,
+        queryParameters: {
+          'booked_at': datePicked,
+          'begin_at': beginHourPicked,
+          'end_at': endHourPicked,
+        }).then(
+      (value) => value.fold(
+        (l) async {
+          return left(l['message']);
+        },
+        (r) async {
+          return right(
+              r['data'].map<Computer>((e) => Computer.fromJson(e)).toList());
+        },
+      ),
+    );
+  }
 }

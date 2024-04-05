@@ -26,6 +26,10 @@ mixin _$Computer {
   int? get number => throw _privateConstructorUsedError;
   @JsonKey(name: 'slug')
   String? get slug => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_under_maintenance')
+  bool? get isUnderMaintenance => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_available')
+  bool? get isAvailable => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +45,9 @@ abstract class $ComputerCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') String? id,
       @JsonKey(name: 'number') int? number,
-      @JsonKey(name: 'slug') String? slug});
+      @JsonKey(name: 'slug') String? slug,
+      @JsonKey(name: 'is_under_maintenance') bool? isUnderMaintenance,
+      @JsonKey(name: 'is_available') bool? isAvailable});
 }
 
 /// @nodoc
@@ -60,6 +66,8 @@ class _$ComputerCopyWithImpl<$Res, $Val extends Computer>
     Object? id = freezed,
     Object? number = freezed,
     Object? slug = freezed,
+    Object? isUnderMaintenance = freezed,
+    Object? isAvailable = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -74,6 +82,14 @@ class _$ComputerCopyWithImpl<$Res, $Val extends Computer>
           ? _value.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String?,
+      isUnderMaintenance: freezed == isUnderMaintenance
+          ? _value.isUnderMaintenance
+          : isUnderMaintenance // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isAvailable: freezed == isAvailable
+          ? _value.isAvailable
+          : isAvailable // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -89,7 +105,9 @@ abstract class _$$ComputerImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'id') String? id,
       @JsonKey(name: 'number') int? number,
-      @JsonKey(name: 'slug') String? slug});
+      @JsonKey(name: 'slug') String? slug,
+      @JsonKey(name: 'is_under_maintenance') bool? isUnderMaintenance,
+      @JsonKey(name: 'is_available') bool? isAvailable});
 }
 
 /// @nodoc
@@ -106,6 +124,8 @@ class __$$ComputerImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? number = freezed,
     Object? slug = freezed,
+    Object? isUnderMaintenance = freezed,
+    Object? isAvailable = freezed,
   }) {
     return _then(_$ComputerImpl(
       id: freezed == id
@@ -120,6 +140,14 @@ class __$$ComputerImplCopyWithImpl<$Res>
           ? _value.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String?,
+      isUnderMaintenance: freezed == isUnderMaintenance
+          ? _value.isUnderMaintenance
+          : isUnderMaintenance // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isAvailable: freezed == isAvailable
+          ? _value.isAvailable
+          : isAvailable // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -130,7 +158,9 @@ class _$ComputerImpl implements _Computer {
   const _$ComputerImpl(
       {@JsonKey(name: 'id') this.id,
       @JsonKey(name: 'number') this.number,
-      @JsonKey(name: 'slug') this.slug});
+      @JsonKey(name: 'slug') this.slug,
+      @JsonKey(name: 'is_under_maintenance') this.isUnderMaintenance,
+      @JsonKey(name: 'is_available') this.isAvailable});
 
   factory _$ComputerImpl.fromJson(Map<String, dynamic> json) =>
       _$$ComputerImplFromJson(json);
@@ -144,10 +174,16 @@ class _$ComputerImpl implements _Computer {
   @override
   @JsonKey(name: 'slug')
   final String? slug;
+  @override
+  @JsonKey(name: 'is_under_maintenance')
+  final bool? isUnderMaintenance;
+  @override
+  @JsonKey(name: 'is_available')
+  final bool? isAvailable;
 
   @override
   String toString() {
-    return 'Computer(id: $id, number: $number, slug: $slug)';
+    return 'Computer(id: $id, number: $number, slug: $slug, isUnderMaintenance: $isUnderMaintenance, isAvailable: $isAvailable)';
   }
 
   @override
@@ -157,12 +193,17 @@ class _$ComputerImpl implements _Computer {
             other is _$ComputerImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.number, number) || other.number == number) &&
-            (identical(other.slug, slug) || other.slug == slug));
+            (identical(other.slug, slug) || other.slug == slug) &&
+            (identical(other.isUnderMaintenance, isUnderMaintenance) ||
+                other.isUnderMaintenance == isUnderMaintenance) &&
+            (identical(other.isAvailable, isAvailable) ||
+                other.isAvailable == isAvailable));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, number, slug);
+  int get hashCode => Object.hash(
+      runtimeType, id, number, slug, isUnderMaintenance, isAvailable);
 
   @JsonKey(ignore: true)
   @override
@@ -182,7 +223,9 @@ abstract class _Computer implements Computer {
   const factory _Computer(
       {@JsonKey(name: 'id') final String? id,
       @JsonKey(name: 'number') final int? number,
-      @JsonKey(name: 'slug') final String? slug}) = _$ComputerImpl;
+      @JsonKey(name: 'slug') final String? slug,
+      @JsonKey(name: 'is_under_maintenance') final bool? isUnderMaintenance,
+      @JsonKey(name: 'is_available') final bool? isAvailable}) = _$ComputerImpl;
 
   factory _Computer.fromJson(Map<String, dynamic> json) =
       _$ComputerImpl.fromJson;
@@ -196,6 +239,12 @@ abstract class _Computer implements Computer {
   @override
   @JsonKey(name: 'slug')
   String? get slug;
+  @override
+  @JsonKey(name: 'is_under_maintenance')
+  bool? get isUnderMaintenance;
+  @override
+  @JsonKey(name: 'is_available')
+  bool? get isAvailable;
   @override
   @JsonKey(ignore: true)
   _$$ComputerImplCopyWith<_$ComputerImpl> get copyWith =>
