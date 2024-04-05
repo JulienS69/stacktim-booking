@@ -10,6 +10,8 @@ import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../../logic/models/booking/booking.dart';
+
 class CalendarPage extends GetView<CalendarViewController> {
   const CalendarPage({
     super.key,
@@ -44,6 +46,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                 allowedViews: const [
                   CalendarView.month,
                 ],
+                firstDayOfWeek: 1,
                 initialDisplayDate: DateTime.now(),
                 dataSource: controller.getDataSource(),
                 todayTextStyle: const TextStyle(color: Colors.white),
