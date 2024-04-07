@@ -7,8 +7,6 @@ import 'package:stacktim_booking/ui/login/login_view_controller.dart';
 import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 
-import '../../helper/snackbar.dart';
-
 class LoginView extends GetView<LoginViewController> {
   const LoginView({
     super.key,
@@ -118,14 +116,8 @@ class LoginView extends GetView<LoginViewController> {
                   child: InkWell(
                     onTap: () async {
                       HapticFeedback.heavyImpact();
-                      // Get.offAllNamed(Routes.welcome);
-                      if (controller.microsoftUrl.value.isEmpty) {
-                        showSnackbar(
-                            "Le service est momentanément indisponible",
-                            SnackStatusEnum.error);
-                      } else {
-                        controller.initialWebView();
-                      }
+                      await controller.getMicrosftUrl();
+                      controller.initialWebView();
                     },
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
@@ -160,6 +152,30 @@ class LoginView extends GetView<LoginViewController> {
                         ),
                       ),
                     ),
+                  ),
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onDoubleTap: () {
+                    controller.isShowingVersion.value = true;
+                  },
+                  child: Obx(
+                    () => controller.isShowingVersion.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 25.0),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: controller.buildVersionNumber(),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 50.0),
+                            child: Container(
+                              height: 50,
+                              width: 150,
+                              color: Colors.transparent,
+                            ),
+                          ),
                   ),
                 ),
               ],

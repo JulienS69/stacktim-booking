@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
+import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/ui/booking/modal_sheet/first_sheet/section/booking_title.dart';
 import 'package:stacktim_booking/ui/booking/modal_sheet/first_sheet/section/date_picker.dart';
@@ -74,7 +75,7 @@ SliverWoltModalSheetPage scrollDatePicker({
             pageIndexNotifier: pageIndexNotifier,
           ),
           const SizedBox(
-            height: 25,
+            height: 15,
           ),
           BookingEndingTime(
             controller: controller,
@@ -93,25 +94,40 @@ SliverWoltModalSheetPage scrollDatePicker({
               padding: const EdgeInsets.all(pagePadding),
               child: Column(
                 children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      HapticFeedback.vibrate();
-                      await controller.checkAvailbilityComputer();
-                    },
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.black),
-                      foregroundColor: MaterialStatePropertyAll(Colors.white),
-                      textStyle: MaterialStatePropertyAll(arvoStyle),
-                    ),
-                    child: const SizedBox(
-                      height: buttonHeight,
-                      width: double.infinity,
-                      child: Center(
-                          child: Text(
-                        "Choisir ma place dans la salle",
+                  Obx(() => ElevatedButton(
+                        onPressed: () async {
+                          HapticFeedback.vibrate();
+                          await controller.checkAvailbilityComputer();
+                        },
+                        style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.black),
+                          foregroundColor:
+                              MaterialStatePropertyAll(Colors.white),
+                          textStyle: MaterialStatePropertyAll(arvoStyle),
+                        ),
+                        child: SizedBox(
+                          height: buttonHeight,
+                          width: double.infinity,
+                          child: controller.isShowLoading.value
+                              ? Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    const CircularProgressIndicator(
+                                      backgroundColor: Colors.white,
+                                    ),
+                                    Image.asset(
+                                      logo,
+                                      height: 15,
+                                    )
+                                  ],
+                                )
+                              : const Center(
+                                  child: Text(
+                                  "Choisir ma place dans la salle",
+                                )),
+                        ),
                       )),
-                    ),
-                  ),
                 ],
               ),
             )

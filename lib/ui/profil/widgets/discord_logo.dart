@@ -48,7 +48,7 @@ class DiscordRotatingState extends State<DiscordRotating>
           turns: _animation,
           child: Image.asset(
             discord,
-            height: 25,
+            height: 20,
           ),
         ),
       ),

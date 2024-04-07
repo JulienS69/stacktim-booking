@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -73,6 +72,27 @@ class BookingDatePicker extends StatelessWidget {
             )),
         Obx(
           () => controller.isShowingDatePicker.value
+              ? const SizedBox(
+                  height: 25,
+                )
+              : const SizedBox.shrink(),
+        ),
+        Obx(
+          () => controller.isShowingDatePicker.value
+              ? const Divider(
+                  color: Colors.white,
+                )
+              : const SizedBox.shrink(),
+        ),
+        Obx(
+          () => controller.isShowingDatePicker.value
+              ? const SizedBox(
+                  height: 15,
+                )
+              : const SizedBox.shrink(),
+        ),
+        Obx(
+          () => controller.isShowingDatePicker.value
               ? SfDateRangePicker(
                   controller: controller.dateController,
                   selectionMode: DateRangePickerSelectionMode.single,
@@ -91,7 +111,7 @@ class BookingDatePicker extends StatelessWidget {
                   selectionTextStyle: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                   onSelectionChanged: (date) async {
-                    await controller.checkDateAvalaible(
+                    await controller.launchTimePicker(
                       datePicked: date.value,
                       context: context,
                       pageIndexNotifier: pageIndexNotifier,
@@ -101,19 +121,21 @@ class BookingDatePicker extends StatelessWidget {
                 )
               : const SizedBox.shrink(),
         ),
-        Visibility(
-          visible: !controller.isDatePicked.value,
-          child: const SizedBox(
-            height: 25,
-          ),
+        Obx(
+          () => controller.isShowingDatePicker.value
+              ? const Padding(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: Divider(
+                    color: Colors.white,
+                  ))
+              : const SizedBox.shrink(),
         ),
         Obx(
-          () => SizedBox(
-            height: 50,
-            width: 200,
-            child: controller.isShowLoading.value ||
-                    !controller.isDatePicked.value
-                ? ElevatedButton(
+          () => !controller.isDatePicked.value
+              ? SizedBox(
+                  height: 50,
+                  width: 200,
+                  child: ElevatedButton(
                     onPressed: () async {
                       if (controller.isShowingDatePicker.value) {
                         controller.isShowingDatePicker.value = false;
@@ -126,30 +148,17 @@ class BookingDatePicker extends StatelessWidget {
                       foregroundColor: MaterialStatePropertyAll(Colors.white),
                       textStyle: MaterialStatePropertyAll(arvoStyle),
                     ),
-                    child: !controller.isDatePicked.value &&
-                            !controller.isShowLoading.value
-                        ? const Text(
-                            'Selectionner une date',
-                            style: TextStyle(color: Colors.white),
-                          )
-                        : controller.isShowLoading.value
-                            ? Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  const CircularProgressIndicator(
-                                    backgroundColor: Colors.white,
-                                  ),
-                                  Image.asset(
-                                    logo,
-                                    height: 15,
-                                  )
-                                ],
-                              )
-                            : const SizedBox.shrink(),
-                  )
-                : const SizedBox.shrink(),
-          ),
+                    child: const Text(
+                      'Selectionner une date',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
         ),
+        const SizedBox(
+          height: 15,
+        )
       ],
     );
   }

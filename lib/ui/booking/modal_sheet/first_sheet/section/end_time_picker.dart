@@ -41,7 +41,7 @@ class BookingEndingTime extends StatelessWidget {
                           : "${controller.endingHourSelected.value} heures"
                               "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
                       style: arvoStyle.copyWith(
-                        color: controller.startingtimeSelected.isEmpty
+                        color: controller.endingHourSelected.isEmpty
                             ? Colors.red
                             : Colors.white60,
                         decoration: TextDecoration.underline,

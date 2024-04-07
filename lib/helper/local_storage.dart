@@ -1,3 +1,4 @@
 enum LocalStorageKeyEnum {
   isShowTutorial,
+  isShowTutorialProfil,
 }

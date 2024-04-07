@@ -53,7 +53,7 @@ dependencies:
   tutorial_coach_mark: ^1.2.11
   shared_preferences: ^2.2.2
   dio: ^5.4.1
-  sentry_flutter: ^7.17.0
+  sentry_flutter: ^7.18.0
   dartz: ^0.10.1
   connectivity_plus: ^5.0.2
   webview_flutter: ^4.7.0
@@ -66,6 +66,7 @@ dependencies:
   skeletonizer: ^1.1.1
   showcaseview: ^2.0.3
   url_launcher: ^6.2.5
+  package_info_plus: ^5.0.1
 
 dev_dependencies:
   flutter_test:

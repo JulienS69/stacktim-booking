@@ -135,12 +135,20 @@ class DashboardViewController extends GetxController with StateMixin {
             (r) {
               bookingList.value = r;
               isInProgress.value = false;
+              // Liste temporaire pour stocker les réservations en cours
+              List<Booking> inProgressBookings = [];
               for (var booking in bookingList) {
                 if (booking.status?.slug == StatusSlugs.inProgress) {
-                  bookingInProgress = booking;
+                  inProgressBookings.add(booking);
                   isInProgress.value = true;
                 }
               }
+              //TODO FAIRE EN SORTE QUE ça SOIT FAIT COTE BACKEND
+              // Supprimer les réservations en cours de la liste principale
+              bookingList.removeWhere(
+                  (booking) => booking.status?.slug == StatusSlugs.inProgress);
+              // Insérer les réservations en cours au début de la liste principale
+              bookingList.insertAll(0, inProgressBookings);
             },
           ),
         );
@@ -174,6 +182,7 @@ class DashboardViewController extends GetxController with StateMixin {
   }
 
   Future<void> checkAvailbilityComputer() async {
+    isShowLoading.value = true;
     return await computerRepository
         .checkComputerAvailable(
           beginHourPicked: startingtimeSelected.value,
@@ -185,10 +194,12 @@ class DashboardViewController extends GetxController with StateMixin {
             (l) {
               showSnackbar('Plus de places disponible à cette date',
                   SnackStatusEnum.error);
+              isShowLoading.value = false;
             },
             (r) {
               pageIndexNotifier.value = pageIndexNotifier.value + 1;
               computersList.value = r;
+              isShowLoading.value = false;
             },
           ),
         );
@@ -279,20 +290,17 @@ class DashboardViewController extends GetxController with StateMixin {
     });
   }
 
-  checkDateAvalaible({
+  launchTimePicker({
     required DateTime datePicked,
     required BuildContext context,
     required ValueNotifier pageIndexNotifier,
   }) async {
-    isShowLoading.value = true;
-    await Future.delayed(const Duration(seconds: 2));
-    isShowingDatePicker.value = false;
-    isDatePicked.value = true;
     HapticFeedback.heavyImpact();
+    isDatePicked.value = true;
+    isShowingDatePicker.value = false;
     // String formattedDate = DateFormat('yyyy-MM-dd').format(datePicked);
     selectedDate.value = DateFormat('yyyy-MM-dd').format(datePicked);
     bookedAt.value = DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(datePicked);
-    isShowLoading.value = false;
     if (startingtimeSelected.isEmpty) {
       showTimePicker(
           context: context,
@@ -362,7 +370,11 @@ class DashboardViewController extends GetxController with StateMixin {
           } else {
             endingtimeSelected.value = time.format(Get.context!);
             endingHourSelected.value = time.hour.toString();
-            await checkAvailbilityComputer();
+            if (selectedDate.value.isNotEmpty &&
+                startingtimeSelected.value.isNotEmpty &&
+                titleSelected.value.isNotEmpty) {
+              await checkAvailbilityComputer();
+            }
           }
         },
       ),

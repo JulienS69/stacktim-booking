@@ -24,8 +24,9 @@ class ProfilView extends GetView<ProfilViewController> {
 
   @override
   Widget build(BuildContext context) {
-    return controller.obx(
-      (state) => XMobileScaffold(
+    return controller.obx((state) {
+      controller.showTutorialOnDashboard(context);
+      return XMobileScaffold(
         appBar: const XPageHeader(
           title: '',
           imagePath: logoOverSlug,
@@ -228,6 +229,7 @@ class ProfilView extends GetView<ProfilViewController> {
                             highlightColor: Colors.transparent,
                             focusColor: Colors.transparent,
                             child: Row(
+                              key: controller.nickNameButtonKey,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Obx(
@@ -408,6 +410,7 @@ class ProfilView extends GetView<ProfilViewController> {
                         ],
                       ),
                     ),
+                    SizedBox(height: 60),
                     ElevatedButton(
                       onPressed: () async {
                         HapticFeedback.vibrate();
@@ -416,13 +419,37 @@ class ProfilView extends GetView<ProfilViewController> {
                       },
                       child: const Text("Se déconnecter"),
                     ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onDoubleTap: () {
+                        controller.isShowingVersion.value = true;
+                      },
+                      child: Obx(
+                        () => controller.isShowingVersion.value
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: controller.buildVersionNumber(),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: Container(
+                                  height: 20,
+                                  width: 150,
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

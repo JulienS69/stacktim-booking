@@ -90,19 +90,21 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
                 calendarIcon,
                 profileIcon,
               ],
-              splashColor: redStackTim,
+              splashColor: Colors.white,
               inactiveColor: backgroundColor,
               activeColor: Colors.white,
               activeIndex: bottomNavIndex,
               gapLocation: widget.gapLocation ?? GapLocation.none,
               notchSmoothness: NotchSmoothness.verySmoothEdge,
               onTap: (index) {
-                HapticFeedback.vibrate();
-                setState(() {
-                  widget.bottomNavIndex = index;
-                });
-                Navigator.pushReplacementNamed(
-                    context, widget.routeNames[index]);
+                if (index != bottomNavIndex) {
+                  HapticFeedback.vibrate();
+                  setState(() {
+                    widget.bottomNavIndex = index;
+                  });
+                  Navigator.pushReplacementNamed(
+                      context, widget.routeNames[index]);
+                }
               },
               backgroundColor: Colors.black,
             )

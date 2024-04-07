@@ -1,4 +1,6 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/functions.dart';
@@ -21,6 +23,7 @@ class LoginViewController extends GetxController with StateMixin {
   RxString microsoftUrl = "".obs;
   LoginRepository loginRepository;
   WebViewController webViewController = WebViewController();
+  RxBool isShowingVersion = false.obs;
 
   LoginViewController({
     required this.loginRepository,
@@ -28,19 +31,17 @@ class LoginViewController extends GetxController with StateMixin {
 
   @override
   void onInit() async {
-    try {
-      await getMicrosftUrl();
-    } catch (e) {
-      Sentry.captureException(e);
-    }
     change(null, status: RxStatus.success());
     super.onInit();
   }
 
-  Future getMicrosftUrl() async {
+  Future<void> getMicrosftUrl() async {
     return await loginRepository.getMicrosoftUrl().then(
           (value) => value.fold(
-            (l) {},
+            (l) {
+              showSnackbar("Le service est momentanément indisponible",
+                  SnackStatusEnum.error);
+            },
             (r) async {
               microsoftUrl.value = r;
             },
@@ -91,5 +92,25 @@ class LoginViewController extends GetxController with StateMixin {
             () => MicrosoftView(webViewController: webViewController),
           )
         : showSnackbar("cannotConnectWithMicrosoft", SnackStatusEnum.error);
+  }
+
+  /// Displays the version number of the app based on the pubspec.yaml file.
+  Widget buildVersionNumber() {
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: ((context, snapshot) {
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(
+              '${snapshot.data?.version ?? '-'}+${snapshot.data?.buildNumber ?? ''}',
+              // style: buttonText1.copyWith(
+              //   color: buttonClicked,
+              // ),
+            ),
+          ),
+        );
+      }),
+    );
   }
 }
