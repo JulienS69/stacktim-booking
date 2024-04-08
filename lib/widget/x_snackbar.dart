@@ -57,7 +57,7 @@ class XSnackbar extends SnackBar {
           icon ??
               Icon(
                 Icons.info_outline_rounded,
-                color: iconColor ?? snackSimple,
+                color: iconColor ?? Colors.white,
               ),
           Expanded(
             child: Padding(
@@ -89,7 +89,7 @@ class XSnackbar extends SnackBar {
       ),
       duration: duration,
       icon: icon,
-      backgroundColor: backgroundColor ?? inputDefault,
+      backgroundColor: backgroundColor ?? snackSucces,
       context: context,
       textAlign: textAlign,
       textStyle: textStyle,

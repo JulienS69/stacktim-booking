@@ -23,6 +23,12 @@ class BookingRepository extends RestApiRepository {
               "name": "ownBookings",
             },
           ],
+          "sorts": [
+            {
+              "field": "booked_at",
+              "direction": "desc",
+            },
+          ],
           "includes": [
             {"relation": "user"},
             {"relation": "computer"},

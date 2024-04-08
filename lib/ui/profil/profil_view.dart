@@ -45,9 +45,12 @@ class ProfilView extends GetView<ProfilViewController> {
                 ))
             : FloatingActionButton(
                 onPressed: () {
-                  Get.offAndToNamed(Routes.dashboard, arguments: {
-                    'openSheet': true,
-                  });
+                  Get.offAndToNamed(
+                    Routes.dashboard,
+                    arguments: {
+                      'openSheet': true,
+                    },
+                  );
                 },
                 backgroundColor: Colors.black,
                 child: Image.asset(
@@ -164,6 +167,11 @@ class ProfilView extends GetView<ProfilViewController> {
                                   child: TextField(
                                     cursorColor: grey13,
                                     textAlign: TextAlign.center,
+                                    onSubmitted: (nickName) async {
+                                      HapticFeedback.vibrate();
+                                      controller.isEditing.value = false;
+                                      await controller.updateCurrentUser();
+                                    },
                                     autofocus: true,
                                     onTapOutside: (d) {
                                       FocusScope.of(context)
@@ -208,7 +216,6 @@ class ProfilView extends GetView<ProfilViewController> {
                                 InkWell(
                                   onTap: () async {
                                     HapticFeedback.vibrate();
-
                                     controller.isEditing.value = false;
                                     await controller.updateCurrentUser();
                                   },
