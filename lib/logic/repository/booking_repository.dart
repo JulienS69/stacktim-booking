@@ -18,6 +18,7 @@ class BookingRepository extends RestApiRepository {
       isCustomResponse: true,
       body: {
         "search": {
+          "limit": 1000,
           "scopes": [
             {
               "name": "ownBookings",
