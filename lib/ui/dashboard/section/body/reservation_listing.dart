@@ -114,15 +114,14 @@ class _ReservationListingState extends State<ReservationListing> {
                               ),
                             ),
                           ),
-                          widget.controller.getChipByStatusTag(
-                              currentBooking.status?.slug ?? ""),
+                          getChipByStatusTag(currentBooking.status?.slug ?? ""),
                           const SizedBox(
                             width: 10,
                           ),
                           Chevron(
                             direction: ChevronDirection.right,
                             size: 10.0,
-                            color: widget.controller.getColorsByStatusTag(
+                            color: getColorsByStatusTag(
                               statusTag: currentBooking.status?.slug ?? "",
                             ),
                           ),
@@ -216,7 +215,7 @@ class _ReservationListingState extends State<ReservationListing> {
                                   ),
                                 ),
                               ),
-                              widget.controller.getChipByStatusTag(
+                              getChipByStatusTag(
                                   currentBooking.status?.slug ?? ""),
                               const SizedBox(
                                 width: 10,
@@ -224,7 +223,7 @@ class _ReservationListingState extends State<ReservationListing> {
                               Chevron(
                                 direction: ChevronDirection.right,
                                 size: 10.0,
-                                color: widget.controller.getColorsByStatusTag(
+                                color: getColorsByStatusTag(
                                   statusTag: currentBooking.status?.slug ?? "",
                                 ),
                               ),

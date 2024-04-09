@@ -8,12 +8,12 @@ import 'package:stacktim_booking/ui/calendar/calendar_view.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller_bindings.dart';
+import 'package:stacktim_booking/ui/intro/intro_view.dart';
+import 'package:stacktim_booking/ui/intro/intro_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/login/login_view.dart';
 import 'package:stacktim_booking/ui/login/login_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/profil/profil_view.dart';
 import 'package:stacktim_booking/ui/profil/profil_view_controller_bindings.dart';
-import 'package:stacktim_booking/ui/splash_screen/liquid_swipe_view.dart/liquid_swipe_view.dart';
-import 'package:stacktim_booking/ui/splash_screen/liquid_swipe_view.dart/liquid_swipe_view_controller_bindings.dart';
 import 'package:stacktim_booking/ui/splash_screen/splash_screen.dart';
 import 'package:stacktim_booking/ui/splash_screen/splash_screen_controller_bindings.dart';
 import 'package:stacktim_booking/ui/welcome/welcome_view.dart';
@@ -30,8 +30,8 @@ class Nav {
     GetPage(
       title: 'intro'.tr,
       name: Routes.intro,
-      page: () => LiquidSwipeView(),
-      binding: LiquidSwipeViewControllerBindings(),
+      page: () => IntroView(),
+      binding: IntroViewControllerBindings(),
     ),
     GetPage(
       title: 'splash'.tr,

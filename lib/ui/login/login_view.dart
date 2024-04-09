@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/login/login_view_controller.dart';
 import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
@@ -32,21 +33,16 @@ class LoginView extends GetView<LoginViewController> {
                     StaggeredGridTile.fit(
                       crossAxisCellCount: 1,
                       child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        child: Image.asset(
-                          controller.imageList[0],
-                        ),
-                      ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                          child: loginImageListGenerate[0]),
                     ),
                     StaggeredGridTile.fit(
                       crossAxisCellCount: 3,
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        child: Image.asset(
-                          controller.imageList[1],
-                        ),
+                        child: loginImageListGenerate[1],
                       ),
                     ),
                     StaggeredGridTile.fit(
@@ -54,9 +50,7 @@ class LoginView extends GetView<LoginViewController> {
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        child: Image.asset(
-                          controller.imageList[2],
-                        ),
+                        child: loginImageListGenerate[2],
                       ),
                     ),
                     StaggeredGridTile.fit(
@@ -64,9 +58,7 @@ class LoginView extends GetView<LoginViewController> {
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        child: Image.asset(
-                          controller.imageList[3],
-                        ),
+                        child: loginImageListGenerate[3],
                       ),
                     ),
                     StaggeredGridTile.fit(
@@ -74,9 +66,7 @@ class LoginView extends GetView<LoginViewController> {
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        child: Image.asset(
-                          controller.imageList[4],
-                        ),
+                        child: loginImageListGenerate[4],
                       ),
                     ),
                   ],

@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/widget/x_chip.dart';
 
 import 'color.dart';
 
@@ -96,3 +98,73 @@ List<Widget> roomPictureListGenerate = List.generate(
     ),
   ),
 );
+
+List<Image> loginImageListGenerate = List.generate(
+  loginImageList.length,
+  (index) => Image.asset(loginImageList[index]),
+);
+
+XChip getChipByStatusTag(String? tag) {
+  switch (tag) {
+    case StatusSlugs.passee:
+      return XChip.chipStatus(
+        label: "Passée".tr.capitalizeFirst!,
+        chipColor: XChipColor.red,
+      );
+    case StatusSlugs.inComming:
+      return XChip.chipStatus(
+        label: "A venir".tr.capitalizeFirst!,
+        chipColor: XChipColor.blue,
+      );
+    case StatusSlugs.inProgress:
+      return XChip.chipStatus(
+        label: "En cours".tr.capitalizeFirst!,
+        chipColor: XChipColor.green,
+      );
+    default:
+      return XChip.chipStatus(
+        label: "Aucun status".tr.capitalizeFirst!,
+        chipColor: XChipColor.red,
+      );
+  }
+}
+
+XChipColor getColorChipByStatusTag(String tag) {
+  switch (tag) {
+    case StatusSlugs.passee:
+      return XChipColor.red;
+    case StatusSlugs.inComming:
+      return XChipColor.blue;
+    case StatusSlugs.inProgress:
+      return XChipColor.green;
+
+    default:
+      return XChipColor.red;
+  }
+}
+
+String getStringByStatusTag(String tag) {
+  switch (tag) {
+    case StatusSlugs.passee:
+      return 'Passée';
+    case StatusSlugs.inComming:
+      return "A venir";
+    case StatusSlugs.inProgress:
+      return 'En cours';
+
+    default:
+      return '';
+  }
+}
+
+Color getColorsByStatusTag({
+  required String statusTag,
+}) {
+  if (statusTag == StatusSlugs.inProgress) {
+    return greenChip;
+  } else if (statusTag == StatusSlugs.passee) {
+    return redChip;
+  } else {
+    return blueChip;
+  }
+}

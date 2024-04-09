@@ -10,31 +10,22 @@ import 'package:stacktim_booking/ui/login/widgets/microsoft_view.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../helper/snackbar.dart';
-import '../../helper/strings.dart';
 
 class LoginViewController extends GetxController with StateMixin {
-  List<String> imageList = [
-    one,
-    two,
-    three,
-    four,
-    five,
-  ];
+  //STRING
   RxString microsoftUrl = "".obs;
+  //REPOSITORY
   LoginRepository loginRepository;
-  WebViewController webViewController = WebViewController();
+  //BOOL
   RxBool isShowingVersion = false.obs;
+  //OTHER
+  WebViewController webViewController = WebViewController();
 
   LoginViewController({
     required this.loginRepository,
   });
 
-  @override
-  void onInit() async {
-    change(null, status: RxStatus.success());
-    super.onInit();
-  }
-
+//This allows retrieving the Microsoft URL, subsequently enabling launching into the web app view.
   Future<void> getMicrosftUrl() async {
     return await loginRepository.getMicrosoftUrl().then(
           (value) => value.fold(
@@ -104,13 +95,16 @@ class LoginViewController extends GetxController with StateMixin {
             padding: const EdgeInsets.only(left: 8.0),
             child: Text(
               '${snapshot.data?.version ?? '-'}+${snapshot.data?.buildNumber ?? ''}',
-              // style: buttonText1.copyWith(
-              //   color: buttonClicked,
-              // ),
             ),
           ),
         );
       }),
     );
+  }
+
+  @override
+  void onInit() async {
+    change(null, status: RxStatus.success());
+    super.onInit();
   }
 }

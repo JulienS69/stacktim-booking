@@ -201,7 +201,6 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
     );
   }
 
-  @override
   Widget buildContent(BuildContext context) {
     return XMobileScaffold(
       isShowBottomNavigationBar: false,

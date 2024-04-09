@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:stacktim_booking/ui/booking/modal_sheet/first_sheet/scroll_date_picker.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';

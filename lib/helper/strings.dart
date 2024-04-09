@@ -67,6 +67,14 @@ const String esportRoom2 = 'assets/images/salle1.png';
 // Link that never expires
 String stacktimDiscordUrl = "https://discord.gg/HHvzYuZRC4";
 
+List<String> loginImageList = [
+  one,
+  two,
+  three,
+  four,
+  five,
+];
+
 List<String> gameList = [
   game1,
   game2,

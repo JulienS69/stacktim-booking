@@ -11,35 +11,36 @@ import 'package:stacktim_booking/navigation/route.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class ProfilViewController extends GetxController with StateMixin {
+  //REPOSITORY
   UserRepository userRepository = UserRepository();
+  //OBJECT
   User currentUser = const User();
-  RxBool isSkeletonLoading = true.obs;
-  RxBool isEditing = false.obs;
-  TextEditingController nickNameController = TextEditingController();
-  RxString nickName = "".obs;
-  final pageIndexNotifier = ValueNotifier(0);
-  //TUTORIAL
-  List<TargetFocus> tutorialList = [];
-  SharedPreferences? sharedPreferences;
+  //BOOL
   RxBool isShowTutorial = false.obs;
   RxBool isShowingVersion = false.obs;
+  RxBool isSkeletonLoading = true.obs;
+  RxBool isEditing = false.obs;
+  //TEXT EDITING CONTROLLER
+  TextEditingController nickNameController = TextEditingController();
+  //STRING
+  RxString nickName = "".obs;
+  //LIST
+  List<TargetFocus> tutorialList = [];
+  //OTHER
+  SharedPreferences? sharedPreferences;
   final nickNameButtonKey =
       GlobalKey<FormState>(debugLabel: 'nickNameButtonKey');
 
-  @override
-  Future<void> onReady() async {
-    change(null, status: RxStatus.success());
-    sharedPreferences = await SharedPreferences.getInstance();
-    await getDataTutorial();
-    await getCurrentUser();
-    isSkeletonLoading.value = false;
-    super.onReady();
-  }
-
+//This allows retrieving the logged-in user.
   Future<void> getCurrentUser() async {
     return await userRepository.getCurrentUser().then(
           (value) => value.fold(
-            (l) {},
+            (l) {
+              showSnackbar(
+                  "Un problème est survenue lors de la récupération de vos informations",
+                  SnackStatusEnum.error);
+              // change(null, status: RxStatus.error());
+            },
             (r) {
               currentUser = r;
             },
@@ -47,6 +48,7 @@ class ProfilViewController extends GetxController with StateMixin {
         );
   }
 
+//This allows updating the user's nickname
   Future<void> updateCurrentUser() async {
     await userRepository
         .updateNickName(
@@ -64,11 +66,13 @@ class ProfilViewController extends GetxController with StateMixin {
         );
   }
 
+//This allows disconnecting the user by removing items stored in their local storage.
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(LocalStorageKey.jwt.name);
   }
 
+//This allows restarting the tutorial on the dashboard page.
   reloadTutorial() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(LocalStorageKeyEnum.isShowTutorial.name, true);
@@ -162,5 +166,15 @@ class ProfilViewController extends GetxController with StateMixin {
         ],
       ),
     );
+  }
+
+  @override
+  Future<void> onReady() async {
+    change(null, status: RxStatus.success());
+    sharedPreferences = await SharedPreferences.getInstance();
+    await getDataTutorial();
+    await getCurrentUser();
+    isSkeletonLoading.value = false;
+    super.onReady();
   }
 }

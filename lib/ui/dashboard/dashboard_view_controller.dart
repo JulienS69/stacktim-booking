@@ -24,40 +24,37 @@ import 'package:stacktim_booking/logic/repository/booking_repository.dart';
 import 'package:stacktim_booking/logic/repository/status_repository.dart';
 import 'package:stacktim_booking/logic/repository/user_repository.dart';
 import 'package:stacktim_booking/ui/booking/new_booking_view.dart';
-import 'package:stacktim_booking/widget/x_chip.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../logic/repository/computer_repository.dart';
 
 class DashboardViewController extends GetxController with StateMixin {
+  //REPOSTIORY
   BookingRepository bookingRepository = BookingRepository();
   StatusRepository statusRepository = StatusRepository();
   UserRepository userRepository = UserRepository();
   ComputerRepository computerRepository = ComputerRepository();
-
+  //LIST
   RxList<Status> statusList = <Status>[].obs;
   RxList<Booking> bookingList = <Booking>[].obs;
   RxList<Computer> computersList = <Computer>[].obs;
-  User currentUser = const User();
-
   List<TargetFocus> tutorialList = [];
-
+  //OBJECT
+  User currentUser = const User();
+  Booking bookingInProgress = const Booking();
+  Booking currentBooking = const Booking();
+  //BOOL
   RxBool isNotFree = false.obs;
-
   RxBool isShowingDatePicker = false.obs;
   RxBool isDatePicked = false.obs;
   RxBool isShowLoading = false.obs;
   RxBool isShowTutorial = false.obs;
-
-  TextEditingController searchController = TextEditingController();
-  TextEditingController titleController = TextEditingController();
-  FixedExtentScrollController fixedScrollController =
-      FixedExtentScrollController();
-
-  DateRangePickerController? dateController = DateRangePickerController();
+  RxBool isInProgress = false.obs;
+  Rx<double> progressValue = 0.0.obs;
+  RxBool isConfirmed = false.obs;
+  //STRING
   RxString titleSelected = "".obs;
-  //DATE SELECTED
   RxString bookedAt = "".obs;
   RxString selectedDate = "".obs;
   RxString beginingHourSelected = "".obs;
@@ -65,15 +62,15 @@ class DashboardViewController extends GetxController with StateMixin {
   String minutesSelected = "";
   RxString startingtimeSelected = "".obs;
   RxString endingtimeSelected = "".obs;
-  RxInt computerSelected = 0.obs;
   String computerUuidSelected = "";
-  Rx<double> progressValue = 0.0.obs;
-  Rx<bool> isConfirmed = false.obs;
-  final pageIndexNotifier = ValueNotifier(0);
-  Rx<bool> isInProgress = false.obs;
-  Booking bookingInProgress = const Booking();
   String statusIdSelected = '';
-
+  //INT
+  RxInt computerSelected = 0.obs;
+  //TEXT EDITING CONTROLLER
+  TextEditingController searchController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  FixedExtentScrollController fixedScrollController =
+      FixedExtentScrollController();
   //KEY FOR TUTORIAL
   final fabButtonKey = GlobalKey<FormState>(debugLabel: 'fabButtonKey');
   final dashboardButtonKey =
@@ -83,27 +80,12 @@ class DashboardViewController extends GetxController with StateMixin {
   final profilButtonKey = GlobalKey<FormState>(debugLabel: 'profilButtonKey');
   final stackCreditButtonKey =
       GlobalKey<FormState>(debugLabel: 'stackCreditButtonKey');
-  Booking currentBooking = const Booking();
+  //OTHER
+  DateRangePickerController? dateController = DateRangePickerController();
+  final pageIndexNotifier = ValueNotifier(0);
   SharedPreferences? sharedPreferences;
 
-  @override
-  void onInit() async {
-    change(null, status: RxStatus.loading());
-    sharedPreferences = await SharedPreferences.getInstance();
-    await getDataTutorial();
-    try {
-      await getCurrentUser();
-      await getMyBookings();
-      await getStatusList();
-      await checkArgument();
-      change(null, status: RxStatus.success());
-    } catch (e) {
-      Sentry.captureException(e);
-      change(null, status: RxStatus.success());
-    }
-    super.onInit();
-  }
-
+//This allows checking if the request to create a reservation has been made from another page.
   checkArgument() {
     if (Get.arguments != null) {
       if (Get.arguments['openSheet'] != null) {
@@ -112,28 +94,27 @@ class DashboardViewController extends GetxController with StateMixin {
     }
   }
 
+//This allows checking the remaining number of credits before being able to recreate a session.
   checkCreditBeforeCreateBooking() {
-    if (currentUser.credit != null) {
-      if (currentUser.credit?.creditAvailable != 0) {
-        NewBookingSheet(controller: this)
-            .showModalSheet(Get.context!, pageIndexNotifier);
-      } else {
-        showSnackbar(
-            "Impossible de réserver une séssion, tu n'as plus assez de crédits",
-            SnackStatusEnum.error);
-      }
+    if (currentUser.credit != null &&
+        currentUser.credit!.creditAvailable != 0) {
+      NewBookingSheet(controller: this)
+          .showModalSheet(Get.context!, pageIndexNotifier);
     } else {
       showSnackbar(
-          "Impossible de réserver une séssion, tu n'as plus assez de crédits",
+          "Impossible de réserver une séance, tu n'as plus assez de crédits",
           SnackStatusEnum.error);
     }
   }
 
+//This allows retrieving the list of user boooking.
   Future<void> getMyBookings() async {
     return await bookingRepository.getMyBookings().then(
           (value) => value.fold(
             (l) {},
             (r) {
+              //If a reservation has the status 'in progress', we need to move it to the top of the list and
+              //set a boolean to 'true' to adjust the display.
               bookingList.value = r;
               isInProgress.value = false;
               // Liste temporaire pour stocker les réservations en cours
@@ -155,6 +136,7 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
+//This allows retrieving the list of statuses.
   Future<void> getStatusList() async {
     return await statusRepository.getStatusList().then(
           (value) => value.fold(
@@ -171,6 +153,7 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
+//This allows retrieving the logged-in user.
   Future<void> getCurrentUser() async {
     return await userRepository.getCurrentUser().then(
           (value) => value.fold(
@@ -182,6 +165,7 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
+//This allows checking if all computers are not taken by other players and retrieving the list of available computers.
   Future<void> checkAvailbilityComputer() async {
     isShowLoading.value = true;
     return await computerRepository
@@ -193,6 +177,7 @@ class DashboardViewController extends GetxController with StateMixin {
         .then(
           (value) => value.fold(
             (l) {
+              //TODO A TESTER CE CAS
               showSnackbar('Plus de places disponible à cette date',
                   SnackStatusEnum.error);
               isShowLoading.value = false;
@@ -206,6 +191,7 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
+//This allows creating the reservation.
   createBooking() async {
     HapticFeedback.vibrate();
     currentBooking = currentBooking.copyWith(
@@ -250,6 +236,7 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
+//This allows clearing all variables."
   clearForm() {
     isNotFree.value = false;
     isShowingDatePicker.value = false;
@@ -381,71 +368,6 @@ class DashboardViewController extends GetxController with StateMixin {
         },
       ),
     );
-  }
-
-  Color getColorsByStatusTag({
-    required String statusTag,
-  }) {
-    if (statusTag == StatusSlugs.inProgress) {
-      return greenChip;
-    } else if (statusTag == StatusSlugs.passee) {
-      return redChip;
-    } else {
-      return blueChip;
-    }
-  }
-
-  XChip getChipByStatusTag(String? tag) {
-    switch (tag) {
-      case StatusSlugs.passee:
-        return XChip.chipStatus(
-          label: "Passée".tr.capitalizeFirst!,
-          chipColor: XChipColor.red,
-        );
-      case StatusSlugs.inComming:
-        return XChip.chipStatus(
-          label: "A venir".tr.capitalizeFirst!,
-          chipColor: XChipColor.blue,
-        );
-      case StatusSlugs.inProgress:
-        return XChip.chipStatus(
-          label: "En cours".tr.capitalizeFirst!,
-          chipColor: XChipColor.green,
-        );
-      default:
-        return XChip.chipStatus(
-          label: "Aucun status".tr.capitalizeFirst!,
-          chipColor: XChipColor.red,
-        );
-    }
-  }
-
-  XChipColor getColorChipByStatusTag(String tag) {
-    switch (tag) {
-      case StatusSlugs.passee:
-        return XChipColor.red;
-      case StatusSlugs.inComming:
-        return XChipColor.blue;
-      case StatusSlugs.inProgress:
-        return XChipColor.green;
-
-      default:
-        return XChipColor.red;
-    }
-  }
-
-  String getStringByStatusTag(String tag) {
-    switch (tag) {
-      case StatusSlugs.passee:
-        return 'Passée';
-      case StatusSlugs.inComming:
-        return "A venir";
-      case StatusSlugs.inProgress:
-        return 'En cours';
-
-      default:
-        return '';
-    }
   }
 
   checkIsFree(String date) {
@@ -631,5 +553,23 @@ class DashboardViewController extends GetxController with StateMixin {
         );
       },
     );
+  }
+
+  @override
+  void onInit() async {
+    change(null, status: RxStatus.loading());
+    sharedPreferences = await SharedPreferences.getInstance();
+    await getDataTutorial();
+    try {
+      await getCurrentUser();
+      await getMyBookings();
+      await getStatusList();
+      await checkArgument();
+      change(null, status: RxStatus.success());
+    } catch (e) {
+      Sentry.captureException(e);
+      change(null, status: RxStatus.success());
+    }
+    super.onInit();
   }
 }

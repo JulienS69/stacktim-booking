@@ -7,13 +7,13 @@ import 'package:lottie/lottie.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/ui/intro/intro_view_controller.dart';
 import 'package:stacktim_booking/ui/splash_screen/custom_page/agreement_view.dart';
-import 'package:stacktim_booking/ui/splash_screen/liquid_swipe_view.dart/liquid_swipe_view_controller.dart';
 
-class LiquidSwipeView extends GetView<LiquidSwipeViewController> {
+class IntroView extends GetView<IntroViewController> {
   late LiquidController liquidController;
 
-  LiquidSwipeView({
+  IntroView({
     super.key,
   });
 
@@ -30,7 +30,7 @@ class LiquidSwipeView extends GetView<LiquidSwipeViewController> {
               onTap: () {
                 if (index == 0) {
                   showSnackbar(
-                      "Vous devez slider de droite vers la gauche votre écran pour pouvoir naviguer",
+                      "Vous devez swiper de droite vers la gauche votre écran pour pouvoir naviguer",
                       SnackStatusEnum.simple);
                 }
               },

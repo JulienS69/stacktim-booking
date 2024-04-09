@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:stacktim_booking/widget/x_selectable_chip.dart';
 
@@ -26,9 +27,9 @@ class ChipFilter extends StatelessWidget {
                 children: List.generate(
                   controller.statusList.length,
                   (index) => XSelectableChip(
-                      label: controller.getStringByStatusTag(
+                      label: getStringByStatusTag(
                           controller.statusList[index].slug ?? ''),
-                      chipColor: controller.getColorChipByStatusTag(
+                      chipColor: getColorChipByStatusTag(
                           controller.statusList[index].slug ?? "")),
                 ),
               ))
