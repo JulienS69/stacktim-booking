@@ -40,18 +40,23 @@ const styleWidget = TextStyle(
 ThemeData xMyTheme = ThemeData(
   primaryColor: Colors.red, // Couleur principale de l'application
   colorScheme: const ColorScheme(
-      background: Color.fromRGBO(32, 32, 32, 1),
-      brightness: Brightness.light,
-      primary: Colors.red,
-      onPrimary: Colors.orange,
-      secondary: Color(0x42000000),
-      onSecondary: Colors.black26,
-      error: Colors.red,
-      onError: Colors.redAccent,
-      onBackground: Colors.green,
-      //TEXT
-      surface: Colors.white,
-      onSurface: Colors.white),
+    background: Color.fromRGBO(32, 32, 32, 1),
+    brightness: Brightness.light,
+    primary: Colors.red,
+    onPrimary: Colors.orange,
+    secondary: Color(0x42000000),
+    onSecondary: Colors.black26,
+    error: Colors.red,
+    onError: Colors.redAccent,
+    onBackground: Colors.green,
+    //TEXT
+    surface: Colors.white,
+    onSurface: Colors.white,
+    surfaceTint: Colors.black,
+    surfaceVariant: Colors.black,
+  ),
+  dialogBackgroundColor: Colors.black,
+  bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.black54),
   // Couleur d'accentuation utilisée pour les éléments interactifs
   fontFamily: 'Anta', // Police de caractères par défaut
 );

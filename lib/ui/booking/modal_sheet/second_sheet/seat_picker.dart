@@ -26,7 +26,7 @@ SliverWoltModalSheetPage seatPicker({
         pageIndexNotifier.value = pageIndexNotifier.value - 1;
       },
     ),
-    backgroundColor: backgroundColorSheet,
+    backgroundColor: sheetColor,
     hasSabGradient: false,
     forceMaxHeight: true,
     isTopBarLayerAlwaysVisible: true,

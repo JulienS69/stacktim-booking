@@ -87,16 +87,28 @@ class LiquidSwipeView extends GetView<LiquidSwipeViewController> {
                           )),
                     ),
                     Visibility(
-                        visible: index == 4,
-                        replacement: const SizedBox.shrink(),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            fit: BoxFit.scaleDown,
-                            salle,
+                      visible: index == 4,
+                      replacement: const SizedBox.shrink(),
+                      child: CarouselSlider(
+                        items: roomPictureListGenerate,
+                        options: CarouselOptions(
                             height: 300,
-                          ),
-                        )),
+                            aspectRatio: 16 / 9,
+                            viewportFraction: 0.8,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            reverse: false,
+                            autoPlay: true,
+                            autoPlayInterval: const Duration(seconds: 3),
+                            autoPlayAnimationDuration:
+                                const Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.decelerate,
+                            enlargeCenterPage: true,
+                            enlargeFactor: 1,
+                            scrollDirection: Axis.horizontal,
+                            enlargeStrategy: CenterPageEnlargeStrategy.zoom),
+                      ),
+                    ),
                     Visibility(
                       visible: index == 2,
                       replacement: const SizedBox.shrink(),

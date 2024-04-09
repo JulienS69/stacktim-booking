@@ -24,6 +24,7 @@ const String pdfAgreement = 'assets/pdf/agreement.pdf';
 const String errorLottie = 'assets/lotties/404.json';
 const String discord = 'assets/images/discord.png';
 const String arrow = 'assets/images/arrow.png';
+const String gamingCheck = 'assets/lotties/gaming_check.json';
 
 // GAME JACKET PICTURES
 const String game1 = 'assets/game_jacket/1.jpg';
@@ -57,6 +58,10 @@ const String esport13 = 'assets/picture_esport/13.jpg';
 const String esport14 = 'assets/picture_esport/14.jpg';
 const String esport15 = 'assets/picture_esport/15.jpg';
 const String esport16 = 'assets/picture_esport/16.jpg';
+
+// Esport Room PICTURES
+const String esportRoom1 = 'assets/images/salle2.png';
+const String esportRoom2 = 'assets/images/salle1.png';
 
 // URL Discord
 // Link that never expires
@@ -95,6 +100,11 @@ List<String> esportList = [
   esport14,
   esport15,
   esport16,
+];
+
+List<String> roomPictureList = [
+  esportRoom1,
+  esportRoom2,
 ];
 
 

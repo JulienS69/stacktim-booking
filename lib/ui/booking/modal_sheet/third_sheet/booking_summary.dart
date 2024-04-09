@@ -27,7 +27,7 @@ SliverWoltModalSheetPage bookingSummary({
         pageIndexNotifier.value = pageIndexNotifier.value - 1;
       },
     ),
-    backgroundColor: backgroundColorSheet,
+    backgroundColor: sheetColor,
     hasSabGradient: false,
     isTopBarLayerAlwaysVisible: true,
     trailingNavBarWidget: IconButton(

@@ -23,7 +23,7 @@ SliverWoltModalSheetPage scrollDatePicker({
       "Réservation de la salle",
       style: titleArvo.copyWith(fontSize: 18),
     ),
-    backgroundColor: backgroundColorSheet,
+    backgroundColor: sheetColor,
     hasSabGradient: false,
     isTopBarLayerAlwaysVisible: true,
     leadingNavBarWidget: IconButton(

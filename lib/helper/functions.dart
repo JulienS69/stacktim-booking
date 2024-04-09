@@ -85,3 +85,14 @@ List<Widget> esportListGenerate = List.generate(
     ),
   ),
 );
+
+List<Widget> roomPictureListGenerate = List.generate(
+  roomPictureList.length,
+  (index) => ClipRRect(
+    borderRadius: BorderRadius.circular(12.0),
+    child: Image.asset(
+      fit: BoxFit.scaleDown,
+      roomPictureList[index],
+    ),
+  ),
+);

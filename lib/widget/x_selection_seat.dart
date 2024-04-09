@@ -154,7 +154,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
               width: 100,
               height: 550,
               decoration: BoxDecoration(
-                color: grey10, // Couleur du bureau
+                color: grey12, // Couleur du bureau
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Center(

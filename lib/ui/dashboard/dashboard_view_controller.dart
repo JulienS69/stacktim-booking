@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
@@ -70,7 +71,7 @@ class DashboardViewController extends GetxController with StateMixin {
   Rx<bool> isConfirmed = false.obs;
   final pageIndexNotifier = ValueNotifier(0);
   Rx<bool> isInProgress = false.obs;
-  Booking bookingInProgress = Booking();
+  Booking bookingInProgress = const Booking();
   String statusIdSelected = '';
 
   //KEY FOR TUTORIAL
@@ -217,7 +218,6 @@ class DashboardViewController extends GetxController with StateMixin {
       beginAt: startingtimeSelected.value,
       duration: 1,
     );
-
     return await bookingRepository
         .createBooking(currentBooking: currentBooking)
         .then(
@@ -237,7 +237,9 @@ class DashboardViewController extends GetxController with StateMixin {
               // ).show();
             },
             (r) async {
-              await getMyBookings();
+              getMyBookings();
+              // No await in getMyBookings() because 6 seconds duration of dialog after that
+              await showSuccesDialog();
               bookingList.refresh();
               Get.back();
               clearForm();
@@ -570,6 +572,64 @@ class DashboardViewController extends GetxController with StateMixin {
           ))
         ],
       ),
+    );
+  }
+
+  Future showSuccesDialog() async {
+    await showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        Future.delayed(
+          const Duration(seconds: 6),
+          () async {
+            HapticFeedback.vibrate();
+            Navigator.of(context).pop();
+          },
+        );
+        return Dialog(
+          backgroundColor: backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: AnimatedContainer(
+            duration: const Duration(seconds: 1),
+            curve: Curves.easeInOut,
+            height: 250,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LottieBuilder.asset(
+                  gamingCheck,
+                  fit: BoxFit.fill,
+                  height: 150,
+                  repeat: false,
+                ),
+                const SizedBox(height: 20),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Chaud devant ! 🔥 \nOn contacte notre serveur...',
+                          //Ta session sera traitée dans un instant !
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
