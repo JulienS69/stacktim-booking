@@ -30,7 +30,7 @@ class BookingEndingTime extends StatelessWidget {
                 children: [
                   const Text(
                     "Heure de fin choisie : ",
-                    style: arvoStyle,
+                    style: antaStyle,
                   ),
                   const SizedBox(
                     width: 5,
@@ -40,7 +40,7 @@ class BookingEndingTime extends StatelessWidget {
                           ? "Aucunes"
                           : "${controller.endingHourSelected.value} heures"
                               "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
-                      style: arvoStyle.copyWith(
+                      style: antaStyle.copyWith(
                         color: controller.endingHourSelected.isEmpty
                             ? Colors.red
                             : Colors.white60,

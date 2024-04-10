@@ -21,7 +21,7 @@ class StackCredit extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                "Bonjour ${controller.currentUser.nickName ?? "[PSEUDO]"} 👋",
+                "Bonjour ${controller.currentUser.nickName ?? controller.currentUser.firstname} 👋",
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -35,7 +35,7 @@ class StackCredit extends StatelessWidget {
                   Text(
                     controller.currentUser.credit?.creditAvailable.toString() ??
                         "0",
-                    style: titleArvo.copyWith(
+                    style: titleStyle.copyWith(
                       color: primary,
                     ),
                   ),
@@ -58,6 +58,7 @@ class StackCredit extends StatelessWidget {
           padding: EdgeInsets.only(right: 15.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 "Stack crédits \nrestant",

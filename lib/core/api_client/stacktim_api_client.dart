@@ -6,7 +6,7 @@ import 'package:stacktim_booking/helper/strings.dart';
 class StacktimHttpClient extends GetxService {
   Future<Dio> init() async {
     final client = Dio();
-    client.options.baseUrl = urlBaseStackTim;
+    client.options.baseUrl = rdStacktimBookingApi;
     client.options.receiveTimeout = const Duration(seconds: 15);
     client.options.sendTimeout = const Duration(seconds: 15);
     client.options.connectTimeout = const Duration(seconds: 15);

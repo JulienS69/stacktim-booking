@@ -6,6 +6,7 @@ import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_view_controller.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
+import 'package:stacktim_booking/widget/x_error_page.dart';
 import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -38,6 +39,16 @@ class CalendarPage extends GetView<CalendarViewController> {
       ),
       body: controller.obx(
         onLoading: const XLoaderStacktim(),
+        onError: (error) => XErrorPage(
+          contentTitle:
+              "Une erreur s'est produite lors de la récupération du calendrier",
+          onPressedRetry: () {
+            //TODO RETRY LES REQUÊTES
+          },
+          withBottomBar: true,
+          withAppBar: true,
+          bottomNavIndex: 2,
+        ),
         (state) => Column(
           children: [
             Expanded(

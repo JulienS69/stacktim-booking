@@ -29,7 +29,7 @@ class BookingTitle extends StatelessWidget {
           },
           decoration: const InputDecoration(
             hintText: 'Titre de la réservation',
-            hintStyle: arvoStyle,
+            hintStyle: antaStyle,
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 0.0),
             ),

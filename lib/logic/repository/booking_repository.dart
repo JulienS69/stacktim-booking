@@ -40,7 +40,11 @@ class BookingRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
-          return left(l['message']);
+          if (l.containsKey("message")) {
+            return left(l['message']);
+          } else {
+            return left(l);
+          }
         },
         (r) async {
           return right(
@@ -53,7 +57,7 @@ class BookingRepository extends RestApiRepository {
   Future<Either<dynamic, Booking>> getBooking(
       {required String currentBookingId}) async {
     return await handlingPostResponse(
-      queryRoute: "$controller/search",
+      queryRoute: "$controller/seasrch",
       showError: false,
       showSuccess: false,
       isCustomResponse: true,
@@ -69,7 +73,11 @@ class BookingRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
-          return left(l['message']);
+          if (l.containsKey("message")) {
+            return left(l['message']);
+          } else {
+            return left(l);
+          }
         },
         (r) async {
           return right(Booking.fromJson(r));
@@ -104,7 +112,11 @@ class BookingRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
-          return left(l['message']);
+          if (l.containsKey("message")) {
+            return left(l['message']);
+          } else {
+            return left(l);
+          }
         },
         (r) async {
           return right(
@@ -142,7 +154,11 @@ class BookingRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
-          return left(l['message']);
+          if (l.containsKey("message")) {
+            return left(l['message']);
+          } else {
+            return left(l);
+          }
         },
         (r) async {
           return right(Booking.fromJson(r));

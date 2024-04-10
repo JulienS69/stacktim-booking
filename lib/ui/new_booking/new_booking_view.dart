@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:stacktim_booking/ui/booking/modal_sheet/first_sheet/scroll_date_picker.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
+import 'package:stacktim_booking/ui/new_booking/first_sheet/booking_schedule.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-import 'modal_sheet/second_sheet/seat_picker.dart';
-import 'modal_sheet/third_sheet/booking_summary.dart';
+import 'second_sheet/seat_picker.dart';
+import 'third_sheet/booking_summary.dart';
 
 class NewBookingSheet {
   final DashboardViewController controller;
 
-  NewBookingSheet({required this.controller});
+  NewBookingSheet({
+    required this.controller,
+  });
 
   Future<void> showModalSheet(
       BuildContext context, ValueNotifier<int> pageIndexNotifier) async {
@@ -19,7 +21,7 @@ class NewBookingSheet {
       context: context,
       pageListBuilder: (modalSheetContext) {
         return [
-          scrollDatePicker(
+          bookingSchedule(
             modalSheetContext: modalSheetContext,
             pageIndexNotifier: pageIndexNotifier,
           ),

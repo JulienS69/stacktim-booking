@@ -18,10 +18,16 @@ class UserRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
-          return left(l['message']);
+          if (l.containsKey("message")) {
+            return left(l['message']);
+          } else {
+            return left(l);
+          }
         },
         (r) async {
-          return right(User.fromJson(r));
+          return right(
+            User.fromJson(r),
+          );
         },
       ),
     );
@@ -49,7 +55,11 @@ class UserRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
-          return left(l['message']);
+          if (l.containsKey("message")) {
+            return left(l['message']);
+          } else {
+            return left(l);
+          }
         },
         (r) async {
           return right(User.fromJson(r));

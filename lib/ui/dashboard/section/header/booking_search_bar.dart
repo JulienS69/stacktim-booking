@@ -5,8 +5,8 @@ import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 
-class SearchBarReservation extends StatelessWidget {
-  const SearchBarReservation({
+class BookingSearchBar extends StatelessWidget {
+  const BookingSearchBar({
     super.key,
     required this.controller,
   });
@@ -53,6 +53,8 @@ class SearchBarReservation extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.clip,
                         ),
                       ),
                     ],
@@ -77,7 +79,7 @@ class SearchBarReservation extends StatelessWidget {
                         },
                         decoration: const InputDecoration(
                           hintText: 'Rechercher une réservation',
-                          hintStyle: arvoStyle,
+                          hintStyle: antaStyle,
                           focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: cardColor, width: 1.0),

@@ -28,19 +28,6 @@ class StatusSlugs {
   static const String inComming = "a-venir";
 }
 
-String getStatusString(StatusEnumKey status) {
-  switch (status) {
-    case StatusEnumKey.passee:
-      return "Passée";
-    case StatusEnumKey.inProgress:
-      return "En cours";
-    case StatusEnumKey.inComming:
-      return "À venir";
-    default:
-      return "Statut inconnu";
-  }
-}
-
 class ItemData {
   final Color color;
   final String image;

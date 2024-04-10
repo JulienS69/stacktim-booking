@@ -1,3 +1,4 @@
+//STUB - FOLDER BACKGROUND
 const String logo = 'assets/background/logo.png';
 const String one = 'assets/background/1.png';
 const String two = 'assets/background/2.jpg';
@@ -6,25 +7,47 @@ const String four = 'assets/background/4.png';
 const String five = 'assets/background/5.JPG';
 const String six = 'assets/background/6.png';
 const String microsoftLogo = 'assets/background/microsoft.png';
+const String salle = 'assets/background/1.JPG';
+
+//STUB - FOLDER IMAGE
 const String coinLogo = 'assets/images/coin.png';
 const String seat = 'assets/images/seat.png';
-const String riveCharacter = 'assets/riv/logo.riv';
-const String lottieCheck = 'assets/lotties/check.json';
-const String lottieGamepad = 'assets/lotties/gamepad.json';
 const String reload = 'assets/images/reload.png';
 const String document = 'assets/images/document.png';
-const String svgLogo = 'assets/svg/logo.svg';
 const String logoOverSlug = 'assets/images/logo_over_slug.png';
-const String splash = 'assets/launcher_icon/splash.png';
-const String salle = 'assets/background/1.JPG';
 const String teams = 'assets/images/teams.png';
-const String urlBaseStackTim =
-    'https://rd-stacktim-booking-api.xefi-apps.fr/api';
-const String pdfAgreement = 'assets/pdf/agreement.pdf';
-const String errorLottie = 'assets/lotties/404.json';
 const String discord = 'assets/images/discord.png';
 const String arrow = 'assets/images/arrow.png';
+
+//STUB - FOLDER LOTTIE
+const String lottieCheck = 'assets/lotties/check.json';
+const String lottieGamepad = 'assets/lotties/gamepad.json';
+const String errorLottie = 'assets/lotties/404.json';
 const String gamingCheck = 'assets/lotties/gaming_check.json';
+
+//STUB - FOLDER SVG
+const String svgLogo = 'assets/svg/logo.svg';
+
+//STUB - FOLDER LAUNCHER ICON
+const String splash = 'assets/launcher_icon/splash.png';
+
+//STUB - URL
+//LINK - RD
+String rdStacktimBookingApi =
+    "https://rd-stacktim-booking-api.xefi-apps.fr/api";
+//LINK - RC
+String rcStacktimBookingApi =
+    "https://rc-stacktim-booking-api.xefi-apps.fr/api";
+//LINK - DEMO
+String demoStacktimBookingApi =
+    "https://demo-stacktim-booking-api.xefi-apps.fr/api";
+//LINK - PROD
+String prodStacktimBookingApi = "https://stacktim-booking-api.dailyapps.fr/api";
+// Link that never expires
+String stacktimDiscordUrl = "https://discord.gg/HHvzYuZRC4";
+
+//STUB - PDF
+const String pdfAgreement = 'assets/pdf/agreement.pdf';
 
 // GAME JACKET PICTURES
 const String game1 = 'assets/game_jacket/1.jpg';
@@ -62,10 +85,6 @@ const String esport16 = 'assets/picture_esport/16.jpg';
 // Esport Room PICTURES
 const String esportRoom1 = 'assets/images/salle2.png';
 const String esportRoom2 = 'assets/images/salle1.png';
-
-// URL Discord
-// Link that never expires
-String stacktimDiscordUrl = "https://discord.gg/HHvzYuZRC4";
 
 List<String> loginImageList = [
   one,
@@ -114,14 +133,3 @@ List<String> roomPictureList = [
   esportRoom1,
   esportRoom2,
 ];
-
-
-//ENV
-// RD
-// https://rd-stacktim-booking-api.xefi-apps.fr/api
-//RC
-//https://rc-stacktim-booking-api.xefi-apps.fr/api
-//DEMO
-//https://demo-stacktim-booking-api.xefi-apps.fr/api
-//PROD
-// https://stacktim-booking-api.dailyapps.fr/api

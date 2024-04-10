@@ -49,7 +49,7 @@ class EditNickName extends StatelessWidget {
               },
               decoration: InputDecoration(
                 hintText: controller.currentUser.nickName ?? "Nouveau pseudo",
-                hintStyle: arvoStyle,
+                hintStyle: antaStyle,
                 border: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white, width: 1.0),
                 ),

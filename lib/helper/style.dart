@@ -8,25 +8,16 @@ const bodyText2 = TextStyle(
   fontStyle: FontStyle.normal,
 );
 
-const bodyTextMonserat14 = TextStyle(
-  fontSize: 14,
-  color: black,
-  fontWeight: FontWeight.w400,
-  fontStyle: FontStyle.normal,
-);
-
 const titleText1 = TextStyle(
   fontSize: 24,
   fontWeight: FontWeight.w700,
   fontStyle: FontStyle.normal,
 );
 
-const arvoStyle =
-    TextStyle(color: Colors.white, fontFamily: 'Anta', fontSize: 12);
+const antaStyle = TextStyle(color: Colors.white, fontSize: 12);
 
-const titleArvo = TextStyle(
+const titleStyle = TextStyle(
   fontSize: 24,
-  fontFamily: "Anta",
 );
 
 const styleWidget = TextStyle(

@@ -12,6 +12,7 @@ import 'package:stacktim_booking/ui/profil/section/header/profil_header.dart';
 import 'package:stacktim_booking/ui/profil/widgets/discord_logo.dart';
 import 'package:stacktim_booking/ui/splash_screen/custom_page/agreement_view.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
+import 'package:stacktim_booking/widget/x_error_page.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 import 'package:stacktim_booking/widget/x_profil_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,24 +28,16 @@ class ProfilView extends GetView<ProfilViewController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx(
-        //TODO FAIRE L'ECRAN ON ERROR
-        // onError: (msg) => SingleChildScrollView(
-        //       child: Center(
-        //         child: Column(
-        //           mainAxisAlignment: MainAxisAlignment.start,
-        //           children: [
-        //             Image(
-        //               width: double.infinity,
-        //               fit: BoxFit.fill,
-        //               image: AssetImage(
-        //                 logo,
-        //               ),
-        //             )
-        //           ],
-        //         ),
-        //       ),
-        //     ),
-        (state) {
+        onError: (error) => XErrorPage(
+              contentTitle:
+                  "Une erreur s'est produite lors de la récupération de tes informations",
+              onPressedRetry: () {
+                //TODO RETRY LES REQUÊTES
+              },
+              withBottomBar: true,
+              withAppBar: true,
+              bottomNavIndex: 2,
+            ), (state) {
       controller.showTutorialOnDashboard(context);
       return XMobileScaffold(
         appBar: const XPageHeader(

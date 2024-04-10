@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -189,8 +188,6 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                       selectedSeat ?? 0;
                   widget.dashboardViewController.computerUuidSelected =
                       computer.id ?? "";
-                  log(widget.dashboardViewController.computerSelected.value
-                      .toString());
                 },
               );
             }),
@@ -216,7 +213,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                                   children: [
                                     Text(
                                       "Siège sélectionné : N°${widget.dashboardViewController.computerSelected.value} ",
-                                      style: arvoStyle.copyWith(
+                                      style: antaStyle.copyWith(
                                         color: backgroundColorSheet,
                                       ),
                                     ),
@@ -250,7 +247,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                                     children: [
                                       Text(
                                         "J'ai valide ce siège ",
-                                        style: arvoStyle,
+                                        style: antaStyle,
                                       ),
                                       SizedBox(
                                         width: 5,

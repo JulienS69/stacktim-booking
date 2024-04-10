@@ -23,7 +23,7 @@ import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/logic/repository/booking_repository.dart';
 import 'package:stacktim_booking/logic/repository/status_repository.dart';
 import 'package:stacktim_booking/logic/repository/user_repository.dart';
-import 'package:stacktim_booking/ui/booking/new_booking_view.dart';
+import 'package:stacktim_booking/ui/new_booking/new_booking_view.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
@@ -568,7 +568,7 @@ class DashboardViewController extends GetxController with StateMixin {
       change(null, status: RxStatus.success());
     } catch (e) {
       Sentry.captureException(e);
-      change(null, status: RxStatus.success());
+      change(null, status: RxStatus.error());
     }
     super.onInit();
   }

@@ -25,7 +25,7 @@ class BookingDatePicker extends StatelessWidget {
               children: [
                 const Text(
                   "Date choisie : ",
-                  style: arvoStyle,
+                  style: antaStyle,
                 ),
                 const SizedBox(
                   width: 5,
@@ -41,7 +41,7 @@ class BookingDatePicker extends StatelessWidget {
                         },
                         child: Text(
                           controller.bookedAt.value.capitalizeFirst!,
-                          style: arvoStyle.copyWith(
+                          style: antaStyle.copyWith(
                             color: Colors.white60,
                             decoration: TextDecoration.underline,
                           ),
@@ -146,7 +146,7 @@ class BookingDatePicker extends StatelessWidget {
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.black),
                       foregroundColor: MaterialStatePropertyAll(Colors.white),
-                      textStyle: MaterialStatePropertyAll(arvoStyle),
+                      textStyle: MaterialStatePropertyAll(antaStyle),
                     ),
                     child: const Text(
                       'Selectionner une date',

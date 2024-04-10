@@ -39,9 +39,31 @@ class _EmptyBookingState extends State<EmptyBooking> {
                 ),
               ),
             ),
-            const Text("Tu n'as encore pas réservé de session ce mois-ci"),
-            const Text(
-              "Je t'invite à réserver ta première session",
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Tu n'as encore pas réservé de session ce mois-ci",
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
+              ],
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Je t'invite à réserver ta première session",
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 25,
@@ -58,7 +80,7 @@ class _EmptyBookingState extends State<EmptyBooking> {
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(Colors.black),
                         foregroundColor: MaterialStatePropertyAll(Colors.white),
-                        textStyle: MaterialStatePropertyAll(arvoStyle),
+                        textStyle: MaterialStatePropertyAll(antaStyle),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

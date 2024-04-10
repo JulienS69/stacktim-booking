@@ -3,13 +3,14 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/strings.dart';
-import 'package:stacktim_booking/ui/booking/new_booking_view.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
+import 'package:stacktim_booking/ui/dashboard/section/body/booking_listing.dart';
 import 'package:stacktim_booking/ui/dashboard/section/body/empty_booking.dart';
-import 'package:stacktim_booking/ui/dashboard/section/body/reservation_listing.dart';
-import 'package:stacktim_booking/ui/dashboard/section/header/search_bar_reservation.dart';
+import 'package:stacktim_booking/ui/dashboard/section/header/booking_search_bar.dart';
 import 'package:stacktim_booking/ui/dashboard/section/header/stack_credit.dart';
+import 'package:stacktim_booking/ui/new_booking/new_booking_view.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
+import 'package:stacktim_booking/widget/x_error_page.dart';
 import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 
@@ -40,6 +41,13 @@ class DashboardView extends GetView<DashboardViewController> {
       ),
       body: controller.obx(
         onLoading: const XLoaderStacktim(),
+        onError: (error) => XErrorPage(
+          contentTitle:
+              "Une erreur s'est produite lors de la récupération de tes sessions",
+          onPressedRetry: () {
+            //TODO RETRY LES REQUÊTES
+          },
+        ),
         (state) {
           controller.showTutorialOnDashboard(context);
           return Column(
@@ -48,15 +56,15 @@ class DashboardView extends GetView<DashboardViewController> {
                 controller: controller,
               ),
               controller.bookingList.isNotEmpty
-                  ? SearchBarReservation(controller: controller)
+                  ? BookingSearchBar(controller: controller)
                   : const SizedBox.shrink(),
               //SECTION - FILTERS
               // controller.bookingList.isNotEmpty
-              //     ? ChipFilter(controller: controller)
+              //     ? BookingFilter(controller: controller)
               //     : const SizedBox.shrink(),
               controller.bookingList.isNotEmpty
                   ? Expanded(
-                      child: ReservationListing(
+                      child: BookingListing(
                         controller: controller,
                       ),
                     )

@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacktim_booking/logic/repository/booking_repository.dart';
 
 import '../../logic/models/booking/booking.dart';
@@ -15,10 +14,10 @@ class BookingDetailViewController extends GetxController with StateMixin {
     try {
       await getBookingId();
       await getBooking();
+      change(null, status: RxStatus.success());
     } catch (e) {
-      Sentry.captureException(e);
+      change(null, status: RxStatus.error());
     }
-    change(null, status: RxStatus.success());
     super.onInit();
   }
 

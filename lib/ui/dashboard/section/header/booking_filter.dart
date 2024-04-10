@@ -3,8 +3,8 @@ import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:stacktim_booking/widget/x_selectable_chip.dart';
 
-class ChipFilter extends StatelessWidget {
-  const ChipFilter({
+class BookingFilter extends StatelessWidget {
+  const BookingFilter({
     super.key,
     required this.controller,
   });

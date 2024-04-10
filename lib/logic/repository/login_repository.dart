@@ -16,7 +16,11 @@ class LoginRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
-          return left(l['message']);
+          if (l.containsKey("message")) {
+            return left(l['message']);
+          } else {
+            return left(l);
+          }
         },
         (r) async {
           return right(r);
