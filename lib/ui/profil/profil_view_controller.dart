@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
+import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/logic/repository/user_repository.dart';
 import 'package:stacktim_booking/navigation/route.dart';
@@ -22,11 +27,19 @@ class ProfilViewController extends GetxController with StateMixin {
   RxBool isEditing = false.obs;
   //TEXT EDITING CONTROLLER
   TextEditingController nickNameController = TextEditingController();
+  TextEditingController stackCreditController = TextEditingController();
+  TextEditingController passwordCreditController = TextEditingController();
   //STRING
   RxString nickName = "".obs;
+  String version = "";
+  String buildNumber = "";
+  //INT
+  int counter = 0;
+  int counterTeam = 0;
   //LIST
   List<TargetFocus> tutorialList = [];
   //OTHER
+  PackageInfo? packageInfo;
   SharedPreferences? sharedPreferences;
   final nickNameButtonKey =
       GlobalKey<FormState>(debugLabel: 'nickNameButtonKey');
@@ -46,6 +59,228 @@ class ProfilViewController extends GetxController with StateMixin {
             },
           ),
         );
+  }
+
+  void incrementCounter() async {
+    HapticFeedback.vibrate();
+    counter++;
+    if (counter % 10 == 0) {
+      await showSuccesDialog();
+    }
+  }
+
+  Future showSuccesDialog() async {
+    return await showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: AnimatedContainer(
+            duration: const Duration(seconds: 1),
+            curve: Curves.easeInOut,
+            height: 450,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                LottieBuilder.asset(
+                  coinSettings,
+                  fit: BoxFit.fill,
+                  height: 150,
+                  repeat: false,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Tu veux plus de crédit ?',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                const Text(
+                  "Un admin peux t'aider",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                //ANCHOR - CREDITS INPUT
+                TextField(
+                  cursorColor: grey13,
+                  textAlign: TextAlign.center,
+                  onTapOutside: (outside) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  decoration: const InputDecoration(
+                    hintText: "Nombre de crédits supplémentaires",
+                    hintStyle: antaStyle,
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                    ),
+                    errorBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                    ),
+                  ),
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    fontFamily: 'Anta',
+                    decoration: TextDecoration.none,
+                  ),
+                  keyboardType: TextInputType.number,
+                  controller: stackCreditController,
+                ),
+                //ANCHOR - PASSWORD INPUT
+                TextField(
+                  cursorColor: grey13,
+                  textAlign: TextAlign.center,
+                  onTapOutside: (outside) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  decoration: const InputDecoration(
+                    hintText: "Mot de passe",
+                    hintStyle: antaStyle,
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                    ),
+                    errorBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                    ),
+                  ),
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    fontFamily: 'Anta',
+                    decoration: TextDecoration.none,
+                  ),
+                  obscureText: true,
+                  controller: passwordCreditController,
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Retour'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (passwordCreditController.text == "jdc24") {
+                          Get.back();
+                          showSnackbar("Rechargement des crédits en cours",
+                              SnackStatusEnum.simple);
+                          //TODO REQUEST PERMETTANT DE RECHARGER LES CRÉDITS
+                          passwordCreditController.clear();
+                          stackCreditController.clear();
+                        } else {
+                          Get.back();
+                          showSnackbar("Mauvais mot de passe saisi",
+                              SnackStatusEnum.simple);
+                        }
+                      },
+                      child: const Text('Valider'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void incrementCounterFordDevelopers() async {
+    counterTeam++;
+    if (counterTeam % 5 == 0) {
+      await showEasterEggDialog();
+    }
+  }
+
+  Future showEasterEggDialog() async {
+    return await showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: AnimatedContainer(
+            duration: const Duration(seconds: 1),
+            curve: Curves.easeInOut,
+            height: 360,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                LottieBuilder.asset(
+                  teamWork,
+                  fit: BoxFit.fill,
+                  height: 200,
+                  repeat: false,
+                ),
+                const Text(
+                  'Application développé par :',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Julien SEUX, \nDheeraj TILHOO, Corentin COUSSE",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                        maxLines: 3,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Retour'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
 //This allows updating the user's nickname
@@ -77,23 +312,6 @@ class ProfilViewController extends GetxController with StateMixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(LocalStorageKeyEnum.isShowTutorial.name, true);
     Get.offAllNamed(Routes.dashboard);
-  }
-
-  /// Displays the version number of the app based on the pubspec.yaml file.
-  Widget buildVersionNumber() {
-    return FutureBuilder<PackageInfo>(
-      future: PackageInfo.fromPlatform(),
-      builder: ((context, snapshot) {
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(
-              '${snapshot.data?.version ?? '-'}+${snapshot.data?.buildNumber ?? ''}',
-            ),
-          ),
-        );
-      }),
-    );
   }
 
   //SECTION TUTORIAL
@@ -171,6 +389,9 @@ class ProfilViewController extends GetxController with StateMixin {
   @override
   Future<void> onReady() async {
     change(null, status: RxStatus.success());
+    packageInfo = await PackageInfo.fromPlatform();
+    version = packageInfo?.version ?? "1.0.0";
+    buildNumber = packageInfo?.buildNumber ?? "1";
     sharedPreferences = await SharedPreferences.getInstance();
     await getDataTutorial();
     await getCurrentUser();

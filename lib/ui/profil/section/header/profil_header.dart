@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/ui/profil/profil_view_controller.dart';
@@ -22,24 +23,29 @@ class ProfilHeader extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: 'https://picsum.photos/1000',
-                      height: 90,
-                      imageBuilder: (context, imageProvider) => Container(
-                        width: 90.0,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(
-                              20,
+                  GestureDetector(
+                    onTap: () {
+                      controller.incrementCounter();
+                    },
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: 'https://picsum.photos/1000',
+                        height: 90,
+                        imageBuilder: (context, imageProvider) => Container(
+                          width: 90.0,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(
+                                20,
+                              ),
                             ),
-                          ),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),

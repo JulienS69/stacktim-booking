@@ -151,11 +151,22 @@ class LoginView extends GetView<LoginViewController> {
                   },
                   child: Obx(
                     () => controller.isShowingVersion.value
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 25.0),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: controller.buildVersionNumber(),
+                        ? InkWell(
+                            onTap: () {
+                              controller.incrementCounterFordDevelopers();
+                            },
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: Center(
+                                child: Text(
+                                  '${controller.version}+${controller.buildNumber}',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
                           )
                         : Padding(

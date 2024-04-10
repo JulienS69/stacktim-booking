@@ -44,7 +44,7 @@ class EditNickName extends StatelessWidget {
                 await controller.updateCurrentUser();
               },
               autofocus: true,
-              onTapOutside: (d) {
+              onTapOutside: (outside) {
                 FocusScope.of(context).requestFocus(FocusNode());
               },
               decoration: InputDecoration(

@@ -11,6 +11,7 @@ const String salle = 'assets/background/1.JPG';
 
 //STUB - FOLDER IMAGE
 const String coinLogo = 'assets/images/coin.png';
+const String coinUsedLogo = 'assets/images/coin_used.png';
 const String seat = 'assets/images/seat.png';
 const String reload = 'assets/images/reload.png';
 const String document = 'assets/images/document.png';
@@ -24,6 +25,8 @@ const String lottieCheck = 'assets/lotties/check.json';
 const String lottieGamepad = 'assets/lotties/gamepad.json';
 const String errorLottie = 'assets/lotties/404.json';
 const String gamingCheck = 'assets/lotties/gaming_check.json';
+const String coinSettings = 'assets/lotties/coins_settings.json';
+const String teamWork = 'assets/lotties/teamwork.json';
 
 //STUB - FOLDER SVG
 const String svgLogo = 'assets/svg/logo.svg';
