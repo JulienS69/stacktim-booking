@@ -26,6 +26,7 @@ class ProfilHeader extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       controller.incrementCounter();
+                      controller.incrementCounterForGame(context);
                     },
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(

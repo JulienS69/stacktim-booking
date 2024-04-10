@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacktim_booking/game/launcher.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
@@ -36,6 +37,7 @@ class ProfilViewController extends GetxController with StateMixin {
   //INT
   int counter = 0;
   int counterTeam = 0;
+  int counterGame = 0;
   //LIST
   List<TargetFocus> tutorialList = [];
   //OTHER
@@ -64,8 +66,22 @@ class ProfilViewController extends GetxController with StateMixin {
   void incrementCounter() async {
     HapticFeedback.vibrate();
     counter++;
-    if (counter % 10 == 0) {
+    if (counter % 14 == 0) {
       await showSuccesDialog();
+    }
+  }
+
+  void incrementCounterForGame(BuildContext context) async {
+    HapticFeedback.vibrate();
+    counterGame++;
+    if (counterGame % 30 == 0) {
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+      Get.to(
+        () => GameSurprise().build(context),
+        transition: Transition.circularReveal,
+      );
     }
   }
 

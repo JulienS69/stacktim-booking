@@ -55,7 +55,8 @@ class ProfilView extends GetView<ProfilViewController> {
                 child: const Icon(
                   Icons.check,
                   color: Colors.red,
-                ))
+                ),
+              )
             : FloatingActionButton(
                 onPressed: () {
                   Get.offAndToNamed(
