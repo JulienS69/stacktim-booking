@@ -18,8 +18,8 @@ class UserRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
-          if (l.containsKey("message")) {
-            return left(l['message']);
+          if (l is Map && l.containsKey("message")) {
+            return l["message"];
           } else {
             return left(l);
           }
@@ -55,8 +55,8 @@ class UserRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
-          if (l.containsKey("message")) {
-            return left(l['message']);
+          if (l is Map && l.containsKey("message")) {
+            return l["message"];
           } else {
             return left(l);
           }
