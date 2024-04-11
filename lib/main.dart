@@ -1,13 +1,21 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
+import 'core/api_client/stacktim_api_client.dart';
 import 'helper/style.dart';
 import 'navigation/navigation.dart';
 import 'navigation/route.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Get.putAsync<Dio>(() => StacktimHttpClient().init(),
+      tag: 'stacktimApi');
   runApp(const MyApp());
 }
 
@@ -22,7 +30,17 @@ class MyApp extends StatelessWidget {
       theme: xMyTheme,
       initialRoute: Routes.initialRoute,
       getPages: Nav.routes,
+      defaultTransition: Transition.circularReveal,
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('fr'),
+        Locale('en'),
+      ],
       logWriterCallback: (text, {bool isError = false}) {
         log(
           name: '-',

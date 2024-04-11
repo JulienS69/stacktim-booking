@@ -1,0 +1,42 @@
+import 'package:get/get.dart';
+import 'package:stacktim_booking/logic/repository/booking_repository.dart';
+
+import '../../logic/models/booking/booking.dart';
+
+class BookingDetailViewController extends GetxController with StateMixin {
+  String bookingId = "";
+  BookingRepository bookingRepository = BookingRepository();
+  Rx<Booking> currentBooking = const Booking().obs;
+
+  @override
+  void onInit() async {
+    change(null, status: RxStatus.loading());
+    try {
+      await getBookingId();
+      await getBooking();
+      change(null, status: RxStatus.success());
+    } catch (e) {
+      change(null, status: RxStatus.error());
+    }
+    super.onInit();
+  }
+
+  Future<void> getBooking() async {
+    return await bookingRepository.getBooking(currentBookingId: bookingId).then(
+          (value) => value.fold(
+            (l) {},
+            (r) {
+              currentBooking.value = r;
+            },
+          ),
+        );
+  }
+
+  getBookingId() {
+    if (Get.arguments != null) {
+      if (Get.arguments.containsKey('bookingId')) {
+        bookingId = Get.arguments['bookingId'] ?? "0";
+      }
+    }
+  }
+}

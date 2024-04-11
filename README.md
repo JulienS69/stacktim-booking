@@ -1,16 +1,38 @@
-# stacktim_booking
+# Stacktim Booking
 
-A new Flutter project.
+Application mobile Stacktim Booking created by Julien SEUX & Dheeraj TILHOO.
 
-## Getting Started
+![controller-svgrepo-com 15 (2)](https://github.com/JulienS69/stacktim-booking/assets/60474003/1d6131d2-7604-4e90-8b4a-b49cc7d740a7)
 
-This project is a starting point for a Flutter application.
+Flutter mobile application allowing to book a gaming session in the E-Sport room of XEFI Lyon.
 
-A few resources to get you started if this is your first Flutter project:
+-------------------------------------------------------------------------------------------------
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Command for build APK in ANDROID : 
+flutter build apk --release --no-tree-shake-icons
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Command for build APPBUNDLE in ANDROID : 
+flutter build appbundle --release --no-tree-shake-icons
+
+# Command for build IOS : 
+flutter build ios --release --no-tree-shake-icons 
+
+# Command for build ARCHIVE in IOS : 
+flutter build ipa --release --no-tree-shake-icons 
+
+# Generate models in project :
+flutter pub run build_runner build --delete-conflicting-outputs
+
+# Clean models : 
+flutter pub run build_runner clean
+
+# Environnements API : 
+
+    # RD
+        - https://rd-stacktim-booking-api.xefi-apps.fr/api
+    # RC
+        - https://rc-stacktim-booking-api.xefi-apps.fr/api
+    # DEMO
+        - https://demo-stacktim-booking-api.xefi-apps.fr/api
+    # PROD
+        - https://stacktim-booking-api.dailyapps.fr/api
