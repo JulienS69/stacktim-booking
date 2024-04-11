@@ -20,15 +20,18 @@ class StackCredit extends StatelessWidget {
           padding: const EdgeInsets.only(left: 15.0, top: 15.0, right: 20),
           child: Row(
             children: [
-              Text(
-                "Bonjour ${controller.currentUser.nickName ?? controller.currentUser.firstname} 👋",
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  fontStyle: FontStyle.normal,
+              Expanded(
+                child: Text(
+                  "Bonjour ${controller.currentUser.nickName ?? controller.currentUser.firstname} 👋",
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const Spacer(),
               Row(
                 key: controller.stackCreditButtonKey,
                 children: [

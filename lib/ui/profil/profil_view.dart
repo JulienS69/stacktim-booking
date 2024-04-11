@@ -27,175 +27,179 @@ class ProfilView extends GetView<ProfilViewController> {
 
   @override
   Widget build(BuildContext context) {
-    return controller.obx(
-        onError: (error) => XErrorPage(
-              contentTitle:
-                  "Une erreur s'est produite lors de la récupération de tes informations",
-              onPressedRetry: () {
-                //TODO RETRY LES REQUÊTES
+    controller.showTutorialOnDashboard(context);
+    return XMobileScaffold(
+      appBar: const XPageHeader(
+        title: '',
+        imagePath: logoOverSlug,
+      ),
+      gapLocation: GapLocation.end,
+      bottomNavIndex: 2,
+      floatingActionButton: Obx(() => controller.isEditing.value
+          ? FloatingActionButton(
+              onPressed: () async {
+                controller.isEditing.value = false;
+                await controller.updateCurrentUser();
               },
-              withBottomBar: true,
-              withAppBar: true,
-              bottomNavIndex: 2,
-            ), (state) {
-      controller.showTutorialOnDashboard(context);
-      return XMobileScaffold(
-        appBar: const XPageHeader(
-          title: '',
-          imagePath: logoOverSlug,
+              backgroundColor: Colors.black,
+              child: const Icon(
+                Icons.check,
+                color: Colors.red,
+              ),
+            )
+          : FloatingActionButton(
+              onPressed: () {
+                Get.offAndToNamed(
+                  Routes.dashboard,
+                  arguments: {
+                    'openSheet': true,
+                  },
+                );
+              },
+              backgroundColor: Colors.black,
+              child: Image.asset(
+                logo,
+                height: 35,
+              ),
+            )),
+      body: controller.obx(
+        onError: (error) => XErrorPage(
+          contentTitle:
+              "Une erreur s'est produite lors de la récupération de tes informations",
+          onPressedRetry: () {
+            //TODO RETRY LES REQUÊTES
+          },
         ),
-        gapLocation: GapLocation.end,
-        floatingActionButton: Obx(() => controller.isEditing.value
-            ? FloatingActionButton(
-                onPressed: () async {
-                  controller.isEditing.value = false;
-                  await controller.updateCurrentUser();
-                },
-                backgroundColor: Colors.black,
-                child: const Icon(
-                  Icons.check,
-                  color: Colors.red,
-                ),
-              )
-            : FloatingActionButton(
-                onPressed: () {
-                  Get.offAndToNamed(
-                    Routes.dashboard,
-                    arguments: {
-                      'openSheet': true,
-                    },
-                  );
-                },
-                backgroundColor: Colors.black,
-                child: Image.asset(
-                  logo,
-                  height: 35,
-                ),
-              )),
-        bottomNavIndex: 2,
-        body: Obx(
-          () => Skeletonizer(
-            enabled: controller.isSkeletonLoading.value,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                child: Column(
-                  children: [
-                    //STUB - Profil Picture, fullName
-                    ProfilHeader(
-                      controller: controller,
-                    ),
-                    //STUB -  NICKNAME
-                    Obx(() => controller.isEditing.value
-                        ? EditNickName(controller: controller)
-                        : NickName(controller: controller)),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    //STUB -  Credits Available
-                    AvailableCredits(controller: controller),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    //STUB -  Hours Played
-                    HoursPlayed(controller: controller),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    //STUB -  RELOAD TUTORIAL
-                    XProfilWidget(
-                      title: "Relancer le tuto",
-                      onTap: () async {
-                        await controller.reloadTutorial();
-                      },
-                      imageAsset: reload,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    //STUB -  DOUMENTATION
-                    XProfilWidget(
-                      title: "Règlement de la salle",
-                      onTap: () {
-                        Get.to(() => const AgreementView());
-                      },
-                      imageAsset: document,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    //STUB -  Discord
-                    XProfilWidget(
-                      title: "Rejoindre le serveur Discord",
-                      onTap: () async {
-                        await launchUrl(
-                          mode: LaunchMode.externalApplication,
-                          Uri.parse(
-                            stacktimDiscordUrl,
-                          ),
-                        );
-                      },
-                      widget: const DiscordRotating(),
-                    ),
-                    const SizedBox(height: 60),
-                    //STUB -  LOGOUT
-                    ElevatedButton(
-                      onPressed: () async {
-                        HapticFeedback.vibrate();
-                        await controller.logout();
-                        Get.offAllNamed(Routes.login);
-                      },
-                      child: const Text("Se déconnecter"),
-                    ),
-                    //STUB -  APP VERSION
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onDoubleTap: () {
-                        controller.isShowingVersion.value = true;
-                      },
-                      child: Obx(
-                        () => controller.isShowingVersion.value
-                            ? InkWell(
-                                onTap: () {
-                                  controller.incrementCounterFordDevelopers();
-                                },
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 50,
-                                  child: Center(
-                                    child: Text(
-                                      '${controller.version}+${controller.buildNumber}',
-                                      textAlign: TextAlign.center,
+        (state) {
+          return Obx(
+            () => Skeletonizer(
+              enabled: controller.isSkeletonLoading.value,
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  height: Get.height * 0.8,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Column(
+                      children: [
+                        //STUB - Profil Picture, fullName
+                        ProfilHeader(
+                          controller: controller,
+                        ),
+                        //STUB -  NICKNAME
+                        Obx(() => controller.isEditing.value
+                            ? EditNickName(controller: controller)
+                            : NickName(controller: controller)),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        //STUB -  Credits Available
+                        AvailableCredits(controller: controller),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        //STUB -  Hours Played
+                        HoursPlayed(controller: controller),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        const Divider(
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        //STUB -  RELOAD TUTORIAL
+                        XProfilWidget(
+                          title: "Relancer le tuto",
+                          onTap: () async {
+                            await controller.reloadTutorial();
+                          },
+                          imageAsset: reload,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        //STUB -  DOUMENTATION
+                        XProfilWidget(
+                          title: "Règlement de la salle",
+                          onTap: () {
+                            Get.to(() => const AgreementView());
+                          },
+                          imageAsset: document,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        //STUB -  Discord
+                        XProfilWidget(
+                          title: "Rejoindre le serveur Discord",
+                          onTap: () async {
+                            await launchUrl(
+                              mode: LaunchMode.externalApplication,
+                              Uri.parse(
+                                stacktimDiscordUrl,
+                              ),
+                            );
+                          },
+                          widget: const DiscordRotating(),
+                        ),
+                        const Spacer(),
+                        //STUB -  LOGOUT
+                        ElevatedButton(
+                          onPressed: () async {
+                            HapticFeedback.vibrate();
+                            await controller.logout();
+                            Get.offAllNamed(Routes.login);
+                          },
+                          child: const Text("Se déconnecter"),
+                        ),
+
+                        //STUB -  APP VERSION
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onDoubleTap: () {
+                            controller.isShowingVersion.value = true;
+                          },
+                          child: Obx(
+                            () => controller.isShowingVersion.value
+                                ? InkWell(
+                                    onTap: () {
+                                      controller
+                                          .incrementCounterFordDevelopers();
+                                    },
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: 50,
+                                      child: Center(
+                                        child: Text(
+                                          '${controller.version}+${controller.buildNumber}',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(top: 5.0),
+                                    child: Container(
+                                      height: 20,
+                                      width: 150,
+                                      color: Colors.transparent,
                                     ),
                                   ),
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.only(top: 5.0),
-                                child: Container(
-                                  height: 20,
-                                  width: 150,
-                                  color: Colors.transparent,
-                                ),
-                              ),
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-      );
-    });
+          );
+        },
+      ),
+    );
   }
 }

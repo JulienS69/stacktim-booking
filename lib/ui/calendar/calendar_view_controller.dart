@@ -16,8 +16,13 @@ class CalendarViewController extends GetxController with StateMixin {
   //TODO FAIRE LE onError()
   void onInit() async {
     change(null, status: RxStatus.loading());
-    await getMonthlyBookings(DateTime.now().month);
-    change(null, status: RxStatus.success());
+    try {
+      await getMonthlyBookings(DateTime.now().month);
+      change(null, status: RxStatus.success());
+    } catch (e) {
+      change(null, status: RxStatus.error());
+    }
+
     super.onInit();
   }
 

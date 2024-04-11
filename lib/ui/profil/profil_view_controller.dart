@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/game/launcher.dart';
 import 'package:stacktim_booking/helper/color.dart';
+import 'package:stacktim_booking/helper/connection_helper.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
@@ -72,7 +73,6 @@ class ProfilViewController extends GetxController with StateMixin {
   }
 
   void incrementCounterForGame(BuildContext context) async {
-    HapticFeedback.vibrate();
     counterGame++;
     if (counterGame % 30 == 0) {
       if (Get.isDialogOpen ?? false) {
@@ -404,14 +404,22 @@ class ProfilViewController extends GetxController with StateMixin {
 
   @override
   Future<void> onReady() async {
-    change(null, status: RxStatus.success());
-    packageInfo = await PackageInfo.fromPlatform();
-    version = packageInfo?.version ?? "1.0.0";
-    buildNumber = packageInfo?.buildNumber ?? "1";
-    sharedPreferences = await SharedPreferences.getInstance();
-    await getDataTutorial();
-    await getCurrentUser();
-    isSkeletonLoading.value = false;
+    if (await ConnectionHelper.hasNoConnection()) {
+      change(null, status: RxStatus.error());
+    } else {
+      change(null, status: RxStatus.success());
+      packageInfo = await PackageInfo.fromPlatform();
+      version = packageInfo?.version ?? "1.0.0";
+      buildNumber = packageInfo?.buildNumber ?? "1";
+      sharedPreferences = await SharedPreferences.getInstance();
+      try {
+        await getDataTutorial();
+        await getCurrentUser();
+        isSkeletonLoading.value = false;
+      } catch (e) {
+        change(null, status: RxStatus.error());
+      }
+    }
     super.onReady();
   }
 }

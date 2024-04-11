@@ -72,7 +72,7 @@ class XErrorPage extends StatelessWidget {
                   onPressedRetry();
                 },
                 child: Text(
-                  titleButton ?? "Réésayer",
+                  titleButton ?? "Réessayer",
                 ),
               )
             ],

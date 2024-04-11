@@ -11,6 +11,7 @@ import 'package:lottie/lottie.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
+import 'package:stacktim_booking/helper/connection_helper.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
@@ -95,8 +96,12 @@ class DashboardViewController extends GetxController with StateMixin {
   }
 
 //This allows checking the remaining number of credits before being able to recreate a session.
-  checkCreditBeforeCreateBooking() {
-    if (currentUser.credit != null &&
+  checkCreditBeforeCreateBooking() async {
+    if (await ConnectionHelper.hasNoConnection()) {
+      showSnackbar(
+          "Impossible de réserver une séance, aucune connexion internet n'a été trouvée",
+          SnackStatusEnum.error);
+    } else if (currentUser.credit != null &&
         currentUser.credit!.creditAvailable != 0) {
       NewBookingSheet(controller: this)
           .showModalSheet(Get.context!, pageIndexNotifier);

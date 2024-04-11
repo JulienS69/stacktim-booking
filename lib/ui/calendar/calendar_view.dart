@@ -34,8 +34,9 @@ class CalendarPage extends GetView<CalendarViewController> {
         ),
       ),
       appBar: const XPageHeader(
-        title: 'Calendrier',
+        title: '',
         centerTitle: true,
+        imagePath: logoOverSlug,
       ),
       body: controller.obx(
         onLoading: const XLoaderStacktim(),
@@ -45,8 +46,6 @@ class CalendarPage extends GetView<CalendarViewController> {
           onPressedRetry: () {
             //TODO RETRY LES REQUÊTES
           },
-          withBottomBar: true,
-          withAppBar: true,
           bottomNavIndex: 2,
         ),
         (state) => Column(
