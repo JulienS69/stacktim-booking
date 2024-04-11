@@ -1,8 +1,8 @@
 # Stacktim Booking
 
-![controller-svgrepo-com 15 (2)](https://github.com/JulienS69/stacktim-booking/assets/60474003/1d6131d2-7604-4e90-8b4a-b49cc7d740a7)
-
 Application mobile Stacktim Booking created by Julien SEUX & Dheeraj TILHOO.
+
+![controller-svgrepo-com 15 (2)](https://github.com/JulienS69/stacktim-booking/assets/60474003/1d6131d2-7604-4e90-8b4a-b49cc7d740a7)
 
 Flutter mobile application allowing to book a gaming session in the E-Sport room of XEFI Lyon.
 
