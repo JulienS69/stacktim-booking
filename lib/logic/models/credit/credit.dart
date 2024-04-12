@@ -10,6 +10,8 @@ class Credit with _$Credit {
     @JsonKey(name: 'user_id') String? userId,
     @JsonKey(name: 'available') int? creditAvailable,
     @JsonKey(name: 'used') int? creditUsed,
+    @JsonKey(name: 'not_yet_used') int? notYetUsed,
+    @JsonKey(name: 'penalties') int? penalties,
   }) = _Credit;
 
   factory Credit.fromJson(Map<String, dynamic> json) => _$CreditFromJson(json);

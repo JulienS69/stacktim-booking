@@ -9,6 +9,8 @@ import 'package:stacktim_booking/ui/profil/section/header/edit_nickname.dart';
 import 'package:stacktim_booking/ui/profil/section/header/hours_played.dart';
 import 'package:stacktim_booking/ui/profil/section/header/nickname.dart';
 import 'package:stacktim_booking/ui/profil/section/header/profil_header.dart';
+import 'package:stacktim_booking/ui/profil/section/header/user_role.dart';
+import 'package:stacktim_booking/ui/profil/widgets/administator_view.dart';
 import 'package:stacktim_booking/ui/profil/widgets/discord_logo.dart';
 import 'package:stacktim_booking/ui/splash_screen/custom_page/agreement_view.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
@@ -69,12 +71,14 @@ class ProfilView extends GetView<ProfilViewController> {
           onPressedRetry: () {
             //TODO RETRY LES REQUÊTES
           },
+          bottomNavIndex: 2,
         ),
         (state) {
           return Obx(
             () => Skeletonizer(
               enabled: controller.isSkeletonLoading.value,
               child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
                 child: SizedBox(
                   height: Get.height * 0.8,
                   child: Padding(
@@ -89,6 +93,7 @@ class ProfilView extends GetView<ProfilViewController> {
                         Obx(() => controller.isEditing.value
                             ? EditNickName(controller: controller)
                             : NickName(controller: controller)),
+                        UserRole(controller: controller),
                         const SizedBox(
                           height: 50,
                         ),
@@ -107,6 +112,17 @@ class ProfilView extends GetView<ProfilViewController> {
                         ),
                         const SizedBox(
                           height: 15,
+                        ),
+                        XProfilWidget(
+                          title: "Contacter un administrateur",
+                          onTap: () async {
+                            Get.to(() => const AdministratorView());
+                          },
+                          imageAsset: admin,
+                          imageHeight: 35,
+                        ),
+                        const SizedBox(
+                          height: 20,
                         ),
                         //STUB -  RELOAD TUTORIAL
                         XProfilWidget(

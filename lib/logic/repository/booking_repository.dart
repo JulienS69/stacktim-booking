@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
 
 import '../../core/rest_api_repository.dart';
@@ -24,6 +25,13 @@ class BookingRepository extends RestApiRepository {
               "name": "ownBookings",
             },
           ],
+          "filters": [
+            {
+              "field": "canceled_at",
+              "operator": "=",
+              "value": null,
+            },
+          ],
           "sorts": [
             {
               "field": "booked_at",
@@ -41,7 +49,7 @@ class BookingRepository extends RestApiRepository {
       (value) => value.fold(
         (l) async {
           if (l is Map && l.containsKey("message")) {
-            return l["message"];
+            return left(l["message"]);
           } else {
             return left(l);
           }
@@ -57,7 +65,7 @@ class BookingRepository extends RestApiRepository {
   Future<Either<dynamic, Booking>> getBooking(
       {required String currentBookingId}) async {
     return await handlingPostResponse(
-      queryRoute: "$controller/seasrch",
+      queryRoute: "$controller/search",
       showError: false,
       showSuccess: false,
       isCustomResponse: true,
@@ -74,7 +82,7 @@ class BookingRepository extends RestApiRepository {
       (value) => value.fold(
         (l) async {
           if (l is Map && l.containsKey("message")) {
-            return l["message"];
+            return left(l["message"]);
           } else {
             return left(l);
           }
@@ -113,7 +121,7 @@ class BookingRepository extends RestApiRepository {
       (value) => value.fold(
         (l) async {
           if (l is Map && l.containsKey("message")) {
-            return l["message"];
+            return left(l["message"]);
           } else {
             return left(l);
           }
@@ -155,7 +163,43 @@ class BookingRepository extends RestApiRepository {
       (value) => value.fold(
         (l) async {
           if (l is Map && l.containsKey("message")) {
-            return l["message"];
+            return left(l["message"]);
+          } else {
+            return left(l);
+          }
+        },
+        (r) async {
+          return right(Booking.fromJson(r));
+        },
+      ),
+    );
+  }
+
+  Future<Either<String, Booking>> cancelBooking({
+    required String currentBookingId,
+  }) async {
+    return await handlingPostResponse(
+      queryRoute: "$controller/mutate",
+      showError: false,
+      showSuccess: false,
+      isCustomResponse: true,
+      body: {
+        "mutate": [
+          {
+            "operation": "update",
+            "key": currentBookingId,
+            "attributes": {
+              "canceled_at":
+                  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+            }
+          }
+        ]
+      },
+    ).then(
+      (value) => value.fold(
+        (l) async {
+          if (l is Map && l.containsKey("message")) {
+            return left(l["message"]);
           } else {
             return left(l);
           }

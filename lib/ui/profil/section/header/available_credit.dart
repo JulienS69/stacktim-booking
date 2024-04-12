@@ -18,7 +18,7 @@ class AvailableCredits extends StatelessWidget {
             const Text("Stack crédits restant :"),
             const Spacer(),
             Text(
-              controller.currentUser.credit?.creditAvailable.toString() ?? "0",
+              controller.userCreditAvailable.toString(),
               style: const TextStyle(color: Colors.red, fontSize: 18),
             ),
             const SizedBox(

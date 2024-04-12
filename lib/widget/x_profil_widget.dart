@@ -12,6 +12,7 @@ class XProfilWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.onTap,
+    this.imageHeight,
     this.widget,
     this.imageAsset,
   });

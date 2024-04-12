@@ -11,6 +11,8 @@ _$CreditImpl _$$CreditImplFromJson(Map<String, dynamic> json) => _$CreditImpl(
       userId: json['user_id'] as String?,
       creditAvailable: json['available'] as int?,
       creditUsed: json['used'] as int?,
+      notYetUsed: json['not_yet_used'] as int?,
+      penalties: json['penalties'] as int?,
     );
 
 Map<String, dynamic> _$$CreditImplToJson(_$CreditImpl instance) =>
@@ -19,4 +21,6 @@ Map<String, dynamic> _$$CreditImplToJson(_$CreditImpl instance) =>
       'user_id': instance.userId,
       'available': instance.creditAvailable,
       'used': instance.creditUsed,
+      'not_yet_used': instance.notYetUsed,
+      'penalties': instance.penalties,
     };

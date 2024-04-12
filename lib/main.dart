@@ -13,6 +13,7 @@ import 'navigation/route.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Get.putAsync<Dio>(() => StacktimHttpClient().init(),
       tag: 'stacktimApi');

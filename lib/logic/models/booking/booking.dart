@@ -21,6 +21,8 @@ class Booking with _$Booking {
     @JsonKey(name: 'user') User? user,
     @JsonKey(name: 'computer') Computer? computer,
     @JsonKey(name: 'status') Status? status,
+    @JsonKey(name: 'is_checkin_completed') bool? isCheckinComplete,
+    @JsonKey(name: 'is_checkout_completed') bool? isCheckoutComplete,
   }) = _Booking;
 
   factory Booking.fromJson(Map<String, dynamic> json) =>

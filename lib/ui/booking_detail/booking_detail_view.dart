@@ -120,17 +120,29 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
             Container(
                 color: Colors.black,
                 width: double.infinity,
-                height: 100,
+                height: 120,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      const Text(
-                        'Vous pouvez toujours annuler votre réservation',
-                        style: TextStyle(color: Colors.white),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              controller.isInProgress.value
+                                  ? "Il est nécéssaire de confirmer la fin de ta session"
+                                  : "Tu peux annuler ta réservation jusqu'à 2h avant le début de ta session",
+                              style: const TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       FilledButton(
-                        onPressed: () {
+                        onPressed: () async {
                           // AwesomeDialog(
                           //   context: context,
                           //   dialogType: DialogType.question,
@@ -147,10 +159,16 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                           //   btnOkOnPress: () {},
                           //   btnOkColor: Colors.black,
                           // ).show();
+                          if (!controller.isInProgress.value &&
+                              !controller.isPassed.value) {
+                            await controller.cancelBooking();
+                          }
                         },
-                        child: const Text(
-                          'Annuler ma réservation',
-                          style: TextStyle(color: Colors.white),
+                        child: Text(
+                          controller.isInProgress.value
+                              ? "J'ai terminé ma session"
+                              : 'Annuler ma réservation',
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ],

@@ -14,6 +14,7 @@ const String coinLogo = 'assets/images/coin.png';
 const String coinUsedLogo = 'assets/images/coin_used.png';
 const String seat = 'assets/images/seat.png';
 const String reload = 'assets/images/reload.png';
+const String admin = 'assets/images/admin.png';
 const String document = 'assets/images/document.png';
 const String logoOverSlug = 'assets/images/logo_over_slug.png';
 const String teams = 'assets/images/teams.png';
@@ -27,6 +28,7 @@ const String errorLottie = 'assets/lotties/404.json';
 const String gamingCheck = 'assets/lotties/gaming_check.json';
 const String coinSettings = 'assets/lotties/coins_settings.json';
 const String teamWork = 'assets/lotties/teamwork.json';
+const String notFound = 'assets/lotties/not_found.json';
 
 //STUB - FOLDER SVG
 const String svgLogo = 'assets/svg/logo.svg';

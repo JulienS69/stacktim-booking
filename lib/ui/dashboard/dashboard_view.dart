@@ -55,14 +55,16 @@ class DashboardView extends GetView<DashboardViewController> {
               StackCredit(
                 controller: controller,
               ),
-              controller.bookingList.isNotEmpty
-                  ? BookingSearchBar(controller: controller)
-                  : const SizedBox.shrink(),
+              Obx(
+                () => controller.bookingList.isNotEmpty
+                    ? BookingSearchBar(controller: controller)
+                    : const SizedBox.shrink(),
+              ),
               //SECTION - FILTERS
               // controller.bookingList.isNotEmpty
               //     ? BookingFilter(controller: controller)
               //     : const SizedBox.shrink(),
-              controller.bookingList.isNotEmpty
+              Obx(() => controller.bookingList.isNotEmpty
                   ? Expanded(
                       child: BookingListing(
                         controller: controller,
@@ -73,7 +75,7 @@ class DashboardView extends GetView<DashboardViewController> {
                         NewBookingSheet(controller: controller).showModalSheet(
                             context, controller.pageIndexNotifier);
                       },
-                    ),
+                    )),
             ],
           );
         },

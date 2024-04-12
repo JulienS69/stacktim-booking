@@ -20,7 +20,7 @@ class StatusRepository extends RestApiRepository {
       (value) => value.fold(
         (l) async {
           if (l is Map && l.containsKey("message")) {
-            return l["message"];
+            return left(l["message"]);
           } else {
             return left(l);
           }

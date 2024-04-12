@@ -19,7 +19,7 @@ class UserRepository extends RestApiRepository {
       (value) => value.fold(
         (l) async {
           if (l is Map && l.containsKey("message")) {
-            return l["message"];
+            return left(l["message"]);
           } else {
             return left(l);
           }
@@ -28,6 +28,39 @@ class UserRepository extends RestApiRepository {
           return right(
             User.fromJson(r),
           );
+        },
+      ),
+    );
+  }
+
+  Future<Either<dynamic, List<User>>> getAdministrators() async {
+    return await handlingPostResponse(
+      queryRoute: "$controller/search",
+      showError: false,
+      showSuccess: false,
+      isCustomResponse: true,
+      body: {
+        "search": {
+          "filters": [
+            {
+              "field": "roles.name",
+              "operator": "=",
+              "value": "Stacktim Admin",
+            },
+          ],
+        }
+      },
+    ).then(
+      (value) => value.fold(
+        (l) async {
+          if (l is Map && l.containsKey("message")) {
+            return left(l["message"]);
+          } else {
+            return left(l);
+          }
+        },
+        (r) async {
+          return right(r['data'].map<User>((e) => User.fromJson(e)).toList());
         },
       ),
     );
@@ -56,7 +89,7 @@ class UserRepository extends RestApiRepository {
       (value) => value.fold(
         (l) async {
           if (l is Map && l.containsKey("message")) {
-            return l["message"];
+            return left(l["message"]);
           } else {
             return left(l);
           }

@@ -57,7 +57,9 @@ class BookingListingState extends State<BookingListing> {
             currentBooking.status?.slug == StatusSlugs.inProgress;
         return currentBooking.status?.slug != StatusSlugs.inProgress
             ? XBookingCard(
-                currentBooking: currentBooking, isInProgress: isInProgress)
+                currentBooking: currentBooking,
+                isInProgress: isInProgress,
+              )
             : XBookingCard(
                 currentBooking: currentBooking,
                 isInProgress: true,

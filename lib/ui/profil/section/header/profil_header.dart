@@ -52,6 +52,7 @@ class ProfilHeader extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   //SECTION - EDIT PROFIL PICTURE
                   // Positioned(
                   //   bottom: 0,

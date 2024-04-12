@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -35,12 +34,15 @@ class ProfilViewController extends GetxController with StateMixin {
   RxString nickName = "".obs;
   String version = "";
   String buildNumber = "";
+  String currentUserRole = "";
   //INT
   int counter = 0;
   int counterTeam = 0;
   int counterGame = 0;
+  int userCreditAvailable = 0;
   //LIST
   List<TargetFocus> tutorialList = [];
+  List<User> administratorList = [];
   //OTHER
   PackageInfo? packageInfo;
   SharedPreferences? sharedPreferences;
@@ -58,16 +60,43 @@ class ProfilViewController extends GetxController with StateMixin {
               change(null, status: RxStatus.error());
             },
             (r) {
+              if (r.credit != null) {
+                userCreditAvailable = (r.credit!.creditAvailable ?? 0) -
+                    (r.credit!.notYetUsed ?? 0);
+              }
               currentUser = r;
             },
           ),
         );
   }
 
+  //This allows retrieving the logged-in user.
+  Future<void> getAdministratorUser() async {
+    return await userRepository.getAdministrators().then(
+          (value) => value.fold(
+            (l) {},
+            (r) {
+              administratorList = r;
+            },
+          ),
+        );
+  }
+
+  String getUserRole() {
+    currentUserRole = "Membre Stacktim Esport";
+    if (currentUser.roles != null) {
+      if (currentUser.roles!.first.roleName == "Stacktim Admin") {
+        currentUserRole = "Membre de l’organisation Stacktim Esport";
+      } else {
+        currentUserRole = "Membre Stacktim Esport";
+      }
+    }
+    return currentUserRole;
+  }
+
   void incrementCounter() async {
-    HapticFeedback.vibrate();
     counter++;
-    if (counter % 14 == 0) {
+    if (counter == 15) {
       await showSuccesDialog();
     }
   }
@@ -412,9 +441,11 @@ class ProfilViewController extends GetxController with StateMixin {
       version = packageInfo?.version ?? "1.0.0";
       buildNumber = packageInfo?.buildNumber ?? "1";
       sharedPreferences = await SharedPreferences.getInstance();
+      await getAdministratorUser();
       try {
         await getDataTutorial();
         await getCurrentUser();
+        getUserRole();
         isSkeletonLoading.value = false;
       } catch (e) {
         change(null, status: RxStatus.error());

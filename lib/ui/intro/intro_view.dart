@@ -89,25 +89,12 @@ class IntroView extends GetView<IntroViewController> {
                     Visibility(
                       visible: index == 4,
                       replacement: const SizedBox.shrink(),
-                      child: CarouselSlider(
-                        items: roomPictureListGenerate,
-                        options: CarouselOptions(
-                            height: 300,
-                            aspectRatio: 16 / 9,
-                            viewportFraction: 0.8,
-                            initialPage: 0,
-                            enableInfiniteScroll: true,
-                            reverse: false,
-                            autoPlay: true,
-                            autoPlayInterval: const Duration(seconds: 3),
-                            autoPlayAnimationDuration:
-                                const Duration(milliseconds: 800),
-                            autoPlayCurve: Curves.decelerate,
-                            enlargeCenterPage: true,
-                            enlargeFactor: 1,
-                            scrollDirection: Axis.horizontal,
-                            enlargeStrategy: CenterPageEnlargeStrategy.zoom),
-                      ),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.asset(
+                            esportRoom1,
+                            height: Get.height * 0.3,
+                          )),
                     ),
                     Visibility(
                       visible: index == 2,
@@ -115,7 +102,7 @@ class IntroView extends GetView<IntroViewController> {
                       child: CarouselSlider(
                           items: gameListGenerate,
                           options: CarouselOptions(
-                              height: 500,
+                              height: 350,
                               aspectRatio: 16 / 9,
                               viewportFraction: 0.8,
                               initialPage: 0,
@@ -137,7 +124,7 @@ class IntroView extends GetView<IntroViewController> {
                       child: CarouselSlider(
                         items: esportListGenerate,
                         options: CarouselOptions(
-                            height: 500,
+                            height: 350,
                             aspectRatio: 16 / 9,
                             viewportFraction: 0.8,
                             initialPage: 0,

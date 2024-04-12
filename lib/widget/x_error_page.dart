@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 
@@ -43,7 +48,7 @@ class XErrorPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Lottie.asset(
-                    errorLottie,
+                    notFound,
                     fit: BoxFit.cover,
                     height: 350,
                     repeat: false,
@@ -74,7 +79,19 @@ class XErrorPage extends StatelessWidget {
                 child: Text(
                   titleButton ?? "Réessayer",
                 ),
-              )
+              ),
+              bottomNavIndex == 2
+                  ? ElevatedButton(
+                      onPressed: () async {
+                        HapticFeedback.vibrate();
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.remove(LocalStorageKey.jwt.name);
+                        Get.offAllNamed(Routes.login);
+                      },
+                      child: const Text("Se déconnecter"),
+                    )
+                  : const SizedBox.shrink()
             ],
           ),
         ),

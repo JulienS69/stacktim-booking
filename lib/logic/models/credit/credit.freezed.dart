@@ -28,6 +28,10 @@ mixin _$Credit {
   int? get creditAvailable => throw _privateConstructorUsedError;
   @JsonKey(name: 'used')
   int? get creditUsed => throw _privateConstructorUsedError;
+  @JsonKey(name: 'not_yet_used')
+  int? get notYetUsed => throw _privateConstructorUsedError;
+  @JsonKey(name: 'penalties')
+  int? get penalties => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +47,9 @@ abstract class $CreditCopyWith<$Res> {
       {@JsonKey(name: 'id') String? id,
       @JsonKey(name: 'user_id') String? userId,
       @JsonKey(name: 'available') int? creditAvailable,
-      @JsonKey(name: 'used') int? creditUsed});
+      @JsonKey(name: 'used') int? creditUsed,
+      @JsonKey(name: 'not_yet_used') int? notYetUsed,
+      @JsonKey(name: 'penalties') int? penalties});
 }
 
 /// @nodoc
@@ -63,6 +69,8 @@ class _$CreditCopyWithImpl<$Res, $Val extends Credit>
     Object? userId = freezed,
     Object? creditAvailable = freezed,
     Object? creditUsed = freezed,
+    Object? notYetUsed = freezed,
+    Object? penalties = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -81,6 +89,14 @@ class _$CreditCopyWithImpl<$Res, $Val extends Credit>
           ? _value.creditUsed
           : creditUsed // ignore: cast_nullable_to_non_nullable
               as int?,
+      notYetUsed: freezed == notYetUsed
+          ? _value.notYetUsed
+          : notYetUsed // ignore: cast_nullable_to_non_nullable
+              as int?,
+      penalties: freezed == penalties
+          ? _value.penalties
+          : penalties // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -96,7 +112,9 @@ abstract class _$$CreditImplCopyWith<$Res> implements $CreditCopyWith<$Res> {
       {@JsonKey(name: 'id') String? id,
       @JsonKey(name: 'user_id') String? userId,
       @JsonKey(name: 'available') int? creditAvailable,
-      @JsonKey(name: 'used') int? creditUsed});
+      @JsonKey(name: 'used') int? creditUsed,
+      @JsonKey(name: 'not_yet_used') int? notYetUsed,
+      @JsonKey(name: 'penalties') int? penalties});
 }
 
 /// @nodoc
@@ -114,6 +132,8 @@ class __$$CreditImplCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? creditAvailable = freezed,
     Object? creditUsed = freezed,
+    Object? notYetUsed = freezed,
+    Object? penalties = freezed,
   }) {
     return _then(_$CreditImpl(
       id: freezed == id
@@ -132,6 +152,14 @@ class __$$CreditImplCopyWithImpl<$Res>
           ? _value.creditUsed
           : creditUsed // ignore: cast_nullable_to_non_nullable
               as int?,
+      notYetUsed: freezed == notYetUsed
+          ? _value.notYetUsed
+          : notYetUsed // ignore: cast_nullable_to_non_nullable
+              as int?,
+      penalties: freezed == penalties
+          ? _value.penalties
+          : penalties // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -143,7 +171,9 @@ class _$CreditImpl implements _Credit {
       {@JsonKey(name: 'id') this.id,
       @JsonKey(name: 'user_id') this.userId,
       @JsonKey(name: 'available') this.creditAvailable,
-      @JsonKey(name: 'used') this.creditUsed});
+      @JsonKey(name: 'used') this.creditUsed,
+      @JsonKey(name: 'not_yet_used') this.notYetUsed,
+      @JsonKey(name: 'penalties') this.penalties});
 
   factory _$CreditImpl.fromJson(Map<String, dynamic> json) =>
       _$$CreditImplFromJson(json);
@@ -160,10 +190,16 @@ class _$CreditImpl implements _Credit {
   @override
   @JsonKey(name: 'used')
   final int? creditUsed;
+  @override
+  @JsonKey(name: 'not_yet_used')
+  final int? notYetUsed;
+  @override
+  @JsonKey(name: 'penalties')
+  final int? penalties;
 
   @override
   String toString() {
-    return 'Credit(id: $id, userId: $userId, creditAvailable: $creditAvailable, creditUsed: $creditUsed)';
+    return 'Credit(id: $id, userId: $userId, creditAvailable: $creditAvailable, creditUsed: $creditUsed, notYetUsed: $notYetUsed, penalties: $penalties)';
   }
 
   @override
@@ -176,13 +212,17 @@ class _$CreditImpl implements _Credit {
             (identical(other.creditAvailable, creditAvailable) ||
                 other.creditAvailable == creditAvailable) &&
             (identical(other.creditUsed, creditUsed) ||
-                other.creditUsed == creditUsed));
+                other.creditUsed == creditUsed) &&
+            (identical(other.notYetUsed, notYetUsed) ||
+                other.notYetUsed == notYetUsed) &&
+            (identical(other.penalties, penalties) ||
+                other.penalties == penalties));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, userId, creditAvailable, creditUsed);
+  int get hashCode => Object.hash(runtimeType, id, userId, creditAvailable,
+      creditUsed, notYetUsed, penalties);
 
   @JsonKey(ignore: true)
   @override
@@ -203,7 +243,9 @@ abstract class _Credit implements Credit {
       {@JsonKey(name: 'id') final String? id,
       @JsonKey(name: 'user_id') final String? userId,
       @JsonKey(name: 'available') final int? creditAvailable,
-      @JsonKey(name: 'used') final int? creditUsed}) = _$CreditImpl;
+      @JsonKey(name: 'used') final int? creditUsed,
+      @JsonKey(name: 'not_yet_used') final int? notYetUsed,
+      @JsonKey(name: 'penalties') final int? penalties}) = _$CreditImpl;
 
   factory _Credit.fromJson(Map<String, dynamic> json) = _$CreditImpl.fromJson;
 
@@ -219,6 +261,12 @@ abstract class _Credit implements Credit {
   @override
   @JsonKey(name: 'used')
   int? get creditUsed;
+  @override
+  @JsonKey(name: 'not_yet_used')
+  int? get notYetUsed;
+  @override
+  @JsonKey(name: 'penalties')
+  int? get penalties;
   @override
   @JsonKey(ignore: true)
   _$$CreditImplCopyWith<_$CreditImpl> get copyWith =>

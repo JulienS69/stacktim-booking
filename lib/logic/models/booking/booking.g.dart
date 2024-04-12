@@ -26,6 +26,8 @@ _$BookingImpl _$$BookingImplFromJson(Map<String, dynamic> json) =>
       status: json['status'] == null
           ? null
           : Status.fromJson(json['status'] as Map<String, dynamic>),
+      isCheckinComplete: json['is_checkin_completed'] as bool?,
+      isCheckoutComplete: json['is_checkout_completed'] as bool?,
     );
 
 Map<String, dynamic> _$$BookingImplToJson(_$BookingImpl instance) =>
@@ -42,4 +44,6 @@ Map<String, dynamic> _$$BookingImplToJson(_$BookingImpl instance) =>
       'user': instance.user,
       'computer': instance.computer,
       'status': instance.status,
+      'is_checkin_completed': instance.isCheckinComplete,
+      'is_checkout_completed': instance.isCheckoutComplete,
     };

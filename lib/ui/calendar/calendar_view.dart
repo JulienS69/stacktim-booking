@@ -49,7 +49,7 @@ class CalendarPage extends GetView<CalendarViewController> {
           onPressedRetry: () {
             controller.onInit();
           },
-          bottomNavIndex: 2,
+          bottomNavIndex: 1,
         ),
         (state) => Column(
           children: [

@@ -67,6 +67,7 @@ class DashboardViewController extends GetxController with StateMixin {
   String statusIdSelected = '';
   //INT
   RxInt computerSelected = 0.obs;
+  RxInt userCreditAvailable = 0.obs;
   //TEXT EDITING CONTROLLER
   TextEditingController searchController = TextEditingController();
   TextEditingController titleController = TextEditingController();
@@ -101,8 +102,7 @@ class DashboardViewController extends GetxController with StateMixin {
       showSnackbar(
           "Impossible de réserver une séance, aucune connexion internet n'a été trouvée",
           SnackStatusEnum.error);
-    } else if (currentUser.credit != null &&
-        currentUser.credit!.creditAvailable != 0) {
+    } else if (userCreditAvailable.value != 0) {
       NewBookingSheet(controller: this)
           .showModalSheet(Get.context!, pageIndexNotifier);
     } else {
@@ -164,6 +164,11 @@ class DashboardViewController extends GetxController with StateMixin {
           (value) => value.fold(
             (l) {},
             (r) {
+              if (r.credit != null) {
+                userCreditAvailable.value = 0;
+                userCreditAvailable.value = (r.credit!.creditAvailable ?? 0) -
+                    (r.credit!.notYetUsed ?? 0);
+              }
               currentUser = r;
             },
           ),
@@ -228,6 +233,7 @@ class DashboardViewController extends GetxController with StateMixin {
               // ).show();
             },
             (r) async {
+              getCurrentUser();
               getMyBookings();
               // No await in getMyBookings() because 6 seconds duration of dialog after that
               await showSuccesDialog();
@@ -505,6 +511,7 @@ class DashboardViewController extends GetxController with StateMixin {
   Future showSuccesDialog() async {
     await showDialog(
       context: Get.context!,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         Future.delayed(
           const Duration(seconds: 6),

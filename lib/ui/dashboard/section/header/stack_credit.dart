@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
@@ -35,13 +36,12 @@ class StackCredit extends StatelessWidget {
               Row(
                 key: controller.stackCreditButtonKey,
                 children: [
-                  Text(
-                    controller.currentUser.credit?.creditAvailable.toString() ??
-                        "0",
-                    style: titleStyle.copyWith(
-                      color: primary,
-                    ),
-                  ),
+                  Obx(() => Text(
+                        controller.userCreditAvailable.value.toString(),
+                        style: titleStyle.copyWith(
+                          color: primary,
+                        ),
+                      )),
                   const SizedBox(
                     width: 5,
                   ),

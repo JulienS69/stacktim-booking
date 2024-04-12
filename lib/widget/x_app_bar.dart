@@ -52,16 +52,20 @@ class XPageHeader extends StatelessWidget implements PreferredSizeWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(
-                    right: 8.0,
-                  ),
+                  padding: EdgeInsets.only(
+                      right: title.isEmpty ? 0.0 : 8.0,
+                      left: title.isEmpty ? 25 : 0.0),
                   child: Image.asset(imagePath!, width: 32, height: 40),
                 ),
-                Text(
-                  title,
-                  style: style ??
-                      titleText1.copyWith(
-                          color: Colors.white, fontFamily: 'Anta'),
+                Padding(
+                  padding: EdgeInsets.only(
+                      right: imagePath?.isEmpty ?? true ? 0.0 : 25.0),
+                  child: Text(
+                    title,
+                    style: style ??
+                        titleText1.copyWith(
+                            color: Colors.white, fontFamily: 'Anta'),
+                  ),
                 ),
               ],
             )

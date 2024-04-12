@@ -24,14 +24,16 @@ class XBookingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        isInProgress
+        isInProgress ||
+                (currentBooking.isCheckoutComplete != true &&
+                    currentBooking.status?.slug == StatusSlugs.passee)
             ? const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        'Lorsque ta session est terminée, il est nécessaire de bien confirmer la fin de celle-ci en cliquant sur le bouton ci-dessous, sinon tu risques de perdre des crédits. 😬',
+                        'Lorsque ta session est terminée, il est nécessaire de bien confirmer la fin de celle-ci en cliquant sur le bouton ci-dessous, sinon tu risques de recevoir des pénalités. 😬',
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -60,7 +62,10 @@ class XBookingCard extends StatelessWidget {
                 BoxShadow(
                   color: isInProgress
                       ? const Color.fromARGB(255, 34, 97, 36)
-                      : Colors.grey[500]!,
+                      : (currentBooking.isCheckoutComplete != true &&
+                              currentBooking.status?.slug == StatusSlugs.passee)
+                          ? Colors.red[500]!
+                          : Colors.grey[500]!,
                   blurRadius: isInProgress ? 60 : 10,
                   blurStyle: BlurStyle.outer,
                 ),
@@ -127,7 +132,9 @@ class XBookingCard extends StatelessWidget {
           ),
         ),
         //STUB - BUTTON END SESSION
-        isInProgress
+        isInProgress ||
+                (currentBooking.isCheckoutComplete != true &&
+                    currentBooking.status?.slug == StatusSlugs.passee)
             ? GestureDetector(
                 onTap: () {
                   // TODO REDIRECT SUR LA PRISE DE PHOTO DE FIN

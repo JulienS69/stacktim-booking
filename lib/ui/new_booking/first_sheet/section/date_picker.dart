@@ -96,6 +96,8 @@ class BookingDatePicker extends StatelessWidget {
               ? SfDateRangePicker(
                   controller: controller.dateController,
                   backgroundColor: Colors.transparent,
+                  headerStyle: const DateRangePickerHeaderStyle(
+                      backgroundColor: Colors.transparent),
                   selectionMode: DateRangePickerSelectionMode.single,
                   monthViewSettings: const DateRangePickerMonthViewSettings(
                     weekendDays: [
