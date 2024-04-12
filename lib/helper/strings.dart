@@ -1,6 +1,6 @@
 //STUB - FOLDER BACKGROUND
 const String logo = 'assets/background/logo.png';
-const String one = 'assets/background/1.png';
+const String one = 'assets/background/1.jpg';
 const String two = 'assets/background/2.jpg';
 const String three = 'assets/background/3.png';
 const String four = 'assets/background/4.jpg';
