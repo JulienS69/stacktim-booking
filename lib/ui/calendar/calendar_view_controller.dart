@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 import '../../logic/models/booking/booking.dart';
-import '../../logic/models/calendar_data_source/calendar_data_source.dart';
 import '../../logic/repository/booking_repository.dart';
 
 class CalendarViewController extends GetxController with StateMixin {
@@ -16,7 +15,6 @@ class CalendarViewController extends GetxController with StateMixin {
   });
 
   @override
-  //TODO FAIRE LE onError()
   void onInit() async {
     change(null, status: RxStatus.loading());
     try {
@@ -27,10 +25,6 @@ class CalendarViewController extends GetxController with StateMixin {
     }
 
     super.onInit();
-  }
-
-  XCalendarDataSource getDataSource() {
-    return XCalendarDataSource(bookingList);
   }
 
   getMonthlyBookings(int month) async {

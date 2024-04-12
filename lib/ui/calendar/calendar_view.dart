@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/logic/models/calendar_data_source/calendar_data_source.dart';
 import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_view_controller.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
@@ -46,7 +47,7 @@ class CalendarPage extends GetView<CalendarViewController> {
           contentTitle:
               "Une erreur s'est produite lors de la récupération du calendrier",
           onPressedRetry: () {
-            //TODO RETRY LES REQUÊTES
+            controller.onInit();
           },
           bottomNavIndex: 2,
         ),
@@ -62,7 +63,10 @@ class CalendarPage extends GetView<CalendarViewController> {
                 ],
                 firstDayOfWeek: 1,
                 initialDisplayDate: DateTime.now(),
-                dataSource: controller.getDataSource(),
+                headerStyle: const CalendarHeaderStyle(
+                  backgroundColor: Colors.transparent,
+                ),
+                dataSource: XCalendarDataSource(controller.bookingList),
                 todayTextStyle: const TextStyle(color: Colors.white),
                 onViewChanged: (viewChangedDetails) {
                   controller.getMonthlyBookings(
@@ -116,94 +120,91 @@ class CalendarPage extends GetView<CalendarViewController> {
                 showNavigationArrow: true,
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 18, right: 18, bottom: 18),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(18)),
-                  height: 300,
-                  width: double.infinity,
-                  child: const Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Légende',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
+            Padding(
+              padding: const EdgeInsets.only(left: 18, right: 18, bottom: 18),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(18)),
+                width: double.infinity,
+                child: const Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Légende',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '27',
+                            style: TextStyle(
+                              color: redStackTim,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '27',
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Session pleine',
+                            style: TextStyle(),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '23',
+                            style: TextStyle(
+                              color: blueChip,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Quelques places encore disponibles',
                               style: TextStyle(
-                                color: redStackTim,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Session pleine',
-                              style: TextStyle(),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '23',
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '20',
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Toutes les places sont actuellement libres',
                               style: TextStyle(
-                                color: blueChip,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Quelques places encore disponibles',
-                                style: TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '20',
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Toutes les places sont actuellement libres',
-                                style: TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),

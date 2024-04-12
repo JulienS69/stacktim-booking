@@ -6,7 +6,7 @@ import 'package:stacktim_booking/logic/models/user/user.dart';
 part 'booking.freezed.dart';
 part 'booking.g.dart';
 
-@freezed
+@Freezed(makeCollectionsUnmodifiable: false)
 class Booking with _$Booking {
   const factory Booking({
     @JsonKey(name: 'id') String? id,
