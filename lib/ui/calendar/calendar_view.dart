@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -77,11 +79,12 @@ class CalendarPage extends GetView<CalendarViewController> {
                   );
                 },
                 monthCellBuilder: (context, details) {
+                  log(details.appointments.length.toString());
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      details.date.day.isEven
+                      details.appointments.isNotEmpty
                           ? Text(
                               '${details.date.day}',
                               style: const TextStyle(

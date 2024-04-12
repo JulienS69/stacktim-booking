@@ -26,6 +26,11 @@ class XCalendarDataSource extends CalendarDataSource<Booking> {
   }
 
   @override
+  String? getNotes(int index) {
+    return appointments![index].title;
+  }
+
+  @override
   Booking convertAppointmentToObject(
       Booking customData, Appointment appointment) {
     return Booking(
