@@ -1,8 +1,8 @@
 name: stacktim_booking
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,7 +19,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.2.3 <4.0.0"
+  sdk: '>=3.2.3 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -76,16 +76,16 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/launcher_icon/definitive_white_black.png"
-  image_path_ios: "assets/launcher_icon/definitive_white_black.png"
+  image_path: 'assets/launcher_icon/definitive_white_black.png'
+  image_path_ios: 'assets/launcher_icon/definitive_white_black.png'
   remove_alpha_ios: true
 
 # flutter pub run flutter_native_splash:create
 flutter_native_splash:
-  color: "#000000"
-  color_dark: "#000000"
+  color: '#000000'
+  color_dark: '#000000'
   fullscreen: true
-  background_image: "assets/launcher_icon/splash.png"
+  background_image: 'assets/launcher_icon/splash.png'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -98,7 +98,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/background/
-    - assets/bottom/
     - assets/images/
     - assets/lotties/
     - assets/svg/

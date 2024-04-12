@@ -3,11 +3,11 @@ const String logo = 'assets/background/logo.png';
 const String one = 'assets/background/1.png';
 const String two = 'assets/background/2.jpg';
 const String three = 'assets/background/3.png';
-const String four = 'assets/background/4.png';
-const String five = 'assets/background/5.JPG';
+const String four = 'assets/background/4.jpg';
+const String five = 'assets/background/5.jpg';
 const String six = 'assets/background/6.png';
 const String microsoftLogo = 'assets/background/microsoft.png';
-const String salle = 'assets/background/1.JPG';
+const String salle = 'assets/background/1.jpg';
 
 //STUB - FOLDER IMAGE
 const String coinLogo = 'assets/images/coin.png';
@@ -73,7 +73,7 @@ const String game13 = 'assets/game_jacket/13.jpg';
 const String esport1 = 'assets/picture_esport/1.jpg';
 const String esport2 = 'assets/picture_esport/2.jpg';
 const String esport3 = 'assets/picture_esport/3.jpg';
-const String esport4 = 'assets/picture_esport/4.png';
+const String esport4 = 'assets/picture_esport/4.jpg';
 const String esport5 = 'assets/picture_esport/5.jpg';
 const String esport6 = 'assets/picture_esport/6.jpg';
 const String esport7 = 'assets/picture_esport/7.jpg';
@@ -88,8 +88,8 @@ const String esport15 = 'assets/picture_esport/15.jpg';
 const String esport16 = 'assets/picture_esport/16.jpg';
 
 // Esport Room PICTURES
-const String esportRoom1 = 'assets/images/salle2.png';
-const String esportRoom2 = 'assets/images/salle1.png';
+const String esportRoom1 = 'assets/images/salle2.jpg';
+const String esportRoom2 = 'assets/images/salle1.jpg';
 
 List<String> loginImageList = [
   one,
