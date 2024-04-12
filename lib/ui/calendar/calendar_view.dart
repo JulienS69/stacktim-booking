@@ -78,7 +78,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                     Routes.calendarDetail,
                     arguments: {
                       'date': calendarTapDetails.date,
-                      'booking': calendarTapDetails.appointments
+                      'calendarTapDetails': calendarTapDetails
                     },
                   );
                 },
