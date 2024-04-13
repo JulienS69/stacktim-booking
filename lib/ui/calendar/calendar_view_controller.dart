@@ -6,9 +6,6 @@ import '../../logic/repository/booking_repository.dart';
 class CalendarViewController extends GetxController with StateMixin {
   final BookingRepository bookingRepository;
   List<Booking> bookingList = [];
-  RxInt daysAvailable = 0.obs;
-  RxInt daysFullyBooked = 0.obs;
-  RxInt daysPartiallyBooked = 0.obs;
 
   CalendarViewController({
     required this.bookingRepository,
