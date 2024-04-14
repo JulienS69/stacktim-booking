@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -83,24 +81,31 @@ class CalendarPage extends GetView<CalendarViewController> {
                   );
                 },
                 monthCellBuilder: (context, details) {
-                  log(details.appointments.length.toString());
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      details.appointments.isNotEmpty
+                      details.appointments.length >= 5
                           ? Text(
                               '${details.date.day}',
                               style: const TextStyle(
                                 color: redStackTim,
                               ),
                             )
-                          : Text(
-                              '${details.date.day}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
+                          : (details.appointments.isNotEmpty &&
+                                  details.appointments.length < 5)
+                              ? Text(
+                                  '${details.date.day}',
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                  ),
+                                )
+                              : Text(
+                                  '${details.date.day}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                )
                     ],
                   );
                 },
@@ -145,17 +150,11 @@ class CalendarPage extends GetView<CalendarViewController> {
                       Row(
                         children: [
                           Text(
-                            '27',
+                            'Jour avec beaucoup de session',
                             style: TextStyle(
                               color: redStackTim,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Session pleine',
-                            style: TextStyle(),
                           ),
                         ],
                       ),
@@ -165,20 +164,10 @@ class CalendarPage extends GetView<CalendarViewController> {
                       Row(
                         children: [
                           Text(
-                            '23',
+                            'Jour avec peu de session',
                             style: TextStyle(
                               color: blueChip,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Quelques places encore disponibles',
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -188,18 +177,13 @@ class CalendarPage extends GetView<CalendarViewController> {
                       ),
                       Row(
                         children: [
-                          Text(
-                            '20',
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
                           Expanded(
                             child: Text(
-                              'Toutes les places sont actuellement libres',
+                              'Jour sans session',
                               style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                               ),
+                              maxLines: 2,
                             ),
                           ),
                         ],
