@@ -99,7 +99,7 @@ class BookingSearchBar extends StatelessWidget {
                           decoration: TextDecoration.none,
                         ),
                         onChanged: (title) {
-                          controller.titleSelected.value = title;
+                          controller.searchBooking(title);
                         },
                         controller: controller.searchController,
                       ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:day_night_time_picker/lib/constants.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
@@ -40,6 +41,7 @@ class DashboardViewController extends GetxController with StateMixin {
   RxList<Status> statusList = <Status>[].obs;
   RxList<Booking> bookingList = <Booking>[].obs;
   RxList<Computer> computersList = <Computer>[].obs;
+  RxList<Booking> searchedBookingList = <Booking>[].obs;
   List<TargetFocus> tutorialList = [];
   //OBJECT
   User currentUser = const User();
@@ -219,18 +221,17 @@ class DashboardViewController extends GetxController with StateMixin {
         .then(
           (value) => value.fold(
             (l) {
-              //FIXME POUVOIR PUB GET AWESOME DIALOG
-              // AwesomeDialog(
-              //   context: Get.context!,
-              //   dialogType: DialogType.error,
-              //   dialogBackgroundColor: backgroundColor,
-              //   animType: AnimType.rightSlide,
-              //   title: 'Oups !',
-              //   desc:
-              //       "Quelque chose c'est mal passé pendant l'enregistrement de ta session",
-              //   btnCancelText: 'Retour',
-              //   btnCancelOnPress: () {},
-              // ).show();
+              AwesomeDialog(
+                context: Get.context!,
+                dialogType: DialogType.error,
+                dialogBackgroundColor: backgroundColor,
+                animType: AnimType.rightSlide,
+                title: 'Oups !',
+                desc:
+                    "Quelque chose c'est mal passé pendant l'enregistrement de ta session",
+                btnCancelText: 'Retour',
+                btnCancelOnPress: () {},
+              ).show();
             },
             (r) async {
               getCurrentUser();
@@ -565,6 +566,22 @@ class DashboardViewController extends GetxController with StateMixin {
         );
       },
     );
+  }
+
+// TODO FAIRE LA RECHERCHE
+  List<Booking> searchBooking(String searchText) {
+    // Si le champ de recherche est vide, renvoyer la liste complète
+    if (searchText.isEmpty) {
+      return bookingList;
+    } else {
+      for (var booking in bookingList) {
+        if (booking.title?.contains(searchText) ?? false) {
+          searchedBookingList.add(booking);
+        }
+      }
+    }
+    // Retourne la liste filtrée si des correspondances sont trouvées, sinon retourne la liste complète
+    return searchedBookingList.isNotEmpty ? searchedBookingList : bookingList;
   }
 
   @override

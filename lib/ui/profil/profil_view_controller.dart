@@ -437,15 +437,15 @@ class ProfilViewController extends GetxController with StateMixin {
       change(null, status: RxStatus.error());
     } else {
       change(null, status: RxStatus.success());
-      packageInfo = await PackageInfo.fromPlatform();
-      version = packageInfo?.version ?? "1.0.0";
-      buildNumber = packageInfo?.buildNumber ?? "1";
-      sharedPreferences = await SharedPreferences.getInstance();
-      await getAdministratorUser();
       try {
-        await getCurrentUser();
         await getDataTutorial();
+        await getCurrentUser();
         getUserRole();
+        await getAdministratorUser();
+        packageInfo = await PackageInfo.fromPlatform();
+        version = packageInfo?.version ?? "1.0.0";
+        buildNumber = packageInfo?.buildNumber ?? "1";
+        sharedPreferences = await SharedPreferences.getInstance();
         isSkeletonLoading.value = false;
       } catch (e) {
         change(null, status: RxStatus.error());

@@ -1,5 +1,8 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
@@ -119,9 +122,17 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
               const Divider(
                 color: Colors.white,
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: controller.currentBookingList.isEmpty ? 0 : 15,
               ),
+              controller.currentBookingList.isEmpty
+                  ? Lottie.asset(
+                      notFound,
+                      fit: BoxFit.cover,
+                      height: 350,
+                      repeat: false,
+                    )
+                  : const SizedBox.shrink(),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -188,26 +199,27 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                       ),
                       FilledButton(
                         onPressed: () async {
-                          // AwesomeDialog(
-                          //   context: context,
-                          //   dialogType: DialogType.question,
-                          //   dialogBackgroundColor: backgroundColor,
-                          //   animType: AnimType.rightSlide,
-                          //   title: 'Attention',
-                          //   desc:
-                          //       'Souhaites-tu vraiment annuler ta réservation ?',
-                          //   btnCancelText: 'Je confirme',
-                          //   btnCancelOnPress: () {
-                          //     //TODO ROUTE POUR ANNULER LA RÉSERVATION
-                          //   },
-                          //   btnOkText: 'Annuler',
-                          //   btnOkOnPress: () {},
-                          //   btnOkColor: Colors.black,
-                          // ).show();
-
-                          if (!controller.isInProgress.value) {
-                            await controller.cancelBooking();
-                          }
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.question,
+                            dialogBackgroundColor: backgroundColor,
+                            animType: AnimType.rightSlide,
+                            title: 'Attention',
+                            desc: !controller.isInProgress.value
+                                ? 'Souhaites-tu vraiment annuler ta réservation ?'
+                                : "Souhaites-tu terminer ta session ?",
+                            btnCancelText: 'Je confirme',
+                            btnCancelOnPress: () async {
+                              if (!controller.isInProgress.value) {
+                                await controller.cancelBooking();
+                              } else {
+                                //TODO PRISE DE PHOTO
+                              }
+                            },
+                            btnOkText: 'Retour',
+                            btnOkOnPress: () {},
+                            btnOkColor: Colors.black,
+                          ).show();
                         },
                         child: Text(
                           controller.isInProgress.value

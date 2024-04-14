@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -31,22 +32,22 @@ SliverWoltModalSheetPage bookingSchedule({
       icon: const Icon(Icons.close),
       onPressed: () {
         if (!controller.checkFormIsEmpty()) {
-          //FIXME - PUB GET AWESOME DIALOG
-          // AwesomeDialog(
-          //   context: modalSheetContext,
-          //   dialogType: DialogType.question,
-          //   dialogBackgroundColor: backgroundColor,
-          //   animType: AnimType.rightSlide,
-          //   title: 'Attention',
-          //   desc:
-          //       'Voulez-vous vraiment supprimer les informations que vous avez saisies ?',
-          //   btnOkText: 'Oui',
-          //   btnCancelText: 'Annuler',
-          //   btnCancelOnPress: () {},
-          //   btnOkOnPress: () {
-          //     Navigator.of(modalSheetContext).pop();
-          //   },
-          // ).show();
+          AwesomeDialog(
+            context: modalSheetContext,
+            dialogType: DialogType.question,
+            dialogBackgroundColor: backgroundColor,
+            animType: AnimType.rightSlide,
+            title: 'Attention',
+            desc:
+                'Veux-tu vraiment supprimer les informations que tu as saisies ?',
+            btnOkText: 'Oui',
+            btnCancelText: 'Annuler',
+            btnCancelOnPress: () {},
+            btnOkOnPress: () {
+              Get.back();
+              controller.clearForm();
+            },
+          ).show();
         } else {
           Navigator.of(modalSheetContext).pop();
         }

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
@@ -27,13 +28,16 @@ SliverWoltModalSheetPage bookingSummary({
         pageIndexNotifier.value = pageIndexNotifier.value - 1;
       },
     ),
+    enableDrag: false,
     backgroundColor: sheetColor,
     hasSabGradient: false,
     isTopBarLayerAlwaysVisible: true,
     trailingNavBarWidget: IconButton(
       padding: const EdgeInsets.all(pagePadding),
       icon: const Icon(Icons.check),
-      onPressed: Navigator.of(modalSheetContext).pop,
+      onPressed: () async {
+        await controller.createBooking();
+      },
     ),
     child: Padding(
       padding: const EdgeInsets.fromLTRB(
@@ -141,9 +145,26 @@ SliverWoltModalSheetPage bookingSummary({
         ),
         ElevatedButton(
           onPressed: () async {
-            pageIndexNotifier.value = pageIndexNotifier.value - 3;
-            Get.back();
-            controller.clearForm();
+            if (!controller.checkFormIsEmpty()) {
+              AwesomeDialog(
+                context: modalSheetContext,
+                dialogType: DialogType.question,
+                dialogBackgroundColor: backgroundColor,
+                animType: AnimType.rightSlide,
+                title: 'Attention',
+                desc:
+                    'Veux-tu vraiment supprimer les informations que tu as saisies ?',
+                btnOkText: 'Oui',
+                btnCancelText: 'Annuler',
+                btnCancelOnPress: () {},
+                btnOkOnPress: () {
+                  Get.back();
+                  controller.clearForm();
+                },
+              ).show();
+            } else {
+              Navigator.of(modalSheetContext).pop();
+            }
           },
           style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.black),
@@ -155,7 +176,7 @@ SliverWoltModalSheetPage bookingSummary({
             width: 250,
             child: Center(
               child: Text(
-                "J'annule ma réservation'",
+                "J'annule ma réservation",
               ),
             ),
           ),

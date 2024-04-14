@@ -29,7 +29,9 @@ class ProfilView extends GetView<ProfilViewController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.showTutorialOnDashboard(context);
+    if (controller.isSkeletonLoading.value) {
+      controller.showTutorialOnDashboard(context);
+    }
     return XMobileScaffold(
       appBar: const XPageHeader(
         title: '',
