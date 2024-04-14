@@ -74,141 +74,138 @@ class ProfilView extends GetView<ProfilViewController> {
           bottomNavIndex: 2,
         ),
         (state) {
+          controller.showTutorialOnDashboard(context);
           return Obx(
             () => Skeletonizer(
               enabled: controller.isSkeletonLoading.value,
               child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: SizedBox(
-                  height: Get.height * 0.8,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                    child: Column(
-                      children: [
-                        //STUB - Profil Picture, fullName
-                        ProfilHeader(
-                          controller: controller,
-                        ),
-                        //STUB -  NICKNAME
-                        Obx(() => controller.isEditing.value
-                            ? EditNickName(controller: controller)
-                            : NickName(controller: controller)),
-                        UserRole(controller: controller),
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        //STUB -  Credits Available
-                        AvailableCredits(controller: controller),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        //STUB -  Hours Played
-                        HoursPlayed(controller: controller),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        const Divider(
-                          color: Colors.white,
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        XProfilWidget(
-                          title: "Contacter un administrateur",
-                          onTap: () async {
-                            Get.to(() => const AdministratorView());
-                          },
-                          imageAsset: admin,
-                          imageHeight: 35,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        //STUB -  RELOAD TUTORIAL
-                        XProfilWidget(
-                          title: "Relancer le tuto",
-                          onTap: () async {
-                            await controller.reloadTutorial();
-                          },
-                          imageAsset: reload,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        //STUB -  DOUMENTATION
-                        XProfilWidget(
-                          title: "Règlement de la salle",
-                          onTap: () {
-                            Get.to(() => const AgreementView());
-                          },
-                          imageAsset: document,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        //STUB -  Discord
-                        XProfilWidget(
-                          title: "Rejoindre le serveur Discord",
-                          onTap: () async {
-                            await launchUrl(
-                              mode: LaunchMode.externalApplication,
-                              Uri.parse(
-                                stacktimDiscordUrl,
-                              ),
-                            );
-                          },
-                          widget: const DiscordRotating(),
-                        ),
-                        const Spacer(),
-                        //STUB -  LOGOUT
-                        ElevatedButton(
-                          onPressed: () async {
-                            HapticFeedback.vibrate();
-                            await controller.logout();
-                            Get.offAllNamed(Routes.login);
-                          },
-                          child: const Text("Se déconnecter"),
-                        ),
-
-                        //STUB -  APP VERSION
-                        GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onDoubleTap: () {
-                            controller.isShowingVersion.value = true;
-                          },
-                          child: Obx(
-                            () => controller.isShowingVersion.value
-                                ? InkWell(
-                                    onTap: () {
-                                      controller
-                                          .incrementCounterFordDevelopers();
-                                    },
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      height: 50,
-                                      child: Center(
-                                        child: Text(
-                                          '${controller.version}+${controller.buildNumber}',
-                                          textAlign: TextAlign.center,
-                                        ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                  child: Column(
+                    children: [
+                      //STUB - Profil Picture, fullName
+                      ProfilHeader(
+                        controller: controller,
+                      ),
+                      //STUB -  NICKNAME
+                      Obx(() => controller.isEditing.value
+                          ? EditNickName(controller: controller)
+                          : NickName(controller: controller)),
+                      UserRole(controller: controller),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      //STUB -  Credits Available
+                      AvailableCredits(controller: controller),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      //STUB -  Hours Played
+                      HoursPlayed(controller: controller),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      XProfilWidget(
+                        title: "Contacter un administrateur",
+                        onTap: () async {
+                          Get.to(() => const AdministratorView());
+                        },
+                        imageAsset: admin,
+                        imageHeight: 35,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      //STUB -  RELOAD TUTORIAL
+                      XProfilWidget(
+                        title: "Relancer le tuto",
+                        onTap: () async {
+                          await controller.reloadTutorial();
+                        },
+                        imageAsset: reload,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      //STUB -  DOUMENTATION
+                      XProfilWidget(
+                        title: "Règlement de la salle",
+                        onTap: () {
+                          Get.to(() => const AgreementView());
+                        },
+                        imageAsset: document,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      //STUB -  Discord
+                      XProfilWidget(
+                        title: "Rejoindre le serveur Discord",
+                        onTap: () async {
+                          await launchUrl(
+                            mode: LaunchMode.externalApplication,
+                            Uri.parse(
+                              stacktimDiscordUrl,
+                            ),
+                          );
+                        },
+                        widget: const DiscordRotating(),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      //STUB -  LOGOUT
+                      ElevatedButton(
+                        onPressed: () async {
+                          HapticFeedback.vibrate();
+                          await controller.logout();
+                          Get.offAllNamed(Routes.login);
+                        },
+                        child: const Text("Se déconnecter"),
+                      ),
+                      //STUB -  APP VERSION
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onDoubleTap: () {
+                          controller.isShowingVersion.value = true;
+                        },
+                        child: Obx(
+                          () => controller.isShowingVersion.value
+                              ? InkWell(
+                                  onTap: () {
+                                    controller.incrementCounterFordDevelopers();
+                                  },
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: 50,
+                                    child: Center(
+                                      child: Text(
+                                        '${controller.version}+${controller.buildNumber}',
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.only(top: 5.0),
-                                    child: Container(
-                                      height: 20,
-                                      width: 150,
-                                      color: Colors.transparent,
-                                    ),
                                   ),
-                          ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.only(top: 5.0),
+                                  child: Container(
+                                    height: 20,
+                                    width: 150,
+                                    color: Colors.transparent,
+                                  ),
+                                ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

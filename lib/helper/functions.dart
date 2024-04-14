@@ -155,3 +155,7 @@ Color getColorsByStatusTag({
     return blueChip;
   }
 }
+
+String teamsUrlOfUser({required String userMail}) {
+  return "https://teams.microsoft.com/l/chat/0/0?users=$userMail&message=[Message envoyé depuis l'application Stacktim Booking]";
+}

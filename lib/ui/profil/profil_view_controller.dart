@@ -443,8 +443,8 @@ class ProfilViewController extends GetxController with StateMixin {
       sharedPreferences = await SharedPreferences.getInstance();
       await getAdministratorUser();
       try {
-        await getDataTutorial();
         await getCurrentUser();
+        await getDataTutorial();
         getUserRole();
         isSkeletonLoading.value = false;
       } catch (e) {

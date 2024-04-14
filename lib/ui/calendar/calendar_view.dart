@@ -139,13 +139,13 @@ class CalendarPage extends GetView<CalendarViewController> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Text(
-                        'Légende',
+                        'Légende :',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                         ),
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 10,
                       ),
                       Row(
                         children: [

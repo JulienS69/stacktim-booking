@@ -66,6 +66,7 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                 fullName: "Julien SEUX",
                 nickName: 'Virtuor',
                 isCurrentUser: true,
+                userMail: "",
               ),
               const SizedBox(
                 height: 15,
@@ -105,6 +106,7 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                     fullName: "Dheeraj TILHOO",
                     nickName: 'DHEEDHEE',
                     isCurrentUser: false,
+                    userMail: "",
                   );
                 },
               ),

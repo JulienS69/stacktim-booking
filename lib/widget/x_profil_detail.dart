@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:stacktim_booking/helper/color.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class XProfilDetail extends StatelessWidget {
   String fullName;
   String nickName;
   List<String> roleSlug;
+  String userMail;
   XProfilDetail({
     required this.fullName,
     required this.nickName,
     required this.roleSlug,
+    required this.userMail,
     super.key,
   });
 
@@ -108,9 +112,18 @@ class XProfilDetail extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  //TODO CONTACTER LA PERSONNE SUR TEAMS
-                  showSnackbar('TODO CONTACTER LA PERSONNE SUR TEAMS',
-                      SnackStatusEnum.warning);
+                  if (userMail.isNotEmpty) {
+                    launchUrl(
+                      mode: LaunchMode.externalApplication,
+                      Uri.parse(
+                        teamsUrlOfUser(userMail: userMail),
+                      ),
+                    );
+                  } else {
+                    showSnackbar(
+                        "Impossible de contacter cet utilisateur pour le moment",
+                        SnackStatusEnum.warning);
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8.0),

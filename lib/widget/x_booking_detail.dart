@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stacktim_booking/helper/color.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BookingDetail extends StatelessWidget {
   String fullName;
@@ -9,12 +11,14 @@ class BookingDetail extends StatelessWidget {
   String bookingTitle;
   String bookingDate;
   bool isCurrentUser;
+  String userMail;
   BookingDetail({
     required this.fullName,
     required this.nickName,
     required this.bookingTitle,
     required this.bookingDate,
     required this.isCurrentUser,
+    required this.userMail,
     super.key,
   });
 
@@ -104,8 +108,18 @@ class BookingDetail extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  showSnackbar('TODO CONTACTER LA PERSONNE SUR TEAMS',
-                      SnackStatusEnum.warning);
+                  if (userMail.isNotEmpty) {
+                    launchUrl(
+                      mode: LaunchMode.externalApplication,
+                      Uri.parse(
+                        teamsUrlOfUser(userMail: userMail),
+                      ),
+                    );
+                  } else {
+                    showSnackbar(
+                        "Impossible de contacter cet utilisateur pour le moment",
+                        SnackStatusEnum.warning);
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8.0),

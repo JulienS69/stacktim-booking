@@ -38,6 +38,7 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
                     fullName: booking.user?.fullName ?? '',
                     nickName: booking.user?.nickName ?? '',
                     isCurrentUser: false,
+                    userMail: booking.user?.email ?? "",
                   );
                 },
               ),
