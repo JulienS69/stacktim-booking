@@ -132,54 +132,93 @@ class CalendarPage extends GetView<CalendarViewController> {
                     color: Colors.grey.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(18)),
                 width: double.infinity,
-                child: const Padding(
-                  padding: EdgeInsets.all(12.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      const Text(
                         'Légende',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Row(
                         children: [
-                          Text(
-                            'Jour avec beaucoup de session',
-                            style: TextStyle(
+                          Container(
+                            width: 15,
+                            height: 15,
+                            decoration: BoxDecoration(
                               color: redStackTim,
-                              overflow: TextOverflow.ellipsis,
+                              borderRadius: BorderRadius.circular(20),
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Jour avec peu de session',
-                            style: TextStyle(
-                              color: blueChip,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                          const SizedBox(
+                            width: 5,
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
+                          const Expanded(
                             child: Text(
-                              'Jour sans session',
+                              'Journée avec de nombreuses sessions',
+                              style: TextStyle(
+                                color: redStackTim,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              maxLines: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 15,
+                            height: 15,
+                            decoration: BoxDecoration(
+                              color: blueChip,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const Expanded(
+                            child: Text(
+                              'Journée avec peu de sessions',
+                              style: TextStyle(
+                                color: blueChip,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              maxLines: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 15,
+                            height: 15,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const Expanded(
+                            child: Text(
+                              'Journée sans sessions',
                               style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                               ),
