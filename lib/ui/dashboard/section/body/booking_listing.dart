@@ -59,11 +59,13 @@ class BookingListingState extends State<BookingListing> {
             ? XBookingCard(
                 currentBooking: currentBooking,
                 isInProgress: isInProgress,
+                userId: widget.controller.currentUser.id ?? "0",
               )
             : XBookingCard(
                 currentBooking: currentBooking,
                 isInProgress: true,
                 hue: hue,
+                userId: widget.controller.currentUser.id ?? "0",
               );
       },
     );

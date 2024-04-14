@@ -33,7 +33,7 @@ class XErrorPage extends StatelessWidget {
       bottomNavIndex: bottomNavIndex ?? 0,
       appBar: withAppBar ?? false
           ? const XPageHeader(
-              title: '',
+              title: 'Erreur',
               centerTitle: true,
               imagePath: logoOverSlug,
             )

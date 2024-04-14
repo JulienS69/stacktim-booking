@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/logic/models/booking/booking.dart';
+import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/ui/booking_detail/booking_detail_view_controller.dart';
+import 'package:stacktim_booking/ui/booking_detail/seat_picker_detail.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
 import 'package:stacktim_booking/widget/x_booking_detail.dart';
 import 'package:stacktim_booking/widget/x_error_page.dart';
@@ -61,24 +65,48 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                 ),
               ),
               BookingDetail(
-                bookingDate: "14 Janvier 2023",
-                bookingTitle: "Training CSGO & Rocket League",
-                fullName: "Julien SEUX",
-                nickName: 'Virtuor',
-                isCurrentUser: true,
-                userMail: "",
+                bookingDate: formatDateInLocal(
+                    datePicked:
+                        controller.currentBooking.value.bookedAt.toString()),
+                bookingTitle: controller.currentBooking.value.title ?? '',
+                fullName: controller.currentBooking.value.user?.fullName ?? '',
+                nickName: controller.currentBooking.value.user?.nickName ??
+                    'Aucun pseudo',
+                isCurrentUser: false,
+                userMail: controller.currentBooking.value.user?.email ?? "",
+                startedBookingHourPicked:
+                    controller.currentBooking.value.beginAt?.substring(0, 5) ??
+                        "",
+                endedBookingHourPicked:
+                    controller.currentBooking.value.endAt?.substring(0, 5) ??
+                        "",
+                computerSelected:
+                    controller.currentBooking.value.computer?.number ?? 0,
+                isWithSeat: true,
+                onTap: () async {
+                  await showDialog(
+                    context: Get.context!,
+                    builder: (BuildContext context) {
+                      return SeatPickerDetail(
+                        bookingDetailViewController: controller,
+                      );
+                    },
+                  );
+                },
               ),
               const SizedBox(
                 height: 15,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Text(
-                      "D'autres personnes sont présentes dans le même crénau que le votre : ",
-                      style: TextStyle(
+                      controller.currentBookingList.isEmpty
+                          ? "Aucunes personne n'a réservé de session sur votre crénau"
+                          : "D'autres personnes sont présentes dans le même crénau que le votre : ",
+                      style: const TextStyle(
                         fontSize: 10,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -97,29 +125,44 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: 5,
+                itemCount: controller.currentBookingList.length,
                 itemBuilder: (context, index) {
-                  //TODO A METTRE DANS UN WIDGET GENERIQUE
+                  Booking booking = controller.currentBookingList[index];
                   return BookingDetail(
-                    bookingDate: "14 Janvier 2023",
-                    bookingTitle: "Training CSGO & Rocket League",
-                    fullName: "Dheeraj TILHOO",
-                    nickName: 'DHEEDHEE',
+                    bookingDate: formatDateInLocal(
+                        datePicked: booking.bookedAt.toString()),
+                    bookingTitle: booking.title ?? '',
+                    fullName: booking.user?.fullName ?? '',
+                    nickName: booking.user?.nickName ?? 'Aucun pseudo',
                     isCurrentUser: false,
-                    userMail: "",
+                    userMail: booking.user?.email ?? "",
+                    startedBookingHourPicked:
+                        booking.beginAt?.substring(0, 5) ?? "",
+                    endedBookingHourPicked:
+                        booking.endAt?.substring(0, 5) ?? "",
+                    computerSelected: booking.computer?.number ?? 0,
+                    isWithSeat: true,
+                    onTap: () async {
+                      await showDialog(
+                        context: Get.context!,
+                        builder: (BuildContext context) {
+                          return SeatPickerDetail(
+                            bookingDetailViewController: controller,
+                          );
+                        },
+                      );
+                    },
                   );
                 },
               ),
               const SizedBox(
-                height: 100,
+                height: 120,
               )
             ],
           ),
         ),
-        bottomSheet: controller.currentBooking.value.id == null
-            ?
-            //TODO IF STATEMENT SI LE USER N'A PLUS LA POSSIBILITÉ D'ANNULER SA RÉSERVATION, NE PLUS AFFICHÉ LE BOUTON ET CHANGER LE TEXTE
-            Container(
+        bottomSheet: controller.currentBooking.value.id != null
+            ? Container(
                 color: Colors.black,
                 width: double.infinity,
                 height: 120,
@@ -161,8 +204,8 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                           //   btnOkOnPress: () {},
                           //   btnOkColor: Colors.black,
                           // ).show();
-                          if (!controller.isInProgress.value &&
-                              !controller.isPassed.value) {
+
+                          if (!controller.isInProgress.value) {
                             await controller.cancelBooking();
                           }
                         },

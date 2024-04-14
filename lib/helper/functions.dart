@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/widget/x_chip.dart';
 
@@ -154,6 +155,15 @@ Color getColorsByStatusTag({
   } else {
     return blueChip;
   }
+}
+
+String formatDateInLocal({
+  required String datePicked,
+}) {
+  String formattedDate = datePicked;
+  DateTime date = DateTime.parse(formattedDate);
+  formattedDate = DateFormat('dd MMMM yyyy', 'fr').format(date);
+  return formattedDate;
 }
 
 String teamsUrlOfUser({required String userMail}) {

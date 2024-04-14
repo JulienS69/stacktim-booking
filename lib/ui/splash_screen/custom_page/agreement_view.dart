@@ -16,7 +16,7 @@ class AgreementView extends StatelessWidget {
       isShowBottomNavigationBar: false,
       appBar: const XPageHeader(
         title: 'Règlement de la salle E-Sport',
-        style: TextStyle(fontSize: 12),
+        style: TextStyle(fontSize: 14),
         centerTitle: true,
         imagePath: logoOverSlug,
       ),

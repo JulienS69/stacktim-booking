@@ -62,7 +62,7 @@ class BookingRepository extends RestApiRepository {
     );
   }
 
-  Future<Either<dynamic, Booking>> getBooking(
+  Future<Either<dynamic, List<Booking>>> getBooking(
       {required String currentBookingId}) async {
     return await handlingPostResponse(
       queryRoute: "$controller/search",
@@ -71,12 +71,18 @@ class BookingRepository extends RestApiRepository {
       isCustomResponse: true,
       body: {
         "search": {
+          "scopes": [
+            {
+              "name": "overlappingBookings",
+              "parameters": [currentBookingId]
+            }
+          ],
           "includes": [
             {"relation": "user"},
             {"relation": "computer"},
             {"relation": "status"},
-          ]
-        }
+          ],
+        },
       },
     ).then(
       (value) => value.fold(
@@ -88,7 +94,8 @@ class BookingRepository extends RestApiRepository {
           }
         },
         (r) async {
-          return right(Booking.fromJson(r));
+          return right(
+              r['data'].map<Booking>((e) => Booking.fromJson(e)).toList());
         },
       ),
     );
@@ -109,6 +116,13 @@ class BookingRepository extends RestApiRepository {
               "name": "monthBookings",
               "parameters": [monthNumber],
             }
+          ],
+          "filters": [
+            {
+              "field": "canceled_at",
+              "operator": "=",
+              "value": null,
+            },
           ],
           "includes": [
             {"relation": "user"},

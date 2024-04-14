@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_detail/calendar_detail_view_controller.dart';
 import 'package:stacktim_booking/widget/x_booking_detail.dart';
@@ -20,7 +20,9 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
       (state) => XMobileScaffold(
         isShowBottomNavigationBar: false,
         appBar: XPageHeader(
-          title: DateFormat.yMMMEd().format(controller.dateTimeSelected),
+          title: formatDateInLocal(
+            datePicked: controller.dateTimeSelected.toString(),
+          ),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -33,17 +35,23 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
                 itemBuilder: (context, index) {
                   Booking booking = controller.bookings[index];
                   return BookingDetail(
-                    bookingDate: booking.bookedAt.toString(),
+                    bookingDate: formatDateInLocal(
+                        datePicked: booking.bookedAt.toString()),
                     bookingTitle: booking.title ?? '',
                     fullName: booking.user?.fullName ?? '',
-                    nickName: booking.user?.nickName ?? '',
+                    nickName: booking.user?.nickName ?? 'Aucun pseudo',
                     isCurrentUser: false,
                     userMail: booking.user?.email ?? "",
+                    startedBookingHourPicked:
+                        booking.beginAt?.substring(0, 5) ?? "",
+                    endedBookingHourPicked:
+                        booking.endAt?.substring(0, 5) ?? "",
+                    computerSelected: booking.computer?.number ?? 0,
                   );
                 },
               ),
               const SizedBox(
-                height: 100,
+                height: 120,
               )
             ],
           ),

@@ -164,7 +164,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                             child: Text(
                               'Journée avec de nombreuses sessions',
                               style: TextStyle(
-                                color: redStackTim,
+                                color: redChip,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               maxLines: 2,

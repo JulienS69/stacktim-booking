@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
+import 'package:stacktim_booking/logic/models/computer/computer.dart';
 import 'package:stacktim_booking/logic/repository/booking_repository.dart';
 import 'package:stacktim_booking/navigation/route.dart';
 
@@ -8,8 +9,11 @@ import '../../logic/models/booking/booking.dart';
 
 class BookingDetailViewController extends GetxController with StateMixin {
   String bookingId = "";
+  String currentUserId = "";
   BookingRepository bookingRepository = BookingRepository();
   Rx<Booking> currentBooking = const Booking().obs;
+  Rx<Computer> computerSelected = const Computer().obs;
+  RxList<Booking> currentBookingList = <Booking>[].obs;
   Rx<bool> isInProgress = false.obs;
   Rx<bool> isPassed = false.obs;
 
@@ -31,15 +35,37 @@ class BookingDetailViewController extends GetxController with StateMixin {
           (value) => value.fold(
             (l) {},
             (r) {
-              if (r.status?.slug == StatusSlugs.inProgress) {
-                isInProgress.value = true;
-              } else if (r.status?.slug == StatusSlugs.passee) {
-                isPassed.value = true;
-              }
-              currentBooking.value = r;
+              currentBookingList.value = r;
+              getBookingOfCurrentUser();
+              checkIsProgressBooking();
             },
           ),
         );
+  }
+
+  checkIsProgressBooking() {
+    if (currentBooking.value.status?.slug == StatusSlugs.inProgress ||
+        (currentBooking.value.status?.slug == StatusSlugs.passee &&
+            currentBooking.value.isCheckoutComplete != true)) {
+      isInProgress.value = true;
+    } else if (currentBooking.value.status?.slug == StatusSlugs.passee &&
+        currentBooking.value.isCheckoutComplete == true) {
+      isPassed.value = true;
+    }
+  }
+
+  getBookingOfCurrentUser() {
+    var index = 0;
+    while (index < currentBookingList.length) {
+      var booking = currentBookingList[index];
+      if (booking.userId == currentUserId) {
+        currentBooking.value = booking;
+        computerSelected.value = booking.computer ?? const Computer();
+        currentBookingList.removeAt(index);
+      } else {
+        index++;
+      }
+    }
   }
 
   Future<void> cancelBooking() async {
@@ -65,6 +91,9 @@ class BookingDetailViewController extends GetxController with StateMixin {
     if (Get.arguments != null) {
       if (Get.arguments.containsKey('bookingId')) {
         bookingId = Get.arguments['bookingId'] ?? "0";
+      }
+      if (Get.arguments.containsKey('currentUserId')) {
+        currentUserId = Get.arguments['currentUserId'] ?? "0";
       }
     }
   }

@@ -13,12 +13,14 @@ class XBookingCard extends StatelessWidget {
     super.key,
     required this.currentBooking,
     required this.isInProgress,
+    required this.userId,
     this.hue,
   });
 
   final Booking currentBooking;
   final bool isInProgress;
   final double? hue;
+  final String? userId;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,10 @@ class XBookingCard extends StatelessWidget {
           onTap: () {
             Get.toNamed(
               Routes.bookingDetail,
-              arguments: {"bookingId": currentBooking.id},
+              arguments: {
+                "bookingId": currentBooking.id,
+                "currentUserId": userId
+              },
             );
           },
           focusColor: Colors.transparent,

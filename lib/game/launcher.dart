@@ -11,7 +11,7 @@ class GameSurprise {
   Widget build(BuildContext context) {
     return XMobileScaffold(
       appBar: const XPageHeader(
-        title: '',
+        title: 'Easter Egg',
         imagePath: logoOverSlug,
       ),
       isShowBottomNavigationBar: false,

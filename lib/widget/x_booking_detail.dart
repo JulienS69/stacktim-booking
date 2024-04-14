@@ -10,8 +10,13 @@ class BookingDetail extends StatelessWidget {
   String nickName;
   String bookingTitle;
   String bookingDate;
+  String startedBookingHourPicked;
+  String endedBookingHourPicked;
   bool isCurrentUser;
   String userMail;
+  int? computerSelected;
+  void Function()? onTap;
+  bool? isWithSeat;
   BookingDetail({
     required this.fullName,
     required this.nickName,
@@ -19,6 +24,11 @@ class BookingDetail extends StatelessWidget {
     required this.bookingDate,
     required this.isCurrentUser,
     required this.userMail,
+    required this.startedBookingHourPicked,
+    required this.endedBookingHourPicked,
+    this.computerSelected,
+    this.onTap,
+    this.isWithSeat,
     super.key,
   });
 
@@ -86,7 +96,7 @@ class BookingDetail extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Titre de la réservation : $bookingTitle',
+                      'Nom de la réservation : $bookingTitle',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: const TextStyle(fontSize: 12),
@@ -97,15 +107,105 @@ class BookingDetail extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      'Réservation prise le $bookingDate',
+                    child: RichText(
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: const TextStyle(fontSize: 12),
+                      maxLines: 2,
+                      strutStyle: const StrutStyle(fontFamily: 'Anta'),
+                      text: TextSpan(
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
+                        children: [
+                          const TextSpan(
+                            text: 'Réservation prise le : ',
+                            style: TextStyle(fontFamily: 'Anta'),
+                          ),
+                          TextSpan(
+                            text: bookingDate,
+                            style: const TextStyle(
+                              color: greenChip,
+                              fontFamily: 'Anta',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Expanded(
+                    child: RichText(
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      strutStyle: const StrutStyle(fontFamily: 'Anta'),
+                      text: TextSpan(
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
+                        children: [
+                          const TextSpan(
+                            text: 'Crénau choisi : ',
+                            style: TextStyle(fontFamily: 'Anta'),
+                          ),
+                          const TextSpan(
+                            text: 'de ',
+                            style: TextStyle(fontFamily: 'Anta'),
+                          ),
+                          TextSpan(
+                            text: '${startedBookingHourPicked}h',
+                            style: const TextStyle(
+                              color: greenChip,
+                              fontFamily: 'Anta',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const TextSpan(
+                              text: ' à ',
+                              style: TextStyle(fontFamily: 'Anta')),
+                          TextSpan(
+                              text: '${endedBookingHourPicked}h',
+                              style: const TextStyle(
+                                color: greenChip,
+                                fontFamily: 'Anta',
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              isWithSeat ?? false
+                  ? InkWell(
+                      onTap: () async {
+                        if (onTap != null) {
+                          onTap!();
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Siège choisi : $computerSelected",
+                              style: const TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
+                    )
+                  : const SizedBox.shrink(),
               InkWell(
                 onTap: () {
                   if (userMail.isNotEmpty) {
