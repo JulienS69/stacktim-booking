@@ -40,8 +40,8 @@ class _SeatWidgetState extends State<SeatWidget> {
       onTap: () {
         if (!widget.isAvailable || widget.isUnderMaintenance) {
           HapticFeedback.selectionClick();
-          showSnackbar("Vous ne pouvez pas sélectionner ce siège",
-              SnackStatusEnum.warning);
+          showSnackbar(
+              "Tu ne peux pas sélectionner ce siège", SnackStatusEnum.warning);
         } else {
           widget.onSelectComputer(widget.computer);
         }

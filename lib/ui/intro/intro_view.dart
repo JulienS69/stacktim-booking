@@ -30,7 +30,7 @@ class IntroView extends GetView<IntroViewController> {
               onTap: () {
                 if (index == 0) {
                   showSnackbar(
-                      "Vous devez swiper de droite vers la gauche votre écran pour pouvoir naviguer",
+                      "Tu dois swiper de droite vers la gauche ton écran pour pouvoir naviguer",
                       SnackStatusEnum.simple);
                 }
               },

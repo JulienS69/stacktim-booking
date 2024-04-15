@@ -93,7 +93,7 @@ class LoginView extends GetView<LoginViewController> {
                   ),
                 ),
                 const Text(
-                  "Connectez-vous et réservez votre place dans\n notre salle gaming",
+                  "Connecte-toi et réserve ta place dans\n notre salle gaming",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontStyle: FontStyle.italic,

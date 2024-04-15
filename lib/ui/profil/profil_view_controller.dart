@@ -55,7 +55,7 @@ class ProfilViewController extends GetxController with StateMixin {
           (value) => value.fold(
             (l) {
               showSnackbar(
-                  "Un problème est survenue lors de la récupération de vos informations",
+                  "Un problème est survenue lors de la récupération de tes informations",
                   SnackStatusEnum.error);
               change(null, status: RxStatus.error());
             },
