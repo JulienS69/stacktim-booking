@@ -15,6 +15,7 @@ class XErrorPage extends StatelessWidget {
   final void Function() onPressedRetry;
   final bool? withAppBar;
   final bool? withBottomBar;
+  final bool? showRetryButton;
   final int? bottomNavIndex;
   const XErrorPage({
     required this.contentTitle,
@@ -23,6 +24,7 @@ class XErrorPage extends StatelessWidget {
     this.withAppBar,
     this.withBottomBar,
     this.bottomNavIndex,
+    this.showRetryButton,
     super.key,
   });
 
@@ -72,14 +74,16 @@ class XErrorPage extends StatelessWidget {
               const SizedBox(
                 height: 60,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  onPressedRetry();
-                },
-                child: Text(
-                  titleButton ?? "Réessayer",
-                ),
-              ),
+              showRetryButton != false
+                  ? ElevatedButton(
+                      onPressed: () {
+                        onPressedRetry();
+                      },
+                      child: Text(
+                        titleButton ?? "Réessayer",
+                      ),
+                    )
+                  : const SizedBox.shrink(),
               bottomNavIndex == 2
                   ? ElevatedButton(
                       onPressed: () async {

@@ -59,6 +59,12 @@ class CalendarPage extends GetView<CalendarViewController> {
                 allowedViews: const [
                   CalendarView.month,
                 ],
+                blackoutDates: controller.holidaysList,
+                blackoutDatesTextStyle: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                  color: Color.fromARGB(255, 83, 83, 83),
+                ),
                 firstDayOfWeek: 1,
                 initialDisplayDate: DateTime.now(),
                 headerStyle: const CalendarHeaderStyle(
