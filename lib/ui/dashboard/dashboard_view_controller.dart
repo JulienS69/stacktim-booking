@@ -404,14 +404,31 @@ class DashboardViewController extends GetxController with StateMixin {
             // Vérifier si l'heure est dans les créneaux horaires valides
             if ((time.hour >= 12 && time.hour <= 13 && time.minute != 59) ||
                 (time.hour >= 17 && time.hour <= 21 && time.minute != 59)) {
-              endingHourSelected.value = time.hour.toString();
-              minutesSelected = time.minute.toString();
-              Time endedTime = Time(hour: time.hour, minute: time.minute);
-              endingtimeSelected.value = endedTime.format(Get.context!);
-              if (selectedDate.value.isNotEmpty &&
-                  startingtimeSelected.value.isNotEmpty &&
-                  titleSelected.value.isNotEmpty) {
-                await checkAvailbilityComputer();
+              DateFormat format = DateFormat('HH:mm');
+              DateTime parsedDateTime =
+                  format.parse(startingtimeSelected.value);
+              Time beginHourSelect = Time(
+                  hour: parsedDateTime.hour, minute: parsedDateTime.minute);
+
+              Time endHourSelect = Time(hour: time.hour, minute: time.minute);
+              if (endHourSelect.hour < beginHourSelect.hour) {
+                showSnackbar(
+                    "Ton heure de fin est inférieur à l'heure de début choisie",
+                    SnackStatusEnum.error);
+              } else if (beginHourSelect.hour == endHourSelect.hour) {
+                showSnackbar(
+                    "Les heures choisies ne peuvent pas être les mêmes",
+                    SnackStatusEnum.error);
+              } else {
+                endingHourSelected.value = time.hour.toString();
+                minutesSelected = time.minute.toString();
+                Time endedTime = Time(hour: time.hour, minute: time.minute);
+                endingtimeSelected.value = endedTime.format(Get.context!);
+                if (selectedDate.value.isNotEmpty &&
+                    startingtimeSelected.value.isNotEmpty &&
+                    titleSelected.value.isNotEmpty) {
+                  await checkAvailbilityComputer();
+                }
               }
             } else {
               showSnackbar(
