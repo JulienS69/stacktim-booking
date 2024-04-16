@@ -335,12 +335,13 @@ class DashboardViewController extends GetxController with StateMixin {
         dialogInsetPadding: const EdgeInsets.all(5),
         value: Time.fromTimeOfDay(
             TimeOfDay(
-                hour: beginingHourSelected.isNotEmpty
-                    ? int.parse(beginingHourSelected.value)
-                    : endingHourSelected.value.isNotEmpty
-                        ? int.parse(endingHourSelected.value)
-                        : TimeOfDay.now().hour,
-                minute: minutesSelected == "30" ? 30 : 0),
+              hour: beginingHourSelected.isNotEmpty && !isEndingTime
+                  ? int.parse(beginingHourSelected.value)
+                  : endingHourSelected.value.isNotEmpty
+                      ? int.parse(endingHourSelected.value)
+                      : TimeOfDay.now().hour,
+              minute: minutesSelected == "30" ? 30 : 0,
+            ),
             0),
         sunrise: const TimeOfDay(hour: 6, minute: 0),
         sunset: const TimeOfDay(hour: 18, minute: 0),
@@ -372,36 +373,55 @@ class DashboardViewController extends GetxController with StateMixin {
           Navigator.pop(context);
           HapticFeedback.heavyImpact();
         },
+        minHour: 12,
+        maxHour: 21,
+        maxMinute: 30,
         onChange: (time) async {
           HapticFeedback.vibrate();
           if (!isEndingTime) {
-            beginingHourSelected.value = time.hour.toString();
-            if (time.minute.toString() == "59") {
-              minutesSelected = "30";
-            } else {
+            // Vérifier si l'heure est dans les créneaux horaires valides
+            if ((time.hour >= 12 && time.hour <= 13 && time.minute != 59) ||
+                (time.hour >= 17 && time.hour <= 21 && time.minute != 59)) {
+              beginingHourSelected.value = time.hour.toString();
               minutesSelected = time.minute.toString();
+              Time beginHourSelect = Time(hour: time.hour, minute: time.minute);
+              startingtimeSelected.value = beginHourSelect.format(Get.context!);
+              if (minutesSelected != "0") {
+                DateFormat format = DateFormat('HH:mm');
+                DateTime parsedDateTime =
+                    format.parse(endingtimeSelected.value);
+                Time updatedEndedTime =
+                    Time(hour: parsedDateTime.hour, minute: time.minute);
+                endingtimeSelected.value =
+                    updatedEndedTime.format(Get.context!);
+              }
+            } else {
+              showSnackbar(
+                  "Impossible de choisir une heure en dehors des horaires définis",
+                  SnackStatusEnum.error);
             }
-            startingtimeSelected.value = time.format(Get.context!);
           } else {
-            endingtimeSelected.value = time.format(Get.context!);
-            endingHourSelected.value = time.hour.toString();
-            if (selectedDate.value.isNotEmpty &&
-                startingtimeSelected.value.isNotEmpty &&
-                titleSelected.value.isNotEmpty) {
-              await checkAvailbilityComputer();
+            // Vérifier si l'heure est dans les créneaux horaires valides
+            if ((time.hour >= 12 && time.hour <= 13 && time.minute != 59) ||
+                (time.hour >= 17 && time.hour <= 21 && time.minute != 59)) {
+              endingHourSelected.value = time.hour.toString();
+              minutesSelected = time.minute.toString();
+              Time endedTime = Time(hour: time.hour, minute: time.minute);
+              endingtimeSelected.value = endedTime.format(Get.context!);
+              if (selectedDate.value.isNotEmpty &&
+                  startingtimeSelected.value.isNotEmpty &&
+                  titleSelected.value.isNotEmpty) {
+                await checkAvailbilityComputer();
+              }
+            } else {
+              showSnackbar(
+                  "Impossible de choisir une heure en dehors des horaires définis",
+                  SnackStatusEnum.error);
             }
           }
         },
       ),
     );
-  }
-
-  checkIsFree(String date) {
-    if (date == "2024-02-01 00:00:00.000") {
-      isNotFree.value = true;
-    } else {
-      isNotFree.value = false;
-    }
   }
 
   //SECTION TUTORIAL

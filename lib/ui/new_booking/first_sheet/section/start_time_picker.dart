@@ -40,7 +40,7 @@ class BookingBeginningTime extends StatelessWidget {
                       controller.startingtimeSelected.isEmpty
                           ? "Aucunes"
                           : "${controller.beginingHourSelected} heures"
-                              "${controller.minutesSelected != "0" ? "et ${controller.minutesSelected} minutes" : ""}",
+                              "${controller.minutesSelected != "0" ? " et ${controller.minutesSelected} minutes" : ""}",
                       style: antaStyle.copyWith(
                         color: controller.startingtimeSelected.isEmpty
                             ? Colors.red
