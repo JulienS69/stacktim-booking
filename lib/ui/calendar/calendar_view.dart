@@ -56,9 +56,6 @@ class CalendarPage extends GetView<CalendarViewController> {
               child: SfCalendar(
                 view: CalendarView.month,
                 todayHighlightColor: Colors.transparent,
-                allowedViews: const [
-                  CalendarView.month,
-                ],
                 blackoutDates: controller.holidaysList,
                 blackoutDatesTextStyle: const TextStyle(
                   fontSize: 12,
@@ -69,6 +66,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                 initialDisplayDate: DateTime.now(),
                 headerStyle: const CalendarHeaderStyle(
                   backgroundColor: Colors.transparent,
+                  textAlign: TextAlign.center,
                 ),
                 dataSource: XCalendarDataSource(controller.bookingList),
                 todayTextStyle: const TextStyle(color: Colors.white),
