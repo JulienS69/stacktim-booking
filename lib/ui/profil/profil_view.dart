@@ -116,7 +116,9 @@ class ProfilView extends GetView<ProfilViewController> {
                       XProfilWidget(
                         title: "Contacter un administrateur",
                         onTap: () async {
-                          Get.to(() => const AdministratorView());
+                          Get.to(
+                            () => const AdministratorView(),
+                          );
                         },
                         imageAsset: admin,
                         imageHeight: 35,

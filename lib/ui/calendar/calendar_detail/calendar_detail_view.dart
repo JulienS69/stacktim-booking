@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
+import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_detail/calendar_detail_view_controller.dart';
 import 'package:stacktim_booking/widget/x_booking_detail.dart';
 import 'package:stacktim_booking/widget/x_error_page.dart';
@@ -129,7 +130,14 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
                         height: 10,
                       ),
                       FilledButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.offAllNamed(
+                            Routes.dashboard,
+                            arguments: {
+                              'openSheet': true,
+                            },
+                          );
+                        },
                         child: const Text(
                           'Réserver ma place',
                           style: TextStyle(color: Colors.white),

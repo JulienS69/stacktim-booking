@@ -77,6 +77,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                     viewChangedDetails.visibleDates.first.month,
                   );
                 },
+                minDate: DateTime(2024),
                 onTap: (calendarTapDetails) {
                   Get.toNamed(
                     Routes.calendarDetail,
@@ -95,7 +96,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                           ? Text(
                               '${details.date.day}',
                               style: const TextStyle(
-                                color: redStackTim,
+                                color: redChip,
                               ),
                             )
                           : (details.appointments.isNotEmpty &&
@@ -103,7 +104,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                               ? Text(
                                   '${details.date.day}',
                                   style: const TextStyle(
-                                    color: Colors.blue,
+                                    color: blueChip,
                                   ),
                                 )
                               : Text(
@@ -111,7 +112,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
-                                )
+                                ),
                     ],
                   );
                 },
@@ -159,7 +160,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                             width: 15,
                             height: 15,
                             decoration: BoxDecoration(
-                              color: redStackTim,
+                              color: redChip,
                               borderRadius: BorderRadius.circular(20),
                             ),
                           ),
