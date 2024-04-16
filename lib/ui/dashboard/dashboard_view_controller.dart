@@ -23,6 +23,7 @@ import 'package:stacktim_booking/logic/models/computer/computer.dart';
 import 'package:stacktim_booking/logic/models/status/status.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/logic/repository/booking_repository.dart';
+import 'package:stacktim_booking/logic/repository/holliday_repository.dart';
 import 'package:stacktim_booking/logic/repository/status_repository.dart';
 import 'package:stacktim_booking/logic/repository/user_repository.dart';
 import 'package:stacktim_booking/ui/new_booking/new_booking_view.dart';
@@ -37,12 +38,14 @@ class DashboardViewController extends GetxController with StateMixin {
   StatusRepository statusRepository = StatusRepository();
   UserRepository userRepository = UserRepository();
   ComputerRepository computerRepository = ComputerRepository();
+  HolidayRepository holidayRepository = HolidayRepository();
   //LIST
   RxList<Status> statusList = <Status>[].obs;
   RxList<Booking> bookingList = <Booking>[].obs;
   RxList<Computer> computersList = <Computer>[].obs;
   RxList<Booking> searchedBookingList = <Booking>[].obs;
   List<TargetFocus> tutorialList = [];
+  List<DateTime>? holidaysList;
   //OBJECT
   User currentUser = const User();
   Booking bookingInProgress = const Booking();
@@ -95,6 +98,17 @@ class DashboardViewController extends GetxController with StateMixin {
       if (Get.arguments['openSheet'] != null) {
         checkCreditBeforeCreateBooking();
       }
+    }
+  }
+
+  Future<void> fetchHolidays() async {
+    try {
+      final holidays = await holidayRepository.fetchFrenchHolidays(2024);
+      holidaysList = holidays
+          .map((holiday) => DateTime.parse(holiday.dateHoliday ?? ""))
+          .toList();
+    } catch (e) {
+      //TODO SentryLog impossible de récupérer les jours fériés
     }
   }
 
@@ -589,6 +603,7 @@ class DashboardViewController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     sharedPreferences = await SharedPreferences.getInstance();
     await getDataTutorial();
+    await fetchHolidays();
     try {
       await getCurrentUser();
       await getMyBookings();

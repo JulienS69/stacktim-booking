@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -99,21 +100,43 @@ class BookingDatePicker extends StatelessWidget {
                   headerStyle: const DateRangePickerHeaderStyle(
                       backgroundColor: Colors.transparent),
                   selectionMode: DateRangePickerSelectionMode.single,
-                  monthViewSettings: const DateRangePickerMonthViewSettings(
-                    weekendDays: [
+                  monthViewSettings: DateRangePickerMonthViewSettings(
+                    weekendDays: const [
                       DateTime.sunday,
                       DateTime.saturday,
                     ],
+                    blackoutDates: controller.holidaysList,
                   ),
                   monthCellStyle: const DateRangePickerMonthCellStyle(
+                    blackoutDateTextStyle: TextStyle(
+                      color: Color.fromARGB(255, 83, 83, 83),
+                    ),
                     weekendTextStyle: TextStyle(
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 83, 83, 83),
+                    ),
+                    disabledDatesTextStyle: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                      color: Color.fromARGB(255, 83, 83, 83),
                     ),
                   ),
+                  enablePastDates: false,
+                  minDate: DateTime.now(),
                   selectionColor: Colors.red,
                   selectionTextStyle: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                   onSelectionChanged: (date) async {
+                    // Check if date picked is in week-end
+                    if (date.value.weekday == DateTime.saturday ||
+                        date.value.weekday == DateTime.sunday) {
+                      // Week-end, annuler la sélection
+                      showSnackbar(
+                          "Vous ne pouvez pas sélectionner une date le week-end.",
+                          SnackStatusEnum.warning);
+
+                      return;
+                    }
+                    // if picked date is ok, launch time picker
                     await controller.launchTimePicker(
                       datePicked: date.value,
                       context: context,
