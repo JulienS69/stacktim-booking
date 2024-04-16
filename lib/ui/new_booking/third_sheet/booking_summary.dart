@@ -78,7 +78,7 @@ SliverWoltModalSheetPage bookingSummary({
             Row(
               children: [
                 const Text(
-                  "Crénau choisie : ",
+                  "Crénau choisi : ",
                   style: antaStyle,
                 ),
                 Expanded(
@@ -100,7 +100,7 @@ SliverWoltModalSheetPage bookingSummary({
             Row(
               children: [
                 const Text(
-                  "Siège choisie : ",
+                  "Siège choisi : ",
                   style: antaStyle,
                 ),
                 Expanded(
