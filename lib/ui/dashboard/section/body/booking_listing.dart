@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
@@ -48,26 +49,32 @@ class BookingListingState extends State<BookingListing> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: widget.controller.bookingList.length,
-      itemBuilder: (context, index) {
-        Booking currentBooking = widget.controller.bookingList[index];
-        bool isInProgress =
-            currentBooking.status?.slug == StatusSlugs.inProgress;
-        return currentBooking.status?.slug != StatusSlugs.inProgress
-            ? XBookingCard(
-                currentBooking: currentBooking,
-                isInProgress: isInProgress,
-                userId: widget.controller.currentUser.id ?? "0",
-              )
-            : XBookingCard(
-                currentBooking: currentBooking,
-                isInProgress: true,
-                hue: hue,
-                userId: widget.controller.currentUser.id ?? "0",
-              );
-      },
-    );
+    return Obx(() {
+      List<Booking> displayedBookings =
+          widget.controller.filteredBookingList.isEmpty
+              ? widget.controller.bookingList
+              : widget.controller.filteredBookingList;
+      return ListView.builder(
+        shrinkWrap: true,
+        itemCount: displayedBookings.length,
+        itemBuilder: (context, index) {
+          Booking currentBooking = displayedBookings[index];
+          bool isInProgress =
+              currentBooking.status?.slug == StatusSlugs.inProgress;
+          return currentBooking.status?.slug != StatusSlugs.inProgress
+              ? XBookingCard(
+                  currentBooking: currentBooking,
+                  isInProgress: isInProgress,
+                  userId: widget.controller.currentUser.id ?? "0",
+                )
+              : XBookingCard(
+                  currentBooking: currentBooking,
+                  isInProgress: true,
+                  hue: hue,
+                  userId: widget.controller.currentUser.id ?? "0",
+                );
+        },
+      );
+    });
   }
 }

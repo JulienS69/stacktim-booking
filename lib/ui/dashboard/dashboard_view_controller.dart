@@ -42,6 +42,7 @@ class DashboardViewController extends GetxController with StateMixin {
   //LIST
   RxList<Status> statusList = <Status>[].obs;
   RxList<Booking> bookingList = <Booking>[].obs;
+  RxList<Booking> filteredBookingList = <Booking>[].obs;
   RxList<Computer> computersList = <Computer>[].obs;
   RxList<Booking> searchedBookingList = <Booking>[].obs;
   List<TargetFocus> tutorialList = [];
@@ -619,20 +620,14 @@ class DashboardViewController extends GetxController with StateMixin {
     );
   }
 
-// TODO FAIRE LA RECHERCHE
-  List<Booking> searchBooking(String searchText) {
-    // Si le champ de recherche est vide, renvoyer la liste complète
-    if (searchText.isEmpty) {
-      return bookingList;
+  void searchBooking(String title) {
+    if (title.isEmpty) {
+      filteredBookingList.assignAll(bookingList);
     } else {
-      for (var booking in bookingList) {
-        if (booking.title?.contains(searchText) ?? false) {
-          searchedBookingList.add(booking);
-        }
-      }
+      filteredBookingList.assignAll(bookingList.where((booking) =>
+          booking.title != null &&
+          booking.title!.toLowerCase().contains(title.toLowerCase())));
     }
-    // Retourne la liste filtrée si des correspondances sont trouvées, sinon retourne la liste complète
-    return searchedBookingList.isNotEmpty ? searchedBookingList : bookingList;
   }
 
   @override
