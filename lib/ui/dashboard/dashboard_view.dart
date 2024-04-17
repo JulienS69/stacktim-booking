@@ -24,6 +24,7 @@ class DashboardView extends GetView<DashboardViewController> {
     return XMobileScaffold(
       bottomNavIndex: 0,
       gapLocation: GapLocation.end,
+      bottomKey: controller.dashboardButtonKey,
       floatingActionButton: FloatingActionButton(
         key: controller.fabButtonKey,
         onPressed: () {
@@ -57,7 +58,9 @@ class DashboardView extends GetView<DashboardViewController> {
               ),
               Obx(
                 () => controller.bookingList.isNotEmpty
-                    ? BookingSearchBar(controller: controller)
+                    ? BookingSearchBar(
+                        controller: controller,
+                      )
                     : const SizedBox.shrink(),
               ),
               //SECTION - FILTERS

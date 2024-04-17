@@ -22,6 +22,7 @@ class CalendarPage extends GetView<CalendarViewController> {
     return XMobileScaffold(
       bottomNavIndex: 1,
       gapLocation: GapLocation.end,
+      bottomKey: controller.calendardButtonKey,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.offAndToNamed(Routes.dashboard, arguments: {
@@ -40,16 +41,17 @@ class CalendarPage extends GetView<CalendarViewController> {
         imagePath: logoOverSlug,
       ),
       body: controller.obx(
-        onLoading: const XLoaderStacktim(),
-        onError: (error) => XErrorPage(
-          contentTitle:
-              "Une erreur s'est produite lors de la récupération du calendrier",
-          onPressedRetry: () {
-            controller.onInit();
-          },
-          bottomNavIndex: 1,
-        ),
-        (state) => Column(
+          onLoading: const XLoaderStacktim(),
+          onError: (error) => XErrorPage(
+                contentTitle:
+                    "Une erreur s'est produite lors de la récupération du calendrier",
+                onPressedRetry: () {
+                  controller.onInit();
+                },
+                bottomNavIndex: 1,
+              ), (state) {
+        controller.showTutorialOnDashboard(context);
+        return Column(
           children: [
             Expanded(
               flex: 3,
@@ -238,8 +240,8 @@ class CalendarPage extends GetView<CalendarViewController> {
               ),
             )
           ],
-        ),
-      ),
+        );
+      }),
     );
   }
 }

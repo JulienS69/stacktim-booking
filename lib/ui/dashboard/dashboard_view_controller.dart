@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/connection_helper.dart';
 import 'package:stacktim_booking/helper/functions.dart';
+import 'package:stacktim_booking/helper/icons.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
@@ -83,9 +84,6 @@ class DashboardViewController extends GetxController with StateMixin {
   final fabButtonKey = GlobalKey<FormState>(debugLabel: 'fabButtonKey');
   final dashboardButtonKey =
       GlobalKey<FormState>(debugLabel: 'dashboardButtonKey');
-  final calendardButtonKey =
-      GlobalKey<FormState>(debugLabel: 'calendardButtonKey');
-  final profilButtonKey = GlobalKey<FormState>(debugLabel: 'profilButtonKey');
   final stackCreditButtonKey =
       GlobalKey<FormState>(debugLabel: 'stackCreditButtonKey');
   //OTHER
@@ -490,6 +488,60 @@ class DashboardViewController extends GetxController with StateMixin {
   }
 
   fillTutorialList() {
+    tutorialList.add(
+      TargetFocus(
+        identify: "Dashboard",
+        enableOverlayTab: true,
+        keyTarget: dashboardButtonKey,
+        shape: ShapeLightFocus.RRect,
+        color: Colors.transparent,
+        contents: [
+          TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(top: 300),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        dashboardIcon,
+                        size: 40,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Bienvenue dans le Dashboard !",
+                    style: titleText1,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  const Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Découvre toutes tes sessions de jeu sur cette page !",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ))
+        ],
+      ),
+    );
+
     //FAB
     tutorialList.add(
       TargetFocus(
@@ -523,6 +575,7 @@ class DashboardViewController extends GetxController with StateMixin {
         keyTarget: stackCreditButtonKey,
         enableOverlayTab: true,
         shape: ShapeLightFocus.Circle,
+        color: Colors.transparent,
         contents: [
           TargetContent(
               child: Column(
@@ -545,14 +598,21 @@ class DashboardViewController extends GetxController with StateMixin {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Retrouve ton nombre de crédits restant',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  overflow: TextOverflow.clip,
-                  color: Colors.white,
-                ),
+              const Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Consulte ton solde de stack crédits restants. Chaque semaine, tu recevras 2 stack crédits qui te permettront de réserver tes sessions, non cumulables et réinitialisés chaque semaine.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        overflow: TextOverflow.clip,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ))

@@ -27,6 +27,7 @@ class XMobileScaffold extends StatefulWidget {
     Routes.calendar,
     Routes.profil,
   ];
+  final Key? bottomKey;
 
   XMobileScaffold({
     Key? key,
@@ -45,6 +46,7 @@ class XMobileScaffold extends StatefulWidget {
     this.leadingWidget,
     this.extendBodyBehindAppBar,
     this.gapLocation,
+    this.bottomKey,
   }) : super(key: key);
 
   @override
@@ -90,6 +92,7 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
                 calendarIcon,
                 profileIcon,
               ],
+              key: widget.bottomKey,
               splashColor: Colors.white,
               inactiveColor: backgroundColor,
               activeColor: Colors.white,

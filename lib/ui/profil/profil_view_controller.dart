@@ -7,6 +7,7 @@ import 'package:stacktim_booking/game/launcher.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/connection_helper.dart';
 import 'package:stacktim_booking/helper/functions.dart';
+import 'package:stacktim_booking/helper/icons.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
@@ -48,6 +49,7 @@ class ProfilViewController extends GetxController with StateMixin {
   SharedPreferences? sharedPreferences;
   final nickNameButtonKey =
       GlobalKey<FormState>(debugLabel: 'nickNameButtonKey');
+  final profilButtonKey = GlobalKey<FormState>(debugLabel: 'profilButtonKey');
 
 //This allows retrieving the logged-in user.
   Future<void> getCurrentUser() async {
@@ -356,6 +358,8 @@ class ProfilViewController extends GetxController with StateMixin {
   reloadTutorial() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(LocalStorageKeyEnum.isShowTutorial.name, true);
+    await prefs.setBool(LocalStorageKeyEnum.isShowTutorialProfil.name, true);
+    await prefs.setBool(LocalStorageKeyEnum.isShowTutorialCalendar.name, true);
     Get.offAllNamed(Routes.dashboard);
   }
 
@@ -370,7 +374,7 @@ class ProfilViewController extends GetxController with StateMixin {
         if (sharedPreferences != null) {
           isShowTutorial.value = false;
           sharedPreferences?.setBool(
-              LocalStorageKeyEnum.isShowTutorial.name, false);
+              LocalStorageKeyEnum.isShowTutorialProfil.name, false);
         }
         return true;
       },
@@ -403,7 +407,60 @@ class ProfilViewController extends GetxController with StateMixin {
   }
 
   fillTutorialList() {
-    //FAB
+    tutorialList.add(
+      TargetFocus(
+        identify: "Profil",
+        enableOverlayTab: true,
+        keyTarget: profilButtonKey,
+        shape: ShapeLightFocus.RRect,
+        color: Colors.transparent,
+        contents: [
+          TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(top: 300),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        profileIcon,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Profil",
+                    style: titleText1,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  const Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Découvre tes statistiques et d'autres informations qui pourraient t'intéresser !",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            overflow: TextOverflow.clip,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ))
+        ],
+      ),
+    );
+    //NICKAME
     tutorialList.add(
       TargetFocus(
         identify: "NICKNAME",

@@ -38,6 +38,7 @@ class ProfilView extends GetView<ProfilViewController> {
         imagePath: logoOverSlug,
       ),
       gapLocation: GapLocation.end,
+      bottomKey: controller.profilButtonKey,
       bottomNavIndex: 2,
       floatingActionButton: Obx(() => controller.isEditing.value
           ? FloatingActionButton(
