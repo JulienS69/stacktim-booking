@@ -93,7 +93,9 @@ class ProfilView extends GetView<ProfilViewController> {
                       Obx(() => controller.isEditing.value
                           ? EditNickName(controller: controller)
                           : NickName(controller: controller)),
-                      UserRole(controller: controller),
+                      controller.isSkeletonLoading.value
+                          ? const SizedBox.shrink()
+                          : UserRole(controller: controller),
                       const SizedBox(
                         height: 50,
                       ),
