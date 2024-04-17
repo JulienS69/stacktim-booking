@@ -45,7 +45,6 @@ class DashboardViewController extends GetxController with StateMixin {
   RxList<Booking> bookingList = <Booking>[].obs;
   RxList<Booking> filteredBookingList = <Booking>[].obs;
   RxList<Computer> computersList = <Computer>[].obs;
-  RxList<Booking> searchedBookingList = <Booking>[].obs;
   List<TargetFocus> tutorialList = [];
   List<DateTime>? holidaysList;
   //OBJECT
@@ -107,7 +106,9 @@ class DashboardViewController extends GetxController with StateMixin {
           .map((holiday) => DateTime.parse(holiday.dateHoliday ?? ""))
           .toList();
     } catch (e) {
-      //TODO SentryLog impossible de récupérer les jours fériés
+      Sentry.captureMessage(
+          "Impossible de récupérer les jours fériés. - DashBoardViewController");
+      await Sentry.captureException(e);
     }
   }
 
@@ -131,7 +132,9 @@ class DashboardViewController extends GetxController with StateMixin {
   Future<void> getMyBookings() async {
     return await bookingRepository.getMyBookings().then(
           (value) => value.fold(
-            (l) {},
+            (l) async {
+              await Sentry.captureException(l);
+            },
             (r) {
               //If a reservation has the status 'in progress', we need to move it to the top of the list and
               //set a boolean to 'true' to adjust the display.
@@ -145,7 +148,6 @@ class DashboardViewController extends GetxController with StateMixin {
                   isInProgress.value = true;
                 }
               }
-              //TODO FAIRE EN SORTE QUE ça SOIT FAIT COTE BACKEND
               // Supprimer les réservations en cours de la liste principale
               bookingList.removeWhere(
                   (booking) => booking.status?.slug == StatusSlugs.inProgress);
@@ -160,7 +162,9 @@ class DashboardViewController extends GetxController with StateMixin {
   Future<void> getStatusList() async {
     return await statusRepository.getStatusList().then(
           (value) => value.fold(
-            (l) {},
+            (l) async {
+              await Sentry.captureException(l);
+            },
             (r) {
               statusList.value = r;
               for (var status in statusList) {
@@ -177,8 +181,22 @@ class DashboardViewController extends GetxController with StateMixin {
   Future<void> getCurrentUser() async {
     return await userRepository.getCurrentUser().then(
           (value) => value.fold(
-            (l) {},
+            (l) async {
+              await Sentry.captureException(l);
+            },
             (r) {
+              Sentry.configureScope(
+                (v) => v.setUser(
+                  SentryUser(
+                    email: r.email,
+                    data: {
+                      'Token utilisateur':
+                          sharedPreferences?.getString(LocalStorageKey.jwt.name)
+                    },
+                    username: r.fullName,
+                  ),
+                ),
+              );
               if (r.credit != null) {
                 userCreditAvailable.value = 0;
                 userCreditAvailable.value = (r.credit!.creditAvailable ?? 0) -
@@ -201,7 +219,8 @@ class DashboardViewController extends GetxController with StateMixin {
         )
         .then(
           (value) => value.fold(
-            (l) {
+            (l) async {
+              await Sentry.captureException(l);
               //TODO A TESTER CE CAS
               showSnackbar('Plus de places disponible à cette date',
                   SnackStatusEnum.error);
@@ -233,7 +252,8 @@ class DashboardViewController extends GetxController with StateMixin {
         .createBooking(currentBooking: currentBooking)
         .then(
           (value) => value.fold(
-            (l) {
+            (l) async {
+              await Sentry.captureException(l);
               AwesomeDialog(
                 context: Get.context!,
                 dialogType: DialogType.error,
@@ -312,7 +332,6 @@ class DashboardViewController extends GetxController with StateMixin {
     HapticFeedback.heavyImpact();
     isDatePicked.value = true;
     isShowingDatePicker.value = false;
-    // String formattedDate = DateFormat('yyyy-MM-dd').format(datePicked);
     selectedDate.value = DateFormat('yyyy-MM-dd').format(datePicked);
     bookedAt.value = DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(datePicked);
     if (startingtimeSelected.isEmpty) {
@@ -703,7 +722,9 @@ class DashboardViewController extends GetxController with StateMixin {
       await checkArgument();
       change(null, status: RxStatus.success());
     } catch (e) {
-      Sentry.captureException(e);
+      Sentry.captureMessage(
+          "Erreur lors de l'initialisation des requêtes. - DashboardViewController");
+      await Sentry.captureException(e);
       change(null, status: RxStatus.error());
     }
     super.onInit();

@@ -169,3 +169,16 @@ String formatDateInLocal({
 String teamsUrlOfUser({required String userMail}) {
   return "https://teams.microsoft.com/l/chat/0/0?users=$userMail&message=[Message envoyé depuis l'application Stacktim Booking]";
 }
+
+// Rate for SENTRY
+double getTracesSampleRateForSentry({
+  required String environnement,
+}) {
+  double traceRate = 0.2;
+  if (environnement == "PROD" || environnement == "DEMO") {
+    traceRate = 0.2;
+  } else if (environnement == "RD" || environnement == "RC") {
+    traceRate = 1.0;
+  }
+  return traceRate;
+}

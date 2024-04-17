@@ -40,7 +40,8 @@ class LoginViewController extends GetxController with StateMixin {
   Future<void> getMicrosftUrl() async {
     return await loginRepository.getMicrosoftUrl().then(
           (value) => value.fold(
-            (l) {
+            (l) async {
+              await Sentry.captureException(l);
               showSnackbar("Le service est momentanément indisponible",
                   SnackStatusEnum.error);
             },
@@ -82,7 +83,8 @@ class LoginViewController extends GetxController with StateMixin {
             }
           },
           onPageStarted: (String url) {},
-          onWebResourceError: (error) {
+          onWebResourceError: (error) async {
+            await Sentry.captureException(error);
             Sentry.captureMessage(
                 "Error when displaying the web page in the web app view. Error : ${error.toString()} initialWebView() -> XLogicForLogin / LOGIN_KIT_DAILYAPPS");
             Get.offAllNamed(Routes.login);

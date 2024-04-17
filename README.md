@@ -15,16 +15,28 @@ Flutter mobile application allowing to book a gaming session in the E-Sport room
 -------------------------------------------------------------------------------------------------
 
 # Command for build APK in ANDROID : 
-flutter build apk --release --no-tree-shake-icons
+    RD : 
+        flutter build apk --release --no-tree-shake-icons --dart-define="ENV_TYPE=RD"
+    RC : 
+        flutter build apk --release --no-tree-shake-icons --dart-define="ENV_TYPE=RD"
+    PROD:
+        flutter build apk --release --no-tree-shake-icons --dart-define="ENV_TYPE=PROD"
 
-# Command for build APPBUNDLE in ANDROID : 
-flutter build appbundle --release --no-tree-shake-icons
+# Command for build APPBUNDLE in ANDROID :
+flutter build appbundle --release --no-tree-shake-icons --dart-define="ENV_TYPE=PROD"
+
 
 # Command for build IOS : 
 flutter build ios --release --no-tree-shake-icons 
 
 # Command for build ARCHIVE in IOS : 
-flutter build ipa --release --no-tree-shake-icons 
+    RD : 
+        flutter build ipa --release --no-tree-shake-icons --dart-define="ENV_TYPE=RD"
+    RC : 
+        flutter build ipa --release --no-tree-shake-icons --dart-define="ENV_TYPE=RC"
+    PROD:
+        flutter build ipa --release --no-tree-shake-icons --dart-define="ENV_TYPE=PROD"
+
 
 # Generate models in project :
 flutter pub run build_runner build --delete-conflicting-outputs

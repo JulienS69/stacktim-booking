@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/icons.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
@@ -36,6 +37,9 @@ class CalendarViewController extends GetxController with StateMixin {
       await getMonthlyBookings(DateTime.now().month);
       change(null, status: RxStatus.success());
     } catch (e) {
+      await Sentry.captureMessage(
+          "Erreur lors de l'initialisation des requêtes. - CalendarViewController");
+      await Sentry.captureException(e);
       change(null, status: RxStatus.error());
     }
 
@@ -45,7 +49,10 @@ class CalendarViewController extends GetxController with StateMixin {
   getMonthlyBookings(int month) async {
     await bookingRepository.getCalendarMonthlyBooking(monthNumber: month).then(
           (value) => value.fold(
-            (l) => bookingList = [],
+            (l) {
+              Sentry.captureException(l);
+              bookingList = [];
+            },
             (r) {
               bookingList = r;
             },
@@ -60,7 +67,7 @@ class CalendarViewController extends GetxController with StateMixin {
           .map((holiday) => DateTime.parse(holiday.dateHoliday ?? ""))
           .toList();
     } catch (e) {
-      //TODO SentryLog impossible de récupérer les jours fériés
+      Sentry.captureException(e);
     }
   }
 

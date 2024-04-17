@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/game/launcher.dart';
 import 'package:stacktim_booking/helper/color.dart';
@@ -55,7 +56,8 @@ class ProfilViewController extends GetxController with StateMixin {
   Future<void> getCurrentUser() async {
     return await userRepository.getCurrentUser().then(
           (value) => value.fold(
-            (l) {
+            (l) async {
+              await Sentry.captureException(l);
               showSnackbar(
                   "Un problème est survenue lors de la récupération de tes informations",
                   SnackStatusEnum.error);
@@ -76,7 +78,9 @@ class ProfilViewController extends GetxController with StateMixin {
   Future<void> getAdministratorUser() async {
     return await userRepository.getAdministrators().then(
           (value) => value.fold(
-            (l) {},
+            (l) async {
+              await Sentry.captureException(l);
+            },
             (r) {
               administratorList = r;
             },
@@ -337,7 +341,8 @@ class ProfilViewController extends GetxController with StateMixin {
             nickName: nickName.value, userUuid: currentUser.id ?? "0")
         .then(
           (value) => value.fold(
-            (l) {
+            (l) async {
+              await Sentry.captureException(l);
               showSnackbar("Un problème est survenue !", SnackStatusEnum.error);
             },
             (r) {
@@ -505,6 +510,9 @@ class ProfilViewController extends GetxController with StateMixin {
         sharedPreferences = await SharedPreferences.getInstance();
         isSkeletonLoading.value = false;
       } catch (e) {
+        Sentry.captureMessage(
+            "Erreur lors de l'initialisation des requêtes. - ProfilViewController");
+        await Sentry.captureException(e);
         change(null, status: RxStatus.error());
       }
     }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/logic/models/computer/computer.dart';
@@ -25,6 +26,9 @@ class BookingDetailViewController extends GetxController with StateMixin {
       await getBooking();
       change(null, status: RxStatus.success());
     } catch (e) {
+      await Sentry.captureMessage(
+          "Erreur lors de l'initialisation des requêtes. - Booking Détail");
+      await Sentry.captureException(e);
       change(null, status: RxStatus.error());
     }
     super.onInit();
@@ -33,7 +37,9 @@ class BookingDetailViewController extends GetxController with StateMixin {
   Future<void> getBooking() async {
     return await bookingRepository.getBooking(currentBookingId: bookingId).then(
           (value) => value.fold(
-            (l) {},
+            (l) async {
+              await Sentry.captureException(l);
+            },
             (r) {
               currentBookingList.value = r;
               getBookingOfCurrentUser();
@@ -73,7 +79,8 @@ class BookingDetailViewController extends GetxController with StateMixin {
         .cancelBooking(currentBookingId: bookingId)
         .then(
           (value) => value.fold(
-            (l) {
+            (l) async {
+              await Sentry.captureException(l);
               showSnackbar(
                   "Impossible d'annuler moins de 2 heures avant le début de la réservation.",
                   SnackStatusEnum.error);

@@ -50,6 +50,10 @@ String demoStacktimBookingApi =
 String prodStacktimBookingApi = "https://stacktim-booking-api.dailyapps.fr/api";
 // Link that never expires
 String stacktimDiscordUrl = "https://discord.gg/HHvzYuZRC4";
+//SENTRY URL
+String sentryUrl = "https://ba9ffe8555cc99f0f99ab537fe16c310@sentry.xefi.fr/31";
+//OTHERS
+String envType = const String.fromEnvironment('ENV_TYPE');
 
 //STUB - PDF
 const String pdfAgreement = 'assets/pdf/agreement.pdf';

@@ -34,7 +34,6 @@ class CalendarDetailViewController extends GetxController with StateMixin {
       }
     }
     change(null, status: RxStatus.success());
-
     super.onInit();
   }
 }
