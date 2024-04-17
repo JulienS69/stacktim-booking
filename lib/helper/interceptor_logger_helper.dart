@@ -44,7 +44,7 @@ showLogOnResponse({
     if (response.statusCode! >= 200 && response.statusCode! <= 299) {
       log(
           name: 'API',
-          '\x1B[37m RESPONSE \x1B[32m${response.statusCode} ✅ \x1B[36m=> \x1B[37mURL : \x1B[92m${response.requestOptions.baseUrl} \x1B[37mRoute : \x1B[92m${response.requestOptions.path}');
+          '\x1B[37m RESPONSE \x1B[32m${response.statusCode} ✅ \x1B[38;2;250;150;0m=> \x1B[37mURL : \x1B[38;2;250;150;0m${response.requestOptions.baseUrl} \x1B[37mRoute : \x1B[38;2;250;150;0m${response.requestOptions.path}');
     } else {
       log(
           name: 'API',
