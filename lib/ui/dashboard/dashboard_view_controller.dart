@@ -763,6 +763,16 @@ class DashboardViewController extends GetxController with StateMixin {
     }
   }
 
+// Retrieve the correct text based on the time of day.
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour >= 18 || hour < 6) {
+      return 'Bonsoir';
+    } else {
+      return 'Bonjour';
+    }
+  }
+
   @override
   void onInit() async {
     change(null, status: RxStatus.loading());
