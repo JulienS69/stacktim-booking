@@ -771,13 +771,17 @@ class DashboardViewController extends GetxController with StateMixin {
     await fetchHolidays();
     try {
       await getCurrentUser();
-      await getMyBookings();
-      await getStatusList();
-      await checkArgument();
-      if (isCheckInTime) {
-        showPhotoDialog(Get.context!);
+      if (currentUser.id != null) {
+        await getMyBookings();
+        await getStatusList();
+        await checkArgument();
+        if (isCheckInTime) {
+          showPhotoDialog(Get.context!);
+        }
+        change(null, status: RxStatus.success());
+      } else {
+        change(null, status: RxStatus.error());
       }
-      change(null, status: RxStatus.success());
     } catch (e) {
       Sentry.captureMessage(
           "Erreur lors de l'initialisation des requêtes. - DashboardViewController");

@@ -72,7 +72,7 @@ class ProfilView extends GetView<ProfilViewController> {
           contentTitle:
               "Une erreur s'est produite lors de la récupération de tes informations",
           onPressedRetry: () {
-            //TODO RETRY LES REQUÊTES
+            controller.onInit();
           },
           bottomNavIndex: 2,
         ),

@@ -46,7 +46,7 @@ class DashboardView extends GetView<DashboardViewController> {
           contentTitle:
               "Une erreur s'est produite lors de la récupération de tes sessions",
           onPressedRetry: () {
-            //TODO RETRY LES REQUÊTES
+            controller.onInit();
           },
         ),
         (state) {

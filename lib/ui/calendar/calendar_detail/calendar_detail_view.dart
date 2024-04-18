@@ -65,7 +65,9 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
                     ? "Il n'est plus possible de réserver une session à cette date"
                     : "Aucune session réservée pour ce jour.",
                 showRetryButton: false,
-                onPressedRetry: () {},
+                onPressedRetry: () {
+                  controller.onInit();
+                },
               ),
         bottomSheet: Container(
           color: Colors.black,

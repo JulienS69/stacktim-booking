@@ -59,7 +59,7 @@ class AdministratorView extends GetView<ProfilViewController> {
                   contentTitle: "Impossible de récupérer contacter le serveur",
                   onPressedRetry: () {
                     controller.getAdministratorUser();
-                    //TODO RETRY LES REQUÊTES
+                    controller.onInit();
                   },
                   bottomNavIndex: 2,
                 );

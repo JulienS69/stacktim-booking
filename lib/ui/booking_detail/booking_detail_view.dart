@@ -1,8 +1,6 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
@@ -25,7 +23,9 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
       onError: (error) => XErrorPage(
         contentTitle:
             "Une erreur s'est produite lors de la récupération du détail de ta session",
-        onPressedRetry: () {},
+        onPressedRetry: () {
+          controller.onInit();
+        },
         withAppBar: true,
       ),
       onLoading: const Stack(
@@ -199,27 +199,27 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                       ),
                       FilledButton(
                         onPressed: () async {
-                          AwesomeDialog(
-                            context: context,
-                            dialogType: DialogType.question,
-                            dialogBackgroundColor: backgroundColor,
-                            animType: AnimType.rightSlide,
-                            title: 'Attention',
-                            desc: !controller.isInProgress.value
-                                ? 'Souhaites-tu vraiment annuler ta réservation ?'
-                                : "Souhaites-tu terminer ta session ?",
-                            btnCancelText: 'Je confirme',
-                            btnCancelOnPress: () async {
-                              if (!controller.isInProgress.value) {
-                                await controller.cancelBooking();
-                              } else {
-                                //TODO PRISE DE PHOTO
-                              }
-                            },
-                            btnOkText: 'Retour',
-                            btnOkOnPress: () {},
-                            btnOkColor: Colors.black,
-                          ).show();
+                          // AwesomeDialog(
+                          //   context: context,
+                          //   dialogType: DialogType.question,
+                          //   dialogBackgroundColor: backgroundColor,
+                          //   animType: AnimType.rightSlide,
+                          //   title: 'Attention',
+                          //   desc: !controller.isInProgress.value
+                          //       ? 'Souhaites-tu vraiment annuler ta réservation ?'
+                          //       : "Souhaites-tu terminer ta session ?",
+                          //   btnCancelText: 'Je confirme',
+                          //   btnCancelOnPress: () async {
+                          //     if (!controller.isInProgress.value) {
+                          //       await controller.cancelBooking();
+                          //     } else {
+                          //       //TODO PRISE DE PHOTO
+                          //     }
+                          //   },
+                          //   btnOkText: 'Retour',
+                          //   btnOkOnPress: () {},
+                          //   btnOkColor: Colors.black,
+                          // ).show();
                         },
                         child: Text(
                           controller.isInProgress.value
