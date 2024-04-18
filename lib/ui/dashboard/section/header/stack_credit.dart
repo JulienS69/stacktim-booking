@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/color.dart';
+import 'package:stacktim_booking/helper/dialogHelper.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
@@ -33,26 +34,34 @@ class StackCredit extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Row(
-                key: controller.stackCreditButtonKey,
-                children: [
-                  Obx(() => Text(
-                        controller.userCreditAvailable.value.toString(),
-                        style: titleStyle.copyWith(
-                          color: primary,
-                        ),
-                      )),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Image.asset(
-                    coinLogo,
-                    height: 15,
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                ],
+              InkWell(
+                onTap: () {
+                  showCoinDialog();
+                },
+                splashColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: Row(
+                  key: controller.stackCreditButtonKey,
+                  children: [
+                    Obx(() => Text(
+                          controller.userCreditAvailable.value.toString(),
+                          style: titleStyle.copyWith(
+                            color: primary,
+                          ),
+                        )),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Image.asset(
+                      coinLogo,
+                      height: 15,
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
