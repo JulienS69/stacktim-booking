@@ -28,6 +28,7 @@ import 'package:stacktim_booking/logic/repository/holliday_repository.dart';
 import 'package:stacktim_booking/logic/repository/status_repository.dart';
 import 'package:stacktim_booking/logic/repository/user_repository.dart';
 import 'package:stacktim_booking/ui/new_booking/new_booking_view.dart';
+import 'package:stacktim_booking/widget/x_booking_card.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
@@ -60,6 +61,7 @@ class DashboardViewController extends GetxController with StateMixin {
   RxBool isInProgress = false.obs;
   Rx<double> progressValue = 0.0.obs;
   RxBool isConfirmed = false.obs;
+  bool isCheckInTime = false;
   //STRING
   RxString titleSelected = "".obs;
   RxString bookedAt = "".obs;
@@ -71,6 +73,7 @@ class DashboardViewController extends GetxController with StateMixin {
   RxString endingtimeSelected = "".obs;
   String computerUuidSelected = "";
   String statusIdSelected = '';
+  String bookingIdToChecking = '';
   //INT
   RxInt computerSelected = 0.obs;
   RxInt userCreditAvailable = 0.obs;
@@ -146,6 +149,14 @@ class DashboardViewController extends GetxController with StateMixin {
                 if (booking.status?.slug == StatusSlugs.inProgress) {
                   inProgressBookings.add(booking);
                   isInProgress.value = true;
+                }
+                // FOR SHOWING DIALOG TO TAKING A PICTURE FOR CHECKIN
+                if (booking.status?.slug == StatusSlugs.inProgress &&
+                        booking.isCheckinComplete != true ||
+                    booking.status?.slug == StatusSlugs.passee &&
+                        booking.isCheckinComplete != true) {
+                  isCheckInTime = true;
+                  bookingIdToChecking = booking.id ?? "";
                 }
               }
               // Supprimer les réservations en cours de la liste principale
@@ -525,8 +536,8 @@ class DashboardViewController extends GetxController with StateMixin {
   }
 
   Future<void> getDataTutorial() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? getTutoBool = prefs.getBool(LocalStorageKeyEnum.isShowTutorial.name);
+    bool? getTutoBool =
+        sharedPreferences?.getBool(LocalStorageKeyEnum.isShowTutorial.name);
     if (getTutoBool == null || getTutoBool == true) {
       fillTutorialList();
       isShowTutorial.value = true;
@@ -534,9 +545,9 @@ class DashboardViewController extends GetxController with StateMixin {
   }
 
   Future<void> closeTutorial() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     isShowTutorial.value = false;
-    await prefs.setBool(LocalStorageKeyEnum.isShowTutorial.name, false);
+    await sharedPreferences?.setBool(
+        LocalStorageKeyEnum.isShowTutorial.name, false);
   }
 
   fillTutorialList() {
@@ -755,6 +766,9 @@ class DashboardViewController extends GetxController with StateMixin {
       await getMyBookings();
       await getStatusList();
       await checkArgument();
+      if (isCheckInTime) {
+        showPhotoDialog(Get.context!);
+      }
       change(null, status: RxStatus.success());
     } catch (e) {
       Sentry.captureMessage(

@@ -20,6 +20,7 @@ const String logoOverSlug = 'assets/images/logo_over_slug.png';
 const String teams = 'assets/images/teams.png';
 const String discord = 'assets/images/discord.png';
 const String arrow = 'assets/images/arrow.png';
+const String camera = 'assets/images/camera.png';
 
 //STUB - FOLDER LOTTIE
 const String lottieCheck = 'assets/lotties/check.json';

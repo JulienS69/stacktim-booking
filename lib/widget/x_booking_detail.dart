@@ -206,39 +206,42 @@ class BookingDetail extends StatelessWidget {
                       ),
                     )
                   : const SizedBox.shrink(),
-              InkWell(
-                onTap: () {
-                  if (userMail.isNotEmpty) {
-                    launchUrl(
-                      mode: LaunchMode.externalApplication,
-                      Uri.parse(
-                        teamsUrlOfUser(userMail: userMail),
+              !isCurrentUser
+                  ? InkWell(
+                      onTap: () {
+                        if (userMail.isNotEmpty) {
+                          launchUrl(
+                            mode: LaunchMode.externalApplication,
+                            Uri.parse(
+                              teamsUrlOfUser(userMail: userMail),
+                            ),
+                          );
+                        } else {
+                          showSnackbar(
+                              "Impossible de contacter cet utilisateur pour le moment",
+                              SnackStatusEnum.warning);
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Row(
+                          children: [
+                            const Text(
+                              'Contacter sur Teams',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  decoration: TextDecoration.underline),
+                            ),
+                            const Spacer(),
+                            Image.asset(
+                              teams,
+                              height: 25,
+                            ),
+                          ],
+                        ),
                       ),
-                    );
-                  } else {
-                    showSnackbar(
-                        "Impossible de contacter cet utilisateur pour le moment",
-                        SnackStatusEnum.warning);
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Contacter sur Teams',
-                        style: TextStyle(
-                            fontSize: 12, decoration: TextDecoration.underline),
-                      ),
-                      const Spacer(),
-                      Image.asset(
-                        teams,
-                        height: 25,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
         ),

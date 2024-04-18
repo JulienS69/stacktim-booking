@@ -375,16 +375,17 @@ class ProfilViewController extends GetxController with StateMixin {
 
 //This allows disconnecting the user by removing items stored in their local storage.
   Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(LocalStorageKey.jwt.name);
+    sharedPreferences?.remove(LocalStorageKey.jwt.name);
   }
 
 //This allows restarting the tutorial on the dashboard page.
   reloadTutorial() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(LocalStorageKeyEnum.isShowTutorial.name, true);
-    await prefs.setBool(LocalStorageKeyEnum.isShowTutorialProfil.name, true);
-    await prefs.setBool(LocalStorageKeyEnum.isShowTutorialCalendar.name, true);
+    await sharedPreferences?.setBool(
+        LocalStorageKeyEnum.isShowTutorial.name, true);
+    await sharedPreferences?.setBool(
+        LocalStorageKeyEnum.isShowTutorialProfil.name, true);
+    await sharedPreferences?.setBool(
+        LocalStorageKeyEnum.isShowTutorialCalendar.name, true);
     Get.offAllNamed(Routes.dashboard);
   }
 
@@ -416,9 +417,8 @@ class ProfilViewController extends GetxController with StateMixin {
   }
 
   Future<void> getDataTutorial() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? getTutoBool =
-        prefs.getBool(LocalStorageKeyEnum.isShowTutorialProfil.name);
+    bool? getTutoBool = sharedPreferences
+        ?.getBool(LocalStorageKeyEnum.isShowTutorialProfil.name);
     if (getTutoBool == null || getTutoBool == true) {
       fillTutorialList();
       isShowTutorial.value = true;
@@ -426,9 +426,9 @@ class ProfilViewController extends GetxController with StateMixin {
   }
 
   Future<void> closeTutorial() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     isShowTutorial.value = false;
-    await prefs.setBool(LocalStorageKeyEnum.isShowTutorialProfil.name, false);
+    await sharedPreferences?.setBool(
+        LocalStorageKeyEnum.isShowTutorialProfil.name, false);
   }
 
   fillTutorialList() {
@@ -520,6 +520,7 @@ class ProfilViewController extends GetxController with StateMixin {
     } else {
       change(null, status: RxStatus.success());
       try {
+        sharedPreferences = await SharedPreferences.getInstance();
         await getDataTutorial();
         await getCurrentUser();
         getUserRole();
@@ -527,7 +528,6 @@ class ProfilViewController extends GetxController with StateMixin {
         packageInfo = await PackageInfo.fromPlatform();
         version = packageInfo?.version ?? "1.0.0";
         buildNumber = packageInfo?.buildNumber ?? "1";
-        sharedPreferences = await SharedPreferences.getInstance();
         isSkeletonLoading.value = false;
       } catch (e) {
         Sentry.captureMessage(

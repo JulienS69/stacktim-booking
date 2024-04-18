@@ -99,9 +99,8 @@ class CalendarViewController extends GetxController with StateMixin {
   }
 
   Future<void> getDataTutorial() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? getTutoBool =
-        prefs.getBool(LocalStorageKeyEnum.isShowTutorialCalendar.name);
+    bool? getTutoBool = sharedPreferences
+        ?.getBool(LocalStorageKeyEnum.isShowTutorialCalendar.name);
     if (getTutoBool == null || getTutoBool == true) {
       fillTutorialList();
       isShowTutorial.value = true;
@@ -109,9 +108,9 @@ class CalendarViewController extends GetxController with StateMixin {
   }
 
   Future<void> closeTutorial() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     isShowTutorial.value = false;
-    await prefs.setBool(LocalStorageKeyEnum.isShowTutorialCalendar.name, false);
+    await sharedPreferences?.setBool(
+        LocalStorageKeyEnum.isShowTutorialCalendar.name, false);
   }
 
   fillTutorialList() {

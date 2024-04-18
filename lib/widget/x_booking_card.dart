@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/date_time_helper.dart';
 import 'package:stacktim_booking/helper/functions.dart';
+import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/navigation/route.dart';
 
 import '../logic/models/booking/booking.dart';
-import '../navigation/route.dart';
 import 'x_chevron.dart';
 
 class XBookingCard extends StatelessWidget {
@@ -189,4 +191,105 @@ class XBookingCard extends StatelessWidget {
       ],
     );
   }
+}
+
+void showPhotoDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) => PopScope(
+      canPop: false,
+      onPopInvoked: (s) {
+        // AwesomeDialog(
+        //   context: context,
+        //   dialogType: DialogType.warning,
+        //   dialogBackgroundColor: backgroundColor,
+        //   animType: AnimType.rightSlide,
+        //   title: 'Attention',
+        //   desc:
+        //       "Tu dois prendre la photo de ta place (de ton setup) avant de jouer",
+        //   btnOkText: 'Retour',
+        //   btnOkOnPress: () {},
+        //   btnOkColor: Colors.black,
+        // ).show();
+      },
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          // AwesomeDialog(
+          //   context: context,
+          //   dialogType: DialogType.warning,
+          //   dialogBackgroundColor: backgroundColor,
+          //   animType: AnimType.rightSlide,
+          //   title: 'Attention',
+          //   desc: "Tu dois prendre la photo de ta place (de ton setup) avant de jouer",
+          //   btnOkText: 'Retour',
+          //   btnOkOnPress: () {},
+          //   btnOkColor: Colors.black,
+          // ).show();
+        },
+        child: Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: backgroundColor,
+            ),
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                InkWell(
+                  onTap: () async {
+                    final ImagePicker picker = ImagePicker();
+                    //TODO LAUNCH CAMERA PICKER
+                    final XFile? photo =
+                        await picker.pickImage(source: ImageSource.camera);
+                    //TODO APRES LA REQUETE
+                    // controller.isCheckInTime.value = false
+                    //  bookingIdToChecking = "";
+                  },
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Image.asset(camera),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Ta session a commencé, il est nécessaire de prendre une photo de ta place avant de commencer à jouer",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    //TODO Mettre en place la requête
+                    final ImagePicker picker = ImagePicker();
+                    //TODO LAUNCH CAMERA PICKER
+                    final XFile? photo = await picker.pickImage(
+                        source: ImageSource.camera,
+                        requestFullMetadata: false,
+                        imageQuality: 80);
+                    //TODO APRES LA REQUETE
+                    // controller.isCheckInTime.value = false
+                    //  bookingIdToChecking = "";
+                    // refresh la liste de booking (onInit())
+                  },
+                  child: const Text('Prendre ma photo'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }

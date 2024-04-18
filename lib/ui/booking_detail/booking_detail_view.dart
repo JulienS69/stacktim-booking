@@ -75,7 +75,7 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                 fullName: controller.currentBooking.value.user?.fullName ?? '',
                 nickName: controller.currentBooking.value.user?.nickName ??
                     'Aucun pseudo',
-                isCurrentUser: false,
+                isCurrentUser: true,
                 userMail: controller.currentBooking.value.user?.email ?? "",
                 startedBookingHourPicked:
                     controller.currentBooking.value.beginAt?.substring(0, 5) ??
