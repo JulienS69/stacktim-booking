@@ -100,4 +100,39 @@ class UserRepository extends RestApiRepository {
       ),
     );
   }
+
+  Future<Either<dynamic, dynamic>> updateStackCredits({
+    required String creditId,
+    required int credits,
+  }) async {
+    return await handlingPostResponse(
+      queryRoute: "/credits/mutate",
+      showError: false,
+      showSuccess: false,
+      body: {
+        "mutate": [
+          {
+            "operation": "update",
+            "key": creditId,
+            "attributes": {
+              "available": credits,
+            }
+          }
+        ]
+      },
+    ).then(
+      (value) => value.fold(
+        (l) async {
+          if (l is Map && l.containsKey("message")) {
+            return left(l["message"]);
+          } else {
+            return left(l);
+          }
+        },
+        (r) async {
+          return right(r);
+        },
+      ),
+    );
+  }
 }

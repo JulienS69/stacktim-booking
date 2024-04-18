@@ -41,7 +41,7 @@ class ProfilViewController extends GetxController with StateMixin {
   int counter = 0;
   int counterTeam = 0;
   int counterGame = 0;
-  int userCreditAvailable = 0;
+  Rx<int> userCreditAvailable = 0.obs;
   //LIST
   List<TargetFocus> tutorialList = [];
   List<User> administratorList = [];
@@ -65,7 +65,7 @@ class ProfilViewController extends GetxController with StateMixin {
             },
             (r) {
               if (r.credit != null) {
-                userCreditAvailable = (r.credit!.creditAvailable ?? 0) -
+                userCreditAvailable.value = (r.credit!.creditAvailable ?? 0) -
                     (r.credit!.notYetUsed ?? 0);
               }
               currentUser = r;
@@ -233,12 +233,11 @@ class ProfilViewController extends GetxController with StateMixin {
                       child: const Text('Retour'),
                     ),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (passwordCreditController.text == "jdc24") {
                           Get.back();
-                          showSnackbar("Rechargement des crédits en cours",
-                              SnackStatusEnum.simple);
-                          //TODO REQUEST PERMETTANT DE RECHARGER LES CRÉDITS
+
+                          await updateStackCredits();
                           passwordCreditController.clear();
                           stackCreditController.clear();
                         } else {
@@ -348,6 +347,27 @@ class ProfilViewController extends GetxController with StateMixin {
             (r) {
               showSnackbar(
                   "Ton pseudo a bien été modifié !", SnackStatusEnum.success);
+            },
+          ),
+        );
+  }
+
+  //This allows updating the user's credits
+  Future<void> updateStackCredits() async {
+    await userRepository
+        .updateStackCredits(
+            credits: int.parse(stackCreditController.text),
+            creditId: currentUser.credit?.id ?? "0")
+        .then(
+          (value) => value.fold(
+            (l) async {
+              await Sentry.captureException(l);
+              showSnackbar("Un problème est survenue !", SnackStatusEnum.error);
+            },
+            (r) async {
+              showSnackbar(
+                  "Rechargement des crédits en cours", SnackStatusEnum.simple);
+              await getCurrentUser();
             },
           ),
         );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/profil/profil_view_controller.dart';
 
@@ -17,10 +18,10 @@ class AvailableCredits extends StatelessWidget {
           children: [
             const Text("Stack crédits restant :"),
             const Spacer(),
-            Text(
-              controller.userCreditAvailable.toString(),
-              style: const TextStyle(color: Colors.red, fontSize: 18),
-            ),
+            Obx(() => Text(
+                  controller.userCreditAvailable.value.toString(),
+                  style: const TextStyle(color: Colors.red, fontSize: 18),
+                )),
             const SizedBox(
               width: 5,
             ),
