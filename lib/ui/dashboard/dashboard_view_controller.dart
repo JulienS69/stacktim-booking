@@ -238,47 +238,79 @@ class DashboardViewController extends GetxController with StateMixin {
 //This allows creating the reservation.
   createBooking() async {
     HapticFeedback.vibrate();
-    currentBooking = currentBooking.copyWith(
-      userId: currentUser.id,
-      statusId: statusIdSelected,
-      bookedAt: selectedDate.value,
-      computerId: computerUuidSelected,
-      title: titleSelected.value,
-      endAt: endingtimeSelected.value,
-      beginAt: startingtimeSelected.value,
-      duration: 1,
-    );
-    return await bookingRepository
-        .createBooking(currentBooking: currentBooking)
-        .then(
-          (value) => value.fold(
-            (l) async {
-              await Sentry.captureException(l);
-              AwesomeDialog(
-                context: Get.context!,
-                dialogType: DialogType.error,
-                dialogBackgroundColor: backgroundColor,
-                animType: AnimType.rightSlide,
-                title: 'Oups !',
-                desc:
-                    "Quelque chose c'est mal passé pendant l'enregistrement de ta session",
-                btnCancelText: 'Retour',
-                btnCancelOnPress: () {},
-              ).show();
-            },
-            (r) async {
-              getCurrentUser();
-              getMyBookings();
-              // No await in getMyBookings() because 6 seconds duration of dialog after that
-              await showSuccesDialog();
-              bookingList.refresh();
-              Get.back();
-              clearForm();
-              showSnackbar(
-                  "Réservation prise avec succès !", SnackStatusEnum.success);
-            },
-          ),
-        );
+    //  Convert time strings into hours and minutes
+    List<int> startTimeParts =
+        startingtimeSelected.value.split(':').map(int.parse).toList();
+    List<int> endTimeParts =
+        endingtimeSelected.value.split(':').map(int.parse).toList();
+    // Retrieve the start and end hours and minutes.
+    int startHours = startTimeParts[0];
+    int endHours = endTimeParts[0];
+    // Calculate the duration in hours and half-hours.
+    int durationHours = endHours - startHours;
+    // Check if the user has enough credits to make a reservation.
+    bool heCanReserve = false;
+    int creditAvailable = 0;
+    if (currentUser.credit != null) {
+      if (currentUser.credit!.creditAvailable != null) {
+        int creditNotYetUsed = 0;
+        if (currentUser.credit!.notYetUsed != null) {
+          creditNotYetUsed = currentUser.credit!.notYetUsed!;
+        }
+        int creditAvailable =
+            currentUser.credit!.creditAvailable! - creditNotYetUsed;
+        heCanReserve = (creditAvailable >= durationHours);
+      }
+    }
+    if (heCanReserve) {
+      currentBooking = currentBooking.copyWith(
+        userId: currentUser.id,
+        statusId: statusIdSelected,
+        bookedAt: selectedDate.value,
+        computerId: computerUuidSelected,
+        title: titleSelected.value,
+        endAt: endingtimeSelected.value,
+        beginAt: startingtimeSelected.value,
+        duration: durationHours,
+      );
+      return await bookingRepository
+          .createBooking(currentBooking: currentBooking)
+          .then(
+            (value) => value.fold(
+              (l) async {
+                await Sentry.captureException(l);
+                AwesomeDialog(
+                  context: Get.context!,
+                  dialogType: DialogType.error,
+                  dialogBackgroundColor: backgroundColor,
+                  animType: AnimType.rightSlide,
+                  title: 'Oups !',
+                  desc:
+                      "Quelque chose c'est mal passé pendant l'enregistrement de ta session",
+                  btnCancelText: 'Retour',
+                  btnCancelOnPress: () {},
+                ).show();
+              },
+              (r) async {
+                getCurrentUser();
+                getMyBookings();
+                // No await in getMyBookings() because 6 seconds duration of dialog after that
+                await showSuccesDialog();
+                bookingList.refresh();
+                Get.back();
+                clearForm();
+                showSnackbar(
+                    "Réservation prise avec succès !", SnackStatusEnum.success);
+              },
+            ),
+          );
+    } else {
+      Sentry.captureMessage(
+          "L'utilisateur ne possède pas assez de crédits pour pouvoir réserver la session sélectionnée");
+      showSnackbar(
+          "Tu ne possèdes pas assez de crédits. Crédits restant : $creditAvailable",
+          SnackStatusEnum.warning);
+    }
   }
 
 //This allows clearing all variables."
@@ -334,6 +366,7 @@ class DashboardViewController extends GetxController with StateMixin {
     isShowingDatePicker.value = false;
     selectedDate.value = DateFormat('yyyy-MM-dd').format(datePicked);
     bookedAt.value = DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(datePicked);
+
     if (startingtimeSelected.isEmpty) {
       showTimePicker(
           context: context,
@@ -713,6 +746,8 @@ class DashboardViewController extends GetxController with StateMixin {
   void onInit() async {
     change(null, status: RxStatus.loading());
     sharedPreferences = await SharedPreferences.getInstance();
+    // Gettting memory size of camera
+    WidgetsFlutterBinding.ensureInitialized();
     await getDataTutorial();
     await fetchHolidays();
     try {
