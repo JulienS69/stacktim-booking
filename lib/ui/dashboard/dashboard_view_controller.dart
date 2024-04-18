@@ -99,6 +99,16 @@ class DashboardViewController extends GetxController with StateMixin {
       if (Get.arguments['openSheet'] != null) {
         checkCreditBeforeCreateBooking();
       }
+      if (Get.arguments['datePickedFromCalendar'] != null) {
+        dateController?.selectedDate =
+            Get.arguments['datePickedFromCalendar'] ?? DateTime.now();
+        isDatePicked.value = true;
+        isShowingDatePicker.value = false;
+        selectedDate.value = DateFormat('yyyy-MM-dd')
+            .format(dateController?.selectedDate ?? DateTime.now());
+        bookedAt.value = DateFormat('EEEE d MMMM yyyy', 'fr_FR')
+            .format(dateController?.selectedDate ?? DateTime.now());
+      }
     }
   }
 
@@ -757,8 +767,6 @@ class DashboardViewController extends GetxController with StateMixin {
   void onInit() async {
     change(null, status: RxStatus.loading());
     sharedPreferences = await SharedPreferences.getInstance();
-    // Gettting memory size of camera
-    WidgetsFlutterBinding.ensureInitialized();
     await getDataTutorial();
     await fetchHolidays();
     try {

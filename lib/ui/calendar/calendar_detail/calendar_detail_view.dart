@@ -135,6 +135,8 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
                             Routes.dashboard,
                             arguments: {
                               'openSheet': true,
+                              'datePickedFromCalendar':
+                                  controller.dateTimeSelected,
                             },
                           );
                         },
