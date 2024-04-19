@@ -89,13 +89,10 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                     controller.currentBooking.value.computer?.number ?? 0,
                 isWithSeat: true,
                 onTap: () async {
-                  await showDialog(
-                    context: Get.context!,
-                    builder: (BuildContext context) {
-                      return SeatPickerDetail(
-                        bookingDetailViewController: controller,
-                      );
-                    },
+                  Get.to(
+                    SeatPickerDetail(
+                      bookingDetailViewController: controller,
+                    ),
                   );
                 },
               ),
