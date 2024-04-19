@@ -20,12 +20,17 @@ class IntroView extends GetView<IntroViewController> {
   @override
   Widget build(BuildContext context) {
     Rx<double> rotationAngle = 0.0.obs;
+    RxBool isIcon = false.obs;
     return controller.obx(
       (state) => Scaffold(
-        //TODO TUTO SAME OF DASHBOARD
         body: LiquidSwipe.builder(
           itemCount: liquidSwipeData.length,
           itemBuilder: (context, index) {
+            if (index == 4) {
+              isIcon.value = true;
+            } else {
+              isIcon.value = false;
+            }
             return InkWell(
               onTap: () {
                 if (index == 0) {
@@ -204,15 +209,19 @@ class IntroView extends GetView<IntroViewController> {
             );
           },
           positionSlideIcon: 0.8,
-          slideIconWidget: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
+          slideIconWidget: Obx(
+            () => isIcon.value
+                ? const SizedBox.shrink()
+                : const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                  ),
           ),
           waveType: WaveType.circularReveal,
           fullTransitionValue: 880,
           enableSideReveal: true,
           preferDragFromRevealedArea: true,
-          enableLoop: true,
+          enableLoop: false,
           ignoreUserGestureWhileAnimating: true,
         ),
       ),
