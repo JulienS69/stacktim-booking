@@ -783,6 +783,16 @@ class DashboardViewController extends GetxController with StateMixin {
     });
   }
 
+  void scrollToTop(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Scrollable.ensureVisible(
+        context,
+        alignment: 0.0,
+        duration: const Duration(milliseconds: 500),
+      );
+    });
+  }
+
   @override
   void onInit() async {
     change(null, status: RxStatus.loading());

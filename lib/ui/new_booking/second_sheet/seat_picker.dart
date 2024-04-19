@@ -16,7 +16,7 @@ SliverWoltModalSheetPage seatPicker({
 }) {
   return WoltModalSheetPage(
     topBarTitle: Text(
-      "Choisi ton siège",
+      "Choisis ton siège",
       style: titleStyle.copyWith(fontSize: 18),
     ),
     leadingNavBarWidget: IconButton(

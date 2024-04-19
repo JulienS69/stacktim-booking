@@ -133,6 +133,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
     setState(
       () {
         if (selectedSeat == seatNumber) {
+          widget.dashboardViewController.scrollToTop(context);
           selectedSeat = null;
         } else {
           widget.dashboardViewController.scrollToBottom(context);
@@ -209,7 +210,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                                 decoration: const BoxDecoration(
                                   color: Colors.white,
                                 ),
-                                height: 60,
+                                height: 50,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -243,7 +244,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                                 child: Container(
                                   decoration: const BoxDecoration(
                                       color: backgroundColor),
-                                  height: 60,
+                                  height: 50,
                                   child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

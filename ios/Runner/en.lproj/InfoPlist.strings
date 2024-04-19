@@ -5,5 +5,5 @@
   Created by Julien SEUX on 19/04/2024.
   
 */
-NSCameraUsageDescription = "Cette application demande l'accès à l'appareil photo afin que tu puisses prendre une photo au démarrage et à la fin de ta session.";
-NSPhotoLibraryUsageDescription = "L'accès à ta librairie peut être demandé afin d'uploader une photo de ton bureau.";
+NSCameraUsageDescription = "Access to your library may be requested in order to upload a photo of your desk.";
+NSPhotoLibraryUsageDescription = "Access to your library may be requested in order to upload a photo of your desk.";

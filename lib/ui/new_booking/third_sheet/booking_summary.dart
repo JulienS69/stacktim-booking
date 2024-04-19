@@ -18,7 +18,7 @@ SliverWoltModalSheetPage bookingSummary({
   return WoltModalSheetPage(
     topBarTitle: Text(
       "Récapitulatif de ta réservation",
-      style: titleStyle.copyWith(fontSize: 18),
+      style: titleStyle.copyWith(fontSize: 16),
     ),
     leadingNavBarWidget: IconButton(
       padding: const EdgeInsets.all(pagePadding),
