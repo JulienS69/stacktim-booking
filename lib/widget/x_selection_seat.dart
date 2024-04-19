@@ -135,6 +135,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
         if (selectedSeat == seatNumber) {
           selectedSeat = null;
         } else {
+          widget.dashboardViewController.scrollToBottom(context);
           selectedSeat = seatNumber;
         }
       },
@@ -199,6 +200,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         Row(
                           children: [

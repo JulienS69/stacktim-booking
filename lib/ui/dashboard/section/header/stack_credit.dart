@@ -24,7 +24,7 @@ class StackCredit extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  "${controller.getGreeting()} ${controller.currentUser.nickName != null ? controller.currentUser.nickName ?? controller.currentUser.firstname : ""} 👋",
+                  "${controller.getGreeting()} ${controller.currentUser.nickName ?? controller.currentUser.firstname} 👋",
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
