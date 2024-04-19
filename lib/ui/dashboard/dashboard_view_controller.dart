@@ -34,7 +34,8 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../logic/repository/computer_repository.dart';
 
-class DashboardViewController extends GetxController with StateMixin {
+class DashboardViewController extends GetxController
+    with StateMixin, GetSingleTickerProviderStateMixin {
   //REPOSTIORY
   BookingRepository bookingRepository = BookingRepository();
   StatusRepository statusRepository = StatusRepository();
@@ -77,6 +78,8 @@ class DashboardViewController extends GetxController with StateMixin {
   //INT
   RxInt computerSelected = 0.obs;
   RxInt userCreditAvailable = 0.obs;
+  int durationHours = 1;
+  int creditAvailable = 0;
   //TEXT EDITING CONTROLLER
   TextEditingController searchController = TextEditingController();
   TextEditingController titleController = TextEditingController();
@@ -92,6 +95,7 @@ class DashboardViewController extends GetxController with StateMixin {
   DateRangePickerController? dateController = DateRangePickerController();
   final pageIndexNotifier = ValueNotifier(0);
   SharedPreferences? sharedPreferences;
+  late AnimationController controller;
 
 //This allows checking if the request to create a reservation has been made from another page.
   checkArgument() {
@@ -256,82 +260,84 @@ class DashboardViewController extends GetxController with StateMixin {
         );
   }
 
-//This allows creating the reservation.
-  createBooking() async {
-    HapticFeedback.vibrate();
-    //  Convert time strings into hours and minutes
+  // Check if the user has enough credits to make a reservation based on the selected start and end times.
+  bool hasEnoughCreditsForReservation() {
+    // Convert time strings into hours and minutes
     List<int> startTimeParts =
         startingtimeSelected.value.split(':').map(int.parse).toList();
     List<int> endTimeParts =
         endingtimeSelected.value.split(':').map(int.parse).toList();
-    // Retrieve the start and end hours and minutes.
+
+    // Retrieve the start and end hours
     int startHours = startTimeParts[0];
     int endHours = endTimeParts[0];
-    // Calculate the duration in hours and half-hours.
-    int durationHours = endHours - startHours;
-    // Check if the user has enough credits to make a reservation.
+
+    // Calculate the duration in hours
+    durationHours = endHours - startHours;
+
+    // Initialize variables
     bool heCanReserve = false;
-    int creditAvailable = 0;
-    if (currentUser.credit != null) {
-      if (currentUser.credit!.creditAvailable != null) {
-        int creditNotYetUsed = 0;
-        if (currentUser.credit!.notYetUsed != null) {
-          creditNotYetUsed = currentUser.credit!.notYetUsed!;
-        }
-        int creditAvailable =
-            currentUser.credit!.creditAvailable! - creditNotYetUsed;
-        heCanReserve = (creditAvailable >= durationHours);
-      }
+    creditAvailable = 0;
+
+    // Check if the user's credit information is available and calculate the available credits
+    if (currentUser.credit != null &&
+        currentUser.credit!.creditAvailable != null) {
+      // Calculate the credits not yet used
+      int creditNotYetUsed = currentUser.credit!.notYetUsed ?? 0;
+      // Calculate the available credits after subtracting the credits not yet used
+      creditAvailable = currentUser.credit!.creditAvailable! - creditNotYetUsed;
+      // Check if the available credits are enough for the reservation duration
+      heCanReserve = (creditAvailable >= durationHours);
     }
-    if (heCanReserve) {
-      currentBooking = currentBooking.copyWith(
-        userId: currentUser.id,
-        statusId: statusIdSelected,
-        bookedAt: selectedDate.value,
-        computerId: computerUuidSelected,
-        title: titleSelected.value,
-        endAt: endingtimeSelected.value,
-        beginAt: startingtimeSelected.value,
-        duration: durationHours,
-      );
-      return await bookingRepository
-          .createBooking(currentBooking: currentBooking)
-          .then(
-            (value) => value.fold(
-              (l) async {
-                await Sentry.captureException(l);
-                AwesomeDialog(
-                  context: Get.context!,
-                  dialogType: DialogType.error,
-                  dialogBackgroundColor: backgroundColor,
-                  animType: AnimType.rightSlide,
-                  title: 'Oups !',
-                  desc:
-                      "Quelque chose c'est mal passé pendant l'enregistrement de ta session",
-                  btnCancelText: 'Retour',
-                  btnCancelOnPress: () {},
-                ).show();
-              },
-              (r) async {
-                getCurrentUser();
-                getMyBookings();
-                // No await in getMyBookings() because 6 seconds duration of dialog after that
-                await showSuccesDialog();
-                bookingList.refresh();
-                Get.back();
-                clearForm();
-                showSnackbar(
-                    "Réservation prise avec succès !", SnackStatusEnum.success);
-              },
-            ),
-          );
-    } else {
-      Sentry.captureMessage(
-          "L'utilisateur ne possède pas assez de crédits pour pouvoir réserver la session sélectionnée");
-      showSnackbar(
-          "Tu ne possèdes pas assez de crédits. Crédits restant : $creditAvailable",
-          SnackStatusEnum.warning);
-    }
+
+    // Return whether the user can make the reservation
+    return heCanReserve;
+  }
+
+//This allows creating the reservation.
+  createBooking() async {
+    HapticFeedback.vibrate();
+    currentBooking = currentBooking.copyWith(
+      userId: currentUser.id,
+      statusId: statusIdSelected,
+      bookedAt: selectedDate.value,
+      computerId: computerUuidSelected,
+      title: titleSelected.value,
+      endAt: endingtimeSelected.value,
+      beginAt: startingtimeSelected.value,
+      duration: durationHours,
+    );
+    return await bookingRepository
+        .createBooking(currentBooking: currentBooking)
+        .then(
+          (value) => value.fold(
+            (l) async {
+              await Sentry.captureException(l);
+              AwesomeDialog(
+                context: Get.context!,
+                dialogType: DialogType.error,
+                dialogBackgroundColor: backgroundColor,
+                animType: AnimType.rightSlide,
+                title: 'Oups !',
+                desc:
+                    "Quelque chose c'est mal passé pendant l'enregistrement de ta session",
+                btnCancelText: 'Retour',
+                btnCancelOnPress: () {},
+              ).show();
+            },
+            (r) async {
+              getCurrentUser();
+              getMyBookings();
+              // No await in getMyBookings() because 6 seconds duration of dialog after that
+              await showSuccesDialog();
+              bookingList.refresh();
+              Get.back();
+              clearForm();
+              showSnackbar(
+                  "Réservation prise avec succès !", SnackStatusEnum.success);
+            },
+          ),
+        );
   }
 
 //This allows clearing all variables."
@@ -396,6 +402,21 @@ class DashboardViewController extends GetxController with StateMixin {
     }
   }
 
+  bool isAfternoon() {
+    DateTime now = DateTime.now();
+    int currentHour = now.hour;
+    // Get today's date in yyyy-MM-dd format
+    DateTime today = DateTime(now.year, now.month, now.day);
+    // Convert the selected date to DateTime format
+    DateTime selectedDateTime = DateTime.parse(selectedDate.value.toString());
+    // Compare if the selected date is today and if the current hour is after 1 PM (13:00)
+    if (selectedDateTime.isAtSameMomentAs(today) && currentHour > 13) {
+      return true;
+    }
+    // If the selected date is not today or if the current hour is before 1 PM (13:00), return false
+    return false;
+  }
+
   showTimePicker({
     required BuildContext context,
     required bool isEndingTime,
@@ -411,7 +432,9 @@ class DashboardViewController extends GetxController with StateMixin {
                   ? int.parse(beginingHourSelected.value)
                   : endingHourSelected.value.isNotEmpty
                       ? int.parse(endingHourSelected.value)
-                      : TimeOfDay.now().hour,
+                      : beginingHourSelected.isNotEmpty
+                          ? int.parse(beginingHourSelected.value) + 1
+                          : TimeOfDay.now().hour,
               minute: minutesSelected == "30" ? 30 : 0,
             ),
             0),
@@ -445,7 +468,7 @@ class DashboardViewController extends GetxController with StateMixin {
           Navigator.pop(context);
           HapticFeedback.heavyImpact();
         },
-        minHour: 12,
+        minHour: isAfternoon() ? 17 : 12,
         maxHour: 21,
         maxMinute: 30,
         onChange: (time) async {
@@ -469,7 +492,7 @@ class DashboardViewController extends GetxController with StateMixin {
               }
             } else {
               showSnackbar(
-                  "Impossible de choisir une heure en dehors des horaires définis",
+                  "Impossible de choisir une heure en dehors des horaires définis - 12h-13h30 / 17h-21h",
                   SnackStatusEnum.error);
             }
           } else {
@@ -499,12 +522,20 @@ class DashboardViewController extends GetxController with StateMixin {
                 if (selectedDate.value.isNotEmpty &&
                     startingtimeSelected.value.isNotEmpty &&
                     titleSelected.value.isNotEmpty) {
-                  await checkAvailbilityComputer();
+                  if (hasEnoughCreditsForReservation()) {
+                    await checkAvailbilityComputer();
+                  } else {
+                    Sentry.captureMessage(
+                        "L'utilisateur ne possède pas assez de crédits pour pouvoir réserver la session sélectionnée");
+                    showSnackbar(
+                        "Tu ne possèdes pas assez de crédits. Crédits restant : $creditAvailable",
+                        SnackStatusEnum.warning);
+                  }
                 }
               }
             } else {
               showSnackbar(
-                  "Impossible de choisir une heure en dehors des horaires définis",
+                  "Impossible de choisir une heure en dehors des horaires définis - 12h-13h30 / 17h-21h",
                   SnackStatusEnum.error);
             }
           }
@@ -700,7 +731,7 @@ class DashboardViewController extends GetxController with StateMixin {
       barrierDismissible: false,
       builder: (BuildContext context) {
         Future.delayed(
-          const Duration(seconds: 6),
+          const Duration(seconds: 2, milliseconds: 800),
           () async {
             HapticFeedback.vibrate();
             Navigator.of(context).pop();
@@ -722,7 +753,14 @@ class DashboardViewController extends GetxController with StateMixin {
                   gamingCheck,
                   fit: BoxFit.fill,
                   height: 150,
+                  controller: controller,
                   repeat: false,
+                  frameRate: FrameRate.max,
+                  onLoaded: (composition) {
+                    controller
+                      ..duration = const Duration(seconds: 3)
+                      ..repeat();
+                  },
                 ),
                 const SizedBox(height: 20),
                 const Row(
@@ -757,9 +795,15 @@ class DashboardViewController extends GetxController with StateMixin {
     if (title.isEmpty) {
       filteredBookingList.assignAll(bookingList);
     } else {
-      filteredBookingList.assignAll(bookingList.where((booking) =>
-          booking.title != null &&
-          booking.title!.toLowerCase().contains(title.toLowerCase())));
+      filteredBookingList.assignAll(
+        bookingList.where(
+          (booking) =>
+              booking.title != null &&
+              booking.title!.toLowerCase().contains(
+                    title.toLowerCase(),
+                  ),
+        ),
+      );
     }
   }
 
@@ -797,6 +841,9 @@ class DashboardViewController extends GetxController with StateMixin {
   void onInit() async {
     change(null, status: RxStatus.loading());
     sharedPreferences = await SharedPreferences.getInstance();
+    controller = AnimationController(
+      vsync: this,
+    );
     await getDataTutorial();
     await fetchHolidays();
     try {

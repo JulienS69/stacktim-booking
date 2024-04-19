@@ -158,25 +158,28 @@ class BookingDatePicker extends StatelessWidget {
         ),
         Obx(
           () => !controller.isDatePicked.value
-              ? SizedBox(
-                  height: 50,
-                  width: 200,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (controller.isShowingDatePicker.value) {
-                        controller.isShowingDatePicker.value = false;
-                      } else {
-                        controller.isShowingDatePicker.value = true;
-                      }
-                    },
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.black),
-                      foregroundColor: MaterialStatePropertyAll(Colors.white),
-                      textStyle: MaterialStatePropertyAll(antaStyle),
-                    ),
-                    child: const Text(
-                      'Selectionner une date',
-                      style: TextStyle(color: Colors.white),
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: SizedBox(
+                    height: 50,
+                    width: 200,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (controller.isShowingDatePicker.value) {
+                          controller.isShowingDatePicker.value = false;
+                        } else {
+                          controller.isShowingDatePicker.value = true;
+                        }
+                      },
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.black),
+                        foregroundColor: MaterialStatePropertyAll(Colors.white),
+                        textStyle: MaterialStatePropertyAll(antaStyle),
+                      ),
+                      child: const Text(
+                        'Selectionner une date',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 )

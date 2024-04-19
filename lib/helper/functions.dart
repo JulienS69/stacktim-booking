@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:stacktim_booking/helper/strings.dart';
@@ -181,4 +182,14 @@ double getTracesSampleRateForSentry({
     traceRate = 1.0;
   }
   return traceRate;
+}
+
+Icon faIconWithCode(String iconCode, {double? size, Color? color}) {
+  return Icon(
+    IconDataRegular(
+      int.parse('0x$iconCode'),
+    ),
+    size: size ?? 20,
+    color: color,
+  );
 }

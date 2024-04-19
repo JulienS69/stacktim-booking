@@ -198,10 +198,7 @@ class BookingDetail extends StatelessWidget {
                           const SizedBox(
                             width: 5,
                           ),
-                          const Icon(
-                            Icons.search,
-                            color: Colors.white,
-                          )
+                          faIconWithCode('f06e', color: Colors.white)
                         ],
                       ),
                     )

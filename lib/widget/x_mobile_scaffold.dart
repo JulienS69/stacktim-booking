@@ -101,7 +101,7 @@ class _XMobileScaffoldState extends State<XMobileScaffold> {
               notchSmoothness: NotchSmoothness.verySmoothEdge,
               onTap: (index) {
                 if (index != bottomNavIndex) {
-                  HapticFeedback.vibrate();
+                  HapticFeedback.selectionClick();
                   setState(() {
                     widget.bottomNavIndex = index;
                   });

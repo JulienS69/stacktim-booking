@@ -66,21 +66,29 @@ class StackCredit extends StatelessWidget {
             ],
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(right: 15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                "Stack crédits \nrestant",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-              )
-            ],
+        InkWell(
+          onTap: () {
+            showCoinDialog();
+          },
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          child: const Padding(
+            padding: EdgeInsets.only(right: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "Stack crédits \nrestant",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ],
