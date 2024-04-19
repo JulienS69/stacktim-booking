@@ -90,7 +90,7 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                 isWithSeat: true,
                 onTap: () async {
                   Get.to(
-                    SeatPickerDetail(
+                    () => SeatPickerDetail(
                       bookingDetailViewController: controller,
                     ),
                   );
