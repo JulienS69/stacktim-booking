@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by Julien SEUX on 19/04/2024.
+  
+*/
+NSCameraUsageDescription = "Access to your library may be requested in order to upload a photo of your desk.";
+NSPhotoLibraryUsageDescription = "Access to your library may be requested in order to upload a photo of your desk.";
