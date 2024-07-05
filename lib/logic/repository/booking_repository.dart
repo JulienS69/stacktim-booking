@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
@@ -9,7 +11,8 @@ import '../../core/rest_api_repository.dart';
 class BookingRepository extends RestApiRepository {
   BookingRepository()
       : super(
-            client: Get.find<Dio>(tag: 'stacktimApi'), controller: '/bookings');
+            client: Get.find<dio.Dio>(tag: 'stacktimApi'),
+            controller: '/bookings');
 
   Future<Either<dynamic, List<Booking>>> getMyBookings() async {
     return await handlingPostResponse(
@@ -208,6 +211,47 @@ class BookingRepository extends RestApiRepository {
             }
           }
         ]
+      },
+    ).then(
+      (value) => value.fold(
+        (l) async {
+          if (l is Map && l.containsKey("message")) {
+            return left(l["message"]);
+          } else {
+            return left(l);
+          }
+        },
+        (r) async {
+          return right(Booking.fromJson(r));
+        },
+      ),
+    );
+  }
+
+  Future<Either<dynamic, Booking>> updateBooking({
+    required String currentBookingId,
+    required bool isChecking,
+    required File pictureFile,
+  }) async {
+    final file = await dio.MultipartFile.fromFile(pictureFile.path,
+        filename: isChecking ? 'checkin.png' : 'checkout.png');
+    final formData = dio.FormData.fromMap({
+      "mutate": [
+        {
+          "operation": "update",
+          "key": currentBookingId,
+        }
+      ],
+      "image": file,
+      "collection": isChecking ? "checkin" : "checkout"
+    });
+    return await handlingPostResponse(
+      queryRoute: "$controller/mutate",
+      showError: false,
+      showSuccess: false,
+      body: formData,
+      header: {
+        'Content-Type': 'multipart/form-data',
       },
     ).then(
       (value) => value.fold(

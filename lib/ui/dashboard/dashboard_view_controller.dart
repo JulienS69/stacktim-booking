@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:day_night_time_picker/lib/constants.dart';
@@ -7,6 +8,7 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -96,6 +98,7 @@ class DashboardViewController extends GetxController
   final pageIndexNotifier = ValueNotifier(0);
   SharedPreferences? sharedPreferences;
   late AnimationController controller;
+  File checkingFile = File("");
 
 //This allows checking if the request to create a reservation has been made from another page.
   checkArgument() {
@@ -837,6 +840,45 @@ class DashboardViewController extends GetxController
     });
   }
 
+//FOR CHEKING & CHECKOUT BOOKING
+  Future<void> checkBooking() async {
+    return await bookingRepository
+        .updateBooking(
+          currentBookingId: bookingIdToChecking,
+          isChecking: isCheckInTime,
+          pictureFile: checkingFile,
+        )
+        .then(
+          (value) => value.fold(
+            (l) async {
+              await Sentry.captureException(l);
+              showSnackbar("Une erreur s'est produite", SnackStatusEnum.error);
+            },
+            (r) {
+              isCheckInTime = false;
+              bookingIdToChecking = "";
+              Get.back();
+              onInit();
+              showSnackbar(
+                  "Ta photo a bien été transmise !", SnackStatusEnum.success);
+            },
+          ),
+        );
+  }
+
+  Future<void> takePictureForCheck() async {
+    // LAUNCH CAMERA PICKER
+    final ImagePicker picker = ImagePicker();
+    XFile? photo = await picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 80,
+    );
+    if (photo != null) {
+      checkingFile = File(photo.path);
+      await checkBooking();
+    }
+  }
+
   @override
   void onInit() async {
     change(null, status: RxStatus.loading());
@@ -853,7 +895,7 @@ class DashboardViewController extends GetxController
         await getStatusList();
         await checkArgument();
         if (isCheckInTime) {
-          showPhotoDialog(Get.context!);
+          showPhotoDialog(Get.context!, takePictureForCheck);
         }
         change(null, status: RxStatus.success());
       } else {

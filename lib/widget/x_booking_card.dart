@@ -1,6 +1,6 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/date_time_helper.dart';
 import 'package:stacktim_booking/helper/functions.dart';
@@ -16,6 +16,7 @@ class XBookingCard extends StatelessWidget {
     required this.currentBooking,
     required this.isInProgress,
     required this.userId,
+    this.onTapCheckout,
     this.hue,
   });
 
@@ -23,7 +24,7 @@ class XBookingCard extends StatelessWidget {
   final bool isInProgress;
   final double? hue;
   final String? userId;
-
+  final void Function()? onTapCheckout;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -144,7 +145,9 @@ class XBookingCard extends StatelessWidget {
                     currentBooking.status?.slug == StatusSlugs.passee)
             ? GestureDetector(
                 onTap: () {
-                  // TODO REDIRECT SUR LA PRISE DE PHOTO DE FIN
+                  if (onTapCheckout != null) {
+                    onTapCheckout!();
+                  }
                 },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 100),
@@ -193,40 +196,44 @@ class XBookingCard extends StatelessWidget {
   }
 }
 
-void showPhotoDialog(BuildContext context) {
+void showPhotoDialog(
+  BuildContext context,
+  void Function() onTap,
+) {
   showDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) => PopScope(
       canPop: false,
       onPopInvoked: (s) {
-        // AwesomeDialog(
-        //   context: context,
-        //   dialogType: DialogType.warning,
-        //   dialogBackgroundColor: backgroundColor,
-        //   animType: AnimType.rightSlide,
-        //   title: 'Attention',
-        //   desc:
-        //       "Tu dois prendre la photo de ta place (de ton setup) avant de jouer",
-        //   btnOkText: 'Retour',
-        //   btnOkOnPress: () {},
-        //   btnOkColor: Colors.black,
-        // ).show();
+        AwesomeDialog(
+          context: context,
+          dialogType: DialogType.warning,
+          dialogBackgroundColor: backgroundColor,
+          animType: AnimType.rightSlide,
+          title: 'Attention',
+          desc:
+              "Tu dois prendre la photo de ta place (de ton setup) avant de jouer",
+          btnOkText: 'Retour',
+          btnOkOnPress: () {},
+          btnOkColor: Colors.black,
+        ).show();
       },
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          // AwesomeDialog(
-          //   context: context,
-          //   dialogType: DialogType.warning,
-          //   dialogBackgroundColor: backgroundColor,
-          //   animType: AnimType.rightSlide,
-          //   title: 'Attention',
-          //   desc: "Tu dois prendre la photo de ta place (de ton setup) avant de jouer",
-          //   btnOkText: 'Retour',
-          //   btnOkOnPress: () {},
-          //   btnOkColor: Colors.black,
-          // ).show();
+          AwesomeDialog(
+            context: context,
+            dialogType: DialogType.warning,
+            dialogBackgroundColor: backgroundColor,
+            animType: AnimType.rightSlide,
+            title: 'Attention',
+            desc:
+                "Tu dois prendre la photo de ta place (de ton setup) avant de jouer",
+            btnOkText: 'Retour',
+            btnOkOnPress: () {},
+            btnOkColor: Colors.black,
+          ).show();
         },
         child: Dialog(
           shape: RoundedRectangleBorder(
@@ -242,14 +249,8 @@ void showPhotoDialog(BuildContext context) {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 InkWell(
-                  onTap: () async {
-                    final ImagePicker picker = ImagePicker();
-                    //TODO LAUNCH CAMERA PICKER
-                    final XFile? photo =
-                        await picker.pickImage(source: ImageSource.camera);
-                    //TODO APRES LA REQUETE
-                    // controller.isCheckInTime.value = false
-                    //  bookingIdToChecking = "";
+                  onTap: () {
+                    onTap();
                   },
                   child: Container(
                     width: 100,
@@ -271,17 +272,7 @@ void showPhotoDialog(BuildContext context) {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    //TODO Mettre en place la requête
-                    final ImagePicker picker = ImagePicker();
-                    //TODO LAUNCH CAMERA PICKER
-                    final XFile? photo = await picker.pickImage(
-                        source: ImageSource.camera,
-                        requestFullMetadata: false,
-                        imageQuality: 80);
-                    //TODO APRES LA REQUETE
-                    // controller.isCheckInTime.value = false
-                    //  bookingIdToChecking = "";
-                    // refresh la liste de booking (onInit())
+                    onTap();
                   },
                   child: const Text('Prendre ma photo'),
                 ),

@@ -66,13 +66,21 @@ class BookingListingState extends State<BookingListing> {
                   currentBooking: currentBooking,
                   isInProgress: isInProgress,
                   userId: widget.controller.currentUser.id ?? "0",
-                )
+                  onTapCheckout: () async {
+                    widget.controller.bookingIdToChecking =
+                        currentBooking.id ?? '';
+                    await widget.controller.takePictureForCheck();
+                  })
               : XBookingCard(
                   currentBooking: currentBooking,
                   isInProgress: true,
                   hue: hue,
                   userId: widget.controller.currentUser.id ?? "0",
-                );
+                  onTapCheckout: () async {
+                    widget.controller.bookingIdToChecking =
+                        currentBooking.id ?? '';
+                    await widget.controller.takePictureForCheck();
+                  });
         },
       );
     });
