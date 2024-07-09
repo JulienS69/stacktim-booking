@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -38,8 +38,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   animated_bottom_navigation_bar: ^1.3.3
   wolt_modal_sheet: ^0.5.0
-  syncfusion_flutter_calendar: ^25.1.39
-  syncfusion_flutter_datepicker: ^25.1.39
+  syncfusion_flutter_calendar: ^26.1.41
+  syncfusion_flutter_datepicker: ^26.1.41
   flutter_localization: ^0.2.0
   intl: ^0.19.0
   day_night_time_picker: ^1.3.1
@@ -52,7 +52,7 @@ dependencies:
   connectivity_plus: ^6.0.2
   webview_flutter: ^4.7.0
   flutter_animation_progress_bar: ^2.3.1
-  syncfusion_flutter_pdfviewer: ^25.1.39
+  syncfusion_flutter_pdfviewer: ^26.1.41
   liquid_swipe: ^3.1.0
   carousel_slider: ^4.2.1
   skeletonizer: ^1.1.1
