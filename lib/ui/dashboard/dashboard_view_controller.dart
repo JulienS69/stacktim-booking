@@ -854,13 +854,20 @@ class DashboardViewController extends GetxController
               await Sentry.captureException(l);
               showSnackbar("Une erreur s'est produite", SnackStatusEnum.error);
             },
-            (r) {
+            (r) async {
               isCheckInTime = false;
               bookingIdToChecking = "";
               Get.back();
-              onInit();
-              showSnackbar(
-                  "Ta photo a bien été transmise !", SnackStatusEnum.success);
+              if (isCheckInTime == false && isInProgress.value) {
+                showSnackbar(
+                    "Ta photo a bien été transmise. Tu n'as plus qu'à attendre que l'horaire de fin de ta session soit passé pour que ce bouton disparaisse.",
+                    SnackStatusEnum.success);
+              } else {
+                showSnackbar(
+                    "Ta photo a bien été transmise !", SnackStatusEnum.success);
+              }
+              await getMyBookings();
+              bookingList.refresh();
             },
           ),
         );
