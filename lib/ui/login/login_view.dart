@@ -7,6 +7,7 @@ import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/login/login_view_controller.dart';
+import 'package:stacktim_booking/ui/login/widgets/login_email_form.dart';
 import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
 import 'package:stacktim_booking/widget/x_mobile_scaffold.dart';
 
@@ -23,7 +24,7 @@ class LoginView extends GetView<LoginViewController> {
         isShowBottomNavigationBar: false,
         body: controller.obx(
           (state) => SingleChildScrollView(
-            controller: ScrollController(),
+            controller: controller.scrollController,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -103,53 +104,107 @@ class LoginView extends GetView<LoginViewController> {
                   height: 60,
                 ),
                 //BUTTON CONNEXION WITH MICROSOFT
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: InkWell(
-                    onTap: () async {
-                      if (await ConnectionHelper.hasNoConnection()) {
-                        showSnackbar("Aucune connexion à internet trouvé",
-                            SnackStatusEnum.error);
-                      } else {
-                        HapticFeedback.heavyImpact();
-                        await controller.getMicrosftUrl();
-                        controller.initialWebView();
-                      }
-                    },
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 55,
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        color: const Color.fromRGBO(225, 6, 0, 1),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(20),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Se connecter avec Microsoft".toUpperCase(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.5,
+                Obx(
+                  () => !controller.isShowingLoginForm.value
+                      ? Padding(
+                          padding:
+                              const EdgeInsets.only(left: 15.0, right: 15.0),
+                          child: InkWell(
+                            onTap: () async {
+                              if (await ConnectionHelper.hasNoConnection()) {
+                                showSnackbar(
+                                    "Aucune connexion à internet trouvé",
+                                    SnackStatusEnum.error);
+                              } else {
+                                HapticFeedback.heavyImpact();
+                                await controller.getMicrosftUrl();
+                                controller.initialWebView();
+                              }
+                            },
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 55,
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                                color: const Color.fromRGBO(225, 6, 0, 1),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Se connecter avec Microsoft"
+                                          .toUpperCase(),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1.5,
+                                      ),
+                                    ),
+                                    Image.asset(
+                                      microsoftLogo,
+                                      height: 60,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            Image.asset(
-                              microsoftLogo,
-                              height: 60,
-                            ),
-                          ],
+                          ),
+                        )
+                      : LoginEmailForm(
+                          loginViewController: controller,
                         ),
-                      ),
-                    ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text(
+                  "OU",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
                   ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                InkWell(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    controller.isShowingLoginForm.value =
+                        !controller.isShowingLoginForm.value;
+                  },
+                  child: Obx(() => Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 50,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 12.0),
+                                child: Text(
+                                  !controller.isShowingLoginForm.value
+                                      ? "Authentification classique"
+                                      : "Se connecter avec microsoft",
+                                  style: const TextStyle(
+                                    letterSpacing: 1.5,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
                 ),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
@@ -186,6 +241,10 @@ class LoginView extends GetView<LoginViewController> {
                           ),
                   ),
                 ),
+
+                Obx(() => SizedBox(
+                      height: controller.isUnfocus.value ? 0 : 250,
+                    )),
               ],
             ),
           ),

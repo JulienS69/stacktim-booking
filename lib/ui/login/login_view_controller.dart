@@ -26,11 +26,18 @@ class LoginViewController extends GetxController with StateMixin {
   LoginRepository loginRepository;
   //BOOL
   RxBool isShowingVersion = false.obs;
+  RxBool isShowingLoginForm = false.obs;
+  RxBool isUnfocus = true.obs;
   //INT
   int counter = 0;
   //OTHER
   WebViewController webViewController = WebViewController();
   PackageInfo? packageInfo;
+  ScrollController scrollController = ScrollController();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   LoginViewController({
     required this.loginRepository,
@@ -47,6 +54,27 @@ class LoginViewController extends GetxController with StateMixin {
             },
             (r) async {
               microsoftUrl.value = r;
+            },
+          ),
+        );
+  }
+
+  Future<void> login() async {
+    return await loginRepository
+        .loginWithForm(
+            email: emailController.text, password: passwordController.text)
+        .then(
+          (value) => value.fold(
+            (l) async {
+              await Sentry.captureException(l);
+              showSnackbar(
+                  "Email ou mot de passe incorrect", SnackStatusEnum.error);
+            },
+            (r) async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.setString(
+                  LocalStorageKey.jwt.name, r['access_token']);
+              Get.offAllNamed(Routes.welcome);
             },
           ),
         );
@@ -175,8 +203,22 @@ class LoginViewController extends GetxController with StateMixin {
     );
   }
 
+  focusListener() {
+    emailFocusNode.addListener(() async {
+      await Future.delayed(const Duration(milliseconds: 500));
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200), curve: Curves.bounceIn);
+    });
+    passwordFocusNode.addListener(() async {
+      await Future.delayed(const Duration(milliseconds: 500));
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200), curve: Curves.bounceIn);
+    });
+  }
+
   @override
   void onInit() async {
+    focusListener();
     packageInfo = await PackageInfo.fromPlatform();
     version = packageInfo?.version ?? "1.0.0";
     buildNumber = packageInfo?.buildNumber ?? "1";
