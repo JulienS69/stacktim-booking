@@ -27,4 +27,31 @@ class LoginRepository extends RestApiRepository {
       ),
     );
   }
+
+  Future<Either<dynamic, dynamic>> loginWithForm({
+    required String email,
+    required String password,
+  }) async {
+    return await handlingPostResponse(
+      queryRoute: "/auth/login",
+      showError: false,
+      showSuccess: false,
+      body: {
+        "email": email,
+        "password": password,
+      },
+    ).then(
+      (value) => value.fold(
+        (l) async {
+          if (l is Map && l.containsKey("message")) {
+            return left(l["message"]);
+          }
+          return left(l);
+        },
+        (r) async {
+          return right(r);
+        },
+      ),
+    );
+  }
 }
