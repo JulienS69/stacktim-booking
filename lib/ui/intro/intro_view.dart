@@ -33,7 +33,7 @@ class IntroView extends GetView<IntroViewController> {
             }
             return InkWell(
               onTap: () {
-                if (index == 0) {
+                if (index != 4) {
                   showSnackbar(
                       "Tu dois swiper de droite vers la gauche ton écran pour pouvoir naviguer",
                       SnackStatusEnum.simple);
@@ -182,11 +182,6 @@ class IntroView extends GetView<IntroViewController> {
                         index == 4
                             ? ElevatedButton(
                                 onPressed: () {
-                                  showSnackbar(
-                                      "Tu dois faire un appuie long pour accepter le règlement",
-                                      SnackStatusEnum.warning);
-                                },
-                                onLongPress: () {
                                   HapticFeedback.vibrate();
                                   controller.acceptAgreement();
                                 },
@@ -212,9 +207,16 @@ class IntroView extends GetView<IntroViewController> {
           slideIconWidget: Obx(
             () => isIcon.value
                 ? const SizedBox.shrink()
-                : const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
+                : InkWell(
+                    onTap: () {
+                      showSnackbar(
+                          "Tu dois swiper de droite vers la gauche ton écran pour pouvoir naviguer",
+                          SnackStatusEnum.simple);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                    ),
                   ),
           ),
           waveType: WaveType.circularReveal,

@@ -62,11 +62,11 @@ class _SeatWidgetState extends State<SeatWidget> {
                     const Offset(50, 50),
                     [
                       Colors.transparent,
-                      widget.isAvailable
-                          ? Colors.transparent
-                          : widget.isUnderMaintenance
-                              ? Colors.amber.withOpacity(0.5)
-                              : Colors.red.withOpacity(0.5),
+                      widget.isUnderMaintenance
+                          ? Colors.amber.withOpacity(0.5)
+                          : !widget.isAvailable
+                              ? Colors.red.withOpacity(0.5)
+                              : Colors.transparent
                     ],
                     [0.0, 1.0],
                   );

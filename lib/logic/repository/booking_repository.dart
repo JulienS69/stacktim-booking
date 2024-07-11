@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
 
 import '../../core/rest_api_repository.dart';
@@ -234,18 +235,31 @@ class BookingRepository extends RestApiRepository {
     required File pictureFile,
     required String attachmentName,
   }) async {
-    final file = await dio.MultipartFile.fromFile(pictureFile.path,
-        filename: attachmentName);
-    final formData = dio.FormData.fromMap({
+    dio.FormData formData = dio.FormData.fromMap({
       "mutate": [
         {
           "operation": "update",
           "key": currentBookingId,
         }
       ],
-      "image": file,
       "collection": isChecking ? "checkin" : "checkout"
     });
+
+    if (pictureFile.path.isNotEmpty) {
+      try {
+        final file = await dio.MultipartFile.fromFile(
+          pictureFile.path,
+          filename: attachmentName,
+        );
+        formData.files.add(MapEntry("image", file));
+      } catch (e) {
+        Sentry.captureException(
+          e,
+        );
+        return left("Error attaching file: $e");
+      }
+    }
+
     return await handlingPostResponse(
       queryRoute: "$controller/mutate",
       showError: false,
@@ -257,6 +271,9 @@ class BookingRepository extends RestApiRepository {
     ).then(
       (value) => value.fold(
         (l) async {
+          Sentry.captureException(
+            l,
+          );
           if (l is Map && l.containsKey("message")) {
             return left(l["message"]);
           } else {

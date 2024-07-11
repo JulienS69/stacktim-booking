@@ -7,10 +7,12 @@ import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
@@ -900,6 +902,7 @@ class DashboardViewController extends GetxController
       if (sizeInMb < 10) {
         // File size is within the limit
         imageFile.value = File(result.path);
+        imageFile.value = await compressFile(imageFile.value);
         attachmentName.value = getReceiptName(imageFile.value);
       } else {
         AwesomeDialog(
@@ -915,6 +918,21 @@ class DashboardViewController extends GetxController
       }
     }
     await checkBooking();
+  }
+
+  // Compresse le document scanné sinon erreur de l'api
+  Future<File> compressFile(File file) async {
+    var temporaryDirectory = await getTemporaryDirectory();
+    String fileName = "${file.path.split('/').last}.jpg";
+    String path = "${temporaryDirectory.path}/$fileName";
+    final File compressedFile = File(path);
+    await FlutterImageCompress.compressAndGetFile(
+      file.path,
+      compressedFile.path,
+      quality: 50,
+    );
+
+    return compressedFile;
   }
 
   String getReceiptName(File imageFile) {
