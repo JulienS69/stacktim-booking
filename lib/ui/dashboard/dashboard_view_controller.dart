@@ -98,7 +98,6 @@ class DashboardViewController extends GetxController
   final pageIndexNotifier = ValueNotifier(0);
   SharedPreferences? sharedPreferences;
   late AnimationController controller;
-  File checkingFile = File("");
   Rx<File> imageFile = File("").obs;
   RxString attachmentPath = "".obs;
   RxString attachmentName = "".obs;
@@ -850,7 +849,7 @@ class DashboardViewController extends GetxController
         .updateBooking(
           currentBookingId: bookingIdToChecking,
           isChecking: isCheckInTime,
-          pictureFile: checkingFile,
+          pictureFile: imageFile.value,
           attachmentName: attachmentName.value,
         )
         .then(
@@ -915,7 +914,6 @@ class DashboardViewController extends GetxController
         ).show();
       }
     }
-    checkingFile = imageFile.value;
     await checkBooking();
   }
 
