@@ -65,7 +65,6 @@ class _LoginEmailFormState extends State<LoginEmailForm> {
             fontFamily: 'Anta',
             decoration: TextDecoration.none,
           ),
-          // controller: emailController,
         ),
         TextField(
           controller: widget.loginViewController.passwordController,
@@ -108,7 +107,6 @@ class _LoginEmailFormState extends State<LoginEmailForm> {
             decoration: TextDecoration.none,
           ),
           obscureText: true,
-          // controller: passwordController,
         ),
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 15),
@@ -129,7 +127,6 @@ class _LoginEmailFormState extends State<LoginEmailForm> {
                       "Tu dois renseigner ton email ainsi que ton mot de passe pour pouvoir te connecter",
                       SnackStatusEnum.warning);
                 }
-                //TODO LOGIN
               }
             },
             highlightColor: Colors.transparent,
@@ -139,9 +136,9 @@ class _LoginEmailFormState extends State<LoginEmailForm> {
               height: 35,
               decoration: BoxDecoration(
                 border: Border.all(),
-                color: const Color.fromRGBO(225, 6, 0, 1),
+                color: black,
                 borderRadius: const BorderRadius.all(
-                  Radius.circular(20),
+                  Radius.circular(10),
                 ),
               ),
               child: Padding(

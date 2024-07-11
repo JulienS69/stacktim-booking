@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -101,111 +103,70 @@ class LoginView extends GetView<LoginViewController> {
                   ),
                 ),
                 const SizedBox(
-                  height: 60,
+                  height: 30,
+                ),
+                Platform.isIOS
+                    ? LoginEmailForm(
+                        loginViewController: controller,
+                      )
+                    : const SizedBox.shrink(),
+                SizedBox(
+                  height: Platform.isIOS ? 30 : 60,
                 ),
                 //BUTTON CONNEXION WITH MICROSOFT
-                Obx(
-                  () => !controller.isShowingLoginForm.value
-                      ? Padding(
-                          padding:
-                              const EdgeInsets.only(left: 15.0, right: 15.0),
-                          child: InkWell(
-                            onTap: () async {
-                              if (await ConnectionHelper.hasNoConnection()) {
-                                showSnackbar(
-                                    "Aucune connexion à internet trouvé",
-                                    SnackStatusEnum.error);
-                              } else {
-                                HapticFeedback.heavyImpact();
-                                await controller.getMicrosftUrl();
-                                controller.initialWebView();
-                              }
-                            },
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(),
-                                color: const Color.fromRGBO(225, 6, 0, 1),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Se connecter avec Microsoft"
-                                          .toUpperCase(),
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1.5,
-                                      ),
-                                    ),
-                                    Image.asset(
-                                      microsoftLogo,
-                                      height: 60,
-                                    ),
-                                  ],
-                                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                  child: InkWell(
+                    onTap: () async {
+                      if (await ConnectionHelper.hasNoConnection()) {
+                        showSnackbar("Aucune connexion à internet trouvé",
+                            SnackStatusEnum.error);
+                      } else {
+                        HapticFeedback.heavyImpact();
+                        await controller.getMicrosftUrl();
+                        controller.initialWebView();
+                      }
+                    },
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        color: const Color.fromRGBO(225, 6, 0, 1),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Se connecter avec Microsoft".toUpperCase(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.5,
                               ),
                             ),
-                          ),
-                        )
-                      : LoginEmailForm(
-                          loginViewController: controller,
+                            Image.asset(
+                              microsoftLogo,
+                              height: 60,
+                            ),
+                          ],
                         ),
+                      ),
+                    ),
+                  ),
                 ),
+
                 const SizedBox(
                   height: 15,
                 ),
-                const Text(
-                  "OU",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.5,
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    controller.isShowingLoginForm.value =
-                        !controller.isShowingLoginForm.value;
-                  },
-                  child: Obx(() => Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: 50,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
-                                child: Text(
-                                  !controller.isShowingLoginForm.value
-                                      ? "Authentification classique"
-                                      : "Se connecter avec microsoft",
-                                  style: const TextStyle(
-                                    letterSpacing: 1.5,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
-                ),
+
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onDoubleTap: () {

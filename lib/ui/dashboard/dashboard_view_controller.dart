@@ -852,6 +852,17 @@ class DashboardViewController extends GetxController
           (value) => value.fold(
             (l) async {
               await Sentry.captureException(l);
+              AwesomeDialog(
+                context: Get.context!,
+                dialogType: DialogType.error,
+                dialogBackgroundColor: backgroundColor,
+                animType: AnimType.rightSlide,
+                title: 'Oups !',
+                desc:
+                    "Quelque chose c'est mal passé pendant l'enregistrement de ta photo",
+                btnCancelText: 'Retour',
+                btnCancelOnPress: () {},
+              ).show();
               showSnackbar("Une erreur s'est produite", SnackStatusEnum.error);
             },
             (r) async {
