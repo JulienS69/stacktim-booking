@@ -26,7 +26,6 @@ class LoginViewController extends GetxController with StateMixin {
   LoginRepository loginRepository;
   //BOOL
   RxBool isShowingVersion = false.obs;
-  RxBool isShowingLoginForm = false.obs;
   RxBool isUnfocus = true.obs;
   //INT
   int counter = 0;
