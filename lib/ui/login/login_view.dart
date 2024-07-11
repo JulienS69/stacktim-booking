@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -106,13 +104,13 @@ class LoginView extends GetView<LoginViewController> {
                 const SizedBox(
                   height: 30,
                 ),
-                Platform.isIOS
-                    ? LoginEmailForm(
+                isProdDate()
+                    ? const SizedBox.shrink()
+                    : LoginEmailForm(
                         loginViewController: controller,
-                      )
-                    : const SizedBox.shrink(),
+                      ),
                 SizedBox(
-                  height: Platform.isIOS ? 30 : 60,
+                  height: isProdDate() ? 60 : 30,
                 ),
                 //BUTTON CONNEXION WITH MICROSOFT
                 isProdDate()
