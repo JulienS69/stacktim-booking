@@ -232,9 +232,10 @@ class BookingRepository extends RestApiRepository {
     required String currentBookingId,
     required bool isChecking,
     required File pictureFile,
+    required String attachmentName,
   }) async {
     final file = await dio.MultipartFile.fromFile(pictureFile.path,
-        filename: isChecking ? 'checkin.png' : 'checkout.png');
+        filename: attachmentName);
     final formData = dio.FormData.fromMap({
       "mutate": [
         {

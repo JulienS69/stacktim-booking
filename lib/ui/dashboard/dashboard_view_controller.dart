@@ -99,6 +99,10 @@ class DashboardViewController extends GetxController
   SharedPreferences? sharedPreferences;
   late AnimationController controller;
   File checkingFile = File("");
+  Rx<File> imageFile = File("").obs;
+  RxString attachmentPath = "".obs;
+  RxString attachmentName = "".obs;
+  RxString imageName = ''.obs;
 
 //This allows checking if the request to create a reservation has been made from another page.
   checkArgument() {
@@ -847,6 +851,7 @@ class DashboardViewController extends GetxController
           currentBookingId: bookingIdToChecking,
           isChecking: isCheckInTime,
           pictureFile: checkingFile,
+          attachmentName: attachmentName.value,
         )
         .then(
           (value) => value.fold(
@@ -863,7 +868,6 @@ class DashboardViewController extends GetxController
                 btnCancelText: 'Retour',
                 btnCancelOnPress: () {},
               ).show();
-              showSnackbar("Une erreur s'est produite", SnackStatusEnum.error);
             },
             (r) async {
               isCheckInTime = false;
@@ -887,13 +891,54 @@ class DashboardViewController extends GetxController
   Future<void> takePictureForCheck() async {
     // LAUNCH CAMERA PICKER
     final ImagePicker picker = ImagePicker();
-    XFile? photo = await picker.pickImage(
+    XFile? result = await picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 80,
     );
-    if (photo != null) {
-      checkingFile = File(photo.path);
-      await checkBooking();
+    if (result != null) {
+      int sizeInBytes = File(result.path).lengthSync();
+      double sizeInMb = sizeInBytes / (1024 * 1024);
+      if (sizeInMb < 10) {
+        // File size is within the limit
+        imageFile.value = File(result.path);
+        attachmentName.value = getReceiptName(imageFile.value);
+      } else {
+        AwesomeDialog(
+          context: Get.context!,
+          dialogType: DialogType.error,
+          dialogBackgroundColor: backgroundColor,
+          animType: AnimType.rightSlide,
+          title: 'Oups !',
+          desc: "Ta photo est supérieur à 10mo (${sizeInMb.round()} Mo)",
+          btnCancelText: 'Retour',
+          btnCancelOnPress: () {},
+        ).show();
+      }
+    }
+    checkingFile = imageFile.value;
+    await checkBooking();
+  }
+
+  String getReceiptName(File imageFile) {
+    if (isCheckInTime) {
+      imageName.value = 'checkin.${getFileExtension(imageFile.path)}';
+      return imageName.value;
+    } else {
+      imageName.value = 'checkout.${getFileExtension(imageFile.path)}';
+      return imageName.value;
+    }
+  }
+
+  String getFileExtension(String filePath) {
+    int lastIndex = filePath.lastIndexOf('.');
+    // Utilisation de la classe Path pour extraire l'extension
+    if (lastIndex != -1 && lastIndex < filePath.length - 1) {
+      // Récupérer l'extension en utilisant la sous-chaîne
+      String extension = filePath.substring(lastIndex + 1);
+      return extension;
+    } else {
+      // Aucune extension trouvée
+      return '';
     }
   }
 
