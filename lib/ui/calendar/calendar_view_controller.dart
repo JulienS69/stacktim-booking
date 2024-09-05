@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/icons.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/style.dart';
+import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/logic/repository/holliday_repository.dart';
+import 'package:stacktim_booking/logic/repository/user_repository.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../logic/models/booking/booking.dart';
@@ -13,6 +16,7 @@ import '../../logic/repository/booking_repository.dart';
 
 class CalendarViewController extends GetxController with StateMixin {
   final BookingRepository bookingRepository;
+  UserRepository userRepository;
   HolidayRepository holidayRepository = HolidayRepository();
   List<Booking> bookingList = [];
   List<DateTime>? holidaysList;
@@ -22,9 +26,14 @@ class CalendarViewController extends GetxController with StateMixin {
   SharedPreferences? sharedPreferences;
   final calendardButtonKey =
       GlobalKey<FormState>(debugLabel: 'calendardButtonKey');
+  final stackCreditButtonKey =
+      GlobalKey<FormState>(debugLabel: 'stackCreditButtonKey');
+  RxInt userCreditAvailable = 0.obs;
+  User currentUser = const User();
 
   CalendarViewController({
     required this.bookingRepository,
+    required this.userRepository,
   });
 
   @override
@@ -32,10 +41,16 @@ class CalendarViewController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     try {
       sharedPreferences = await SharedPreferences.getInstance();
-      await getDataTutorial();
-      await fetchHolidays();
-      await getMonthlyBookings(DateTime.now().month);
-      change(null, status: RxStatus.success());
+      getDataTutorial();
+      await Future.wait([
+        getCurrentUser(),
+        fetchHolidays(),
+        getMonthlyBookings(
+          DateTime.now().month,
+        ),
+      ]).then((res) async {
+        change(null, status: RxStatus.success());
+      });
     } catch (e) {
       await Sentry.captureMessage(
           "Erreur lors de l'initialisation des requêtes. - CalendarViewController");
@@ -46,7 +61,38 @@ class CalendarViewController extends GetxController with StateMixin {
     super.onInit();
   }
 
-  getMonthlyBookings(int month) async {
+//This allows retrieving the logged-in user.
+  Future<void> getCurrentUser() async {
+    return await userRepository.getCurrentUser().then(
+          (value) => value.fold(
+            (l) async {
+              await Sentry.captureException(l);
+            },
+            (r) {
+              Sentry.configureScope(
+                (v) => v.setUser(
+                  SentryUser(
+                    email: r.email,
+                    data: {
+                      'Token utilisateur':
+                          sharedPreferences?.getString(LocalStorageKey.jwt.name)
+                    },
+                    username: r.fullName,
+                  ),
+                ),
+              );
+              if (r.credit != null) {
+                userCreditAvailable.value = 0;
+                userCreditAvailable.value = (r.credit!.creditAvailable ?? 0) -
+                    (r.credit!.notYetUsed ?? 0);
+              }
+              currentUser = r;
+            },
+          ),
+        );
+  }
+
+  Future<void> getMonthlyBookings(int month) async {
     await bookingRepository.getCalendarMonthlyBooking(monthNumber: month).then(
           (value) => value.fold(
             (l) {
@@ -77,12 +123,16 @@ class CalendarViewController extends GetxController with StateMixin {
       targets: targets,
       colorShadow: const Color.fromARGB(255, 22, 22, 22),
       paddingFocus: 0,
-      hideSkip: true,
+      hideSkip: false,
+      alignSkip: AlignmentDirectional.topStart,
+      skipWidget: const Text(
+        "Passer le tutoriel",
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
       onSkip: () {
         if (sharedPreferences != null) {
           isShowTutorial.value = false;
-          sharedPreferences?.setBool(
-              LocalStorageKeyEnum.isShowTutorialCalendar.name, false);
+          skipTutorial(sharedPreferences);
         }
         return true;
       },
@@ -99,9 +149,13 @@ class CalendarViewController extends GetxController with StateMixin {
   }
 
   Future<void> getDataTutorial() async {
-    bool? getTutoBool = sharedPreferences
-        ?.getBool(LocalStorageKeyEnum.isShowTutorialCalendar.name);
-    if (getTutoBool == null || getTutoBool == true) {
+    bool getTutoBool = false;
+    if (!isSkippedTutorial(sharedPreferences)) {
+      getTutoBool = sharedPreferences
+              ?.getBool(LocalStorageKeyEnum.isShowTutorialCalendar.name) ??
+          true;
+    }
+    if (getTutoBool != false) {
       fillTutorialList();
       isShowTutorial.value = true;
     }

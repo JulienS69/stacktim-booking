@@ -6,7 +6,7 @@ class WelcomeViewController extends GetxController with StateMixin {
   //A two-second delay is set for loading before redirecting to the dashboard page.
   Future waitBeforeRedirect() async {
     await Future.delayed(const Duration(seconds: 2));
-    await Get.offAndToNamed(Routes.dashboard);
+    await Get.offAndToNamed(Routes.calendar);
   }
 
   @override

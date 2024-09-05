@@ -2,7 +2,9 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/color.dart';
+import 'package:stacktim_booking/helper/dialogHelper.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/logic/models/calendar_data_source/calendar_data_source.dart';
 import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_view_controller.dart';
@@ -53,6 +55,48 @@ class CalendarPage extends GetView<CalendarViewController> {
         controller.showTutorialOnDashboard(context);
         return Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: InkWell(
+                onTap: () {
+                  showCoinDialog();
+                },
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Stack crédits restant :",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Obx(() => Text(
+                          controller.userCreditAvailable.value.toString(),
+                          style: titleStyle.copyWith(
+                            color: primary,
+                            fontSize: 17,
+                          ),
+                        )),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Image.asset(
+                      coinLogo,
+                      height: 17,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Expanded(
               flex: 3,
               child: SfCalendar(

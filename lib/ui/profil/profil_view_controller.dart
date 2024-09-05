@@ -395,12 +395,16 @@ class ProfilViewController extends GetxController with StateMixin {
       targets: targets,
       colorShadow: const Color.fromARGB(255, 22, 22, 22),
       paddingFocus: 0,
-      hideSkip: true,
+      hideSkip: false,
+      alignSkip: AlignmentDirectional.topStart,
+      skipWidget: const Text(
+        "Passer le tutoriel",
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
       onSkip: () {
         if (sharedPreferences != null) {
           isShowTutorial.value = false;
-          sharedPreferences?.setBool(
-              LocalStorageKeyEnum.isShowTutorialProfil.name, false);
+          skipTutorial(sharedPreferences);
         }
         return true;
       },
@@ -417,9 +421,13 @@ class ProfilViewController extends GetxController with StateMixin {
   }
 
   Future<void> getDataTutorial() async {
-    bool? getTutoBool = sharedPreferences
-        ?.getBool(LocalStorageKeyEnum.isShowTutorialProfil.name);
-    if (getTutoBool == null || getTutoBool == true) {
+    bool getTutoBool = false;
+    if (!isSkippedTutorial(sharedPreferences)) {
+      getTutoBool = sharedPreferences
+              ?.getBool(LocalStorageKeyEnum.isShowTutorialProfil.name) ??
+          true;
+    }
+    if (getTutoBool != false) {
       fillTutorialList();
       isShowTutorial.value = true;
     }

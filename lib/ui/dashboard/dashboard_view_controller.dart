@@ -137,6 +137,18 @@ class DashboardViewController extends GetxController
     }
   }
 
+  isActionFromCalendar() {
+    if (Get.arguments != null) {
+      if (Get.arguments['datePickedFromCalendar'] != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
 //This allows checking the remaining number of credits before being able to recreate a session.
   checkCreditBeforeCreateBooking() async {
     if (await ConnectionHelper.hasNoConnection()) {
@@ -144,6 +156,13 @@ class DashboardViewController extends GetxController
           "Impossible de réserver une séance, aucune connexion internet n'a été trouvée",
           SnackStatusEnum.error);
     } else if (userCreditAvailable.value != 0) {
+      if (!isActionFromCalendar()) {
+        isDatePicked.value = true;
+        isShowingDatePicker.value = false;
+        selectedDate.value = DateFormat('yyyy-MM-dd').format(DateTime.now());
+        bookedAt.value =
+            DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(DateTime.now());
+      }
       NewBookingSheet(controller: this)
           .showModalSheet(Get.context!, pageIndexNotifier);
     } else {
@@ -218,18 +237,6 @@ class DashboardViewController extends GetxController
               await Sentry.captureException(l);
             },
             (r) {
-              Sentry.configureScope(
-                (v) => v.setUser(
-                  SentryUser(
-                    email: r.email,
-                    data: {
-                      'Token utilisateur':
-                          sharedPreferences?.getString(LocalStorageKey.jwt.name)
-                    },
-                    username: r.fullName,
-                  ),
-                ),
-              );
               if (r.credit != null) {
                 userCreditAvailable.value = 0;
                 userCreditAvailable.value = (r.credit!.creditAvailable ?? 0) -
@@ -567,8 +574,7 @@ class DashboardViewController extends GetxController
       onSkip: () {
         if (sharedPreferences != null) {
           isShowTutorial.value = false;
-          sharedPreferences?.setBool(
-              LocalStorageKeyEnum.isShowTutorial.name, false);
+          skipTutorial(sharedPreferences);
         }
         return true;
       },
@@ -585,9 +591,13 @@ class DashboardViewController extends GetxController
   }
 
   Future<void> getDataTutorial() async {
-    bool? getTutoBool =
-        sharedPreferences?.getBool(LocalStorageKeyEnum.isShowTutorial.name);
-    if (getTutoBool == null || getTutoBool == true) {
+    bool getTutoBool = false;
+    if (!isSkippedTutorial(sharedPreferences)) {
+      getTutoBool =
+          sharedPreferences?.getBool(LocalStorageKeyEnum.isShowTutorial.name) ??
+              true;
+    }
+    if (getTutoBool != false) {
       fillTutorialList();
       isShowTutorial.value = true;
     }
@@ -970,9 +980,11 @@ class DashboardViewController extends GetxController
     try {
       await getCurrentUser();
       if (currentUser.id != null) {
-        await getMyBookings();
-        await getStatusList();
-        await checkArgument();
+        await Future.wait([
+          getMyBookings(),
+          getStatusList(),
+        ]);
+        checkArgument();
         if (isCheckInTime) {
           showPhotoDialog(Get.context!, takePictureForCheck);
         }

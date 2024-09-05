@@ -1,7 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
@@ -185,29 +184,6 @@ SliverWoltModalSheetPage bookingSummary({
         ),
         const SizedBox(
           height: 10,
-        ),
-        Obx(
-          () => Row(
-            children: [
-              Expanded(
-                child: FAProgressBar(
-                  currentValue: controller.progressValue.value,
-                  size: 15,
-                  maxValue: 100,
-                  animatedDuration: const Duration(seconds: 5),
-                  direction: Axis.horizontal,
-                  verticalDirection: VerticalDirection.up,
-                  formatValueFixed: 0,
-                  progressGradient: const LinearGradient(
-                    colors: [
-                      Colors.blue,
-                      Colors.purple,
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
       ],
     ),

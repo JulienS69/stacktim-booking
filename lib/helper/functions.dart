@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/widget/x_chip.dart';
 
@@ -168,7 +170,7 @@ String formatDateInLocal({
 }
 
 String teamsUrlOfUser({required String userMail}) {
-  return "https://teams.microsoft.com/l/chat/0/0?users=$userMail&message=[Message envoyé depuis l'application Stacktim Booking]";
+  return "https://teams.microsoft.com/l/chat/0/0?users=$userMail";
 }
 
 // Rate for SENTRY
@@ -192,4 +194,15 @@ Icon faIconWithCode(String iconCode, {double? size, Color? color}) {
     size: size ?? 20,
     color: color,
   );
+}
+
+Future<void> skipTutorial(SharedPreferences? sharedPreferences) async {
+  await sharedPreferences?.setBool(
+      LocalStorageKeyEnum.isSkippedTutorial.name, true);
+}
+
+bool isSkippedTutorial(SharedPreferences? sharedPreferences) {
+  return sharedPreferences
+          ?.getBool(LocalStorageKeyEnum.isSkippedTutorial.name) ==
+      true;
 }
