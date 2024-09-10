@@ -27,13 +27,13 @@ class BookingTitle extends StatelessWidget {
           onTapOutside: (d) {
             FocusScope.of(modalSheetContext).requestFocus(FocusNode());
           },
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             hintText: 'Titre de la réservation',
-            hintStyle: antaStyle,
-            focusedBorder: UnderlineInputBorder(
+            hintStyle: antaStyle.copyWith(fontSize: 16),
+            focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 0.0),
             ),
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 0.0),
             ),
           ),
@@ -41,6 +41,7 @@ class BookingTitle extends StatelessWidget {
             color: Colors.white60,
             fontFamily: 'Anta',
             decoration: TextDecoration.none,
+            fontSize: 18,
           ),
           onChanged: (title) {
             controller.titleSelected.value = title;

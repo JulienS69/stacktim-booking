@@ -29,9 +29,9 @@ class BookingBeginningTime extends StatelessWidget {
               },
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     "Heure de début choisie : ",
-                    style: antaStyle,
+                    style: antaStyle.copyWith(fontSize: 16),
                   ),
                   const SizedBox(
                     width: 5,
@@ -42,6 +42,7 @@ class BookingBeginningTime extends StatelessWidget {
                           : "${controller.beginingHourSelected} heures"
                               "${controller.minutesSelected != "0" ? " et ${controller.minutesSelected} minutes" : ""}",
                       style: antaStyle.copyWith(
+                        fontSize: 16,
                         color: controller.startingtimeSelected.isEmpty
                             ? Colors.red
                             : Colors.white60,

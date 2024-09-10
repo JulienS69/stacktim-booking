@@ -187,9 +187,9 @@ class IntroView extends GetView<IntroViewController> {
                                 },
                                 style: const ButtonStyle(
                                   backgroundColor:
-                                      MaterialStatePropertyAll(Colors.black),
+                                      WidgetStatePropertyAll(Colors.black),
                                   foregroundColor:
-                                      MaterialStatePropertyAll(Colors.white),
+                                      WidgetStatePropertyAll(Colors.white),
                                 ),
                                 child: const Text(
                                   "Je confirme avoir lu le règlement",

@@ -17,6 +17,7 @@ class XErrorPage extends StatelessWidget {
   final bool? withBottomBar;
   final bool? showRetryButton;
   final int? bottomNavIndex;
+  final String? lottieName;
   const XErrorPage({
     required this.contentTitle,
     required this.onPressedRetry,
@@ -25,6 +26,7 @@ class XErrorPage extends StatelessWidget {
     this.withBottomBar,
     this.bottomNavIndex,
     this.showRetryButton,
+    this.lottieName,
     super.key,
   });
 
@@ -50,7 +52,7 @@ class XErrorPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Lottie.asset(
-                    notFound,
+                    lottieName ?? notFound,
                     fit: BoxFit.cover,
                     height: 350,
                     repeat: false,

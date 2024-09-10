@@ -24,9 +24,9 @@ class BookingDatePicker extends StatelessWidget {
         ),
         Obx(() => Row(
               children: [
-                const Text(
+                Text(
                   "Date choisie : ",
-                  style: antaStyle,
+                  style: antaStyle.copyWith(fontSize: 16),
                 ),
                 const SizedBox(
                   width: 5,
@@ -44,6 +44,7 @@ class BookingDatePicker extends StatelessWidget {
                           controller.bookedAt.value.capitalizeFirst!,
                           style: antaStyle.copyWith(
                             color: Colors.white60,
+                            fontSize: 16,
                             decoration: TextDecoration.underline,
                           ),
                         ),
@@ -62,7 +63,7 @@ class BookingDatePicker extends StatelessWidget {
                           }
                         },
                         overlayColor:
-                            const MaterialStatePropertyAll(Colors.transparent),
+                            const WidgetStatePropertyAll(Colors.transparent),
                         child: const Icon(
                           Icons.date_range,
                           color: Colors.white,
@@ -171,14 +172,23 @@ class BookingDatePicker extends StatelessWidget {
                           controller.isShowingDatePicker.value = true;
                         }
                       },
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.black),
-                        foregroundColor: MaterialStatePropertyAll(Colors.white),
-                        textStyle: MaterialStatePropertyAll(antaStyle),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            const WidgetStatePropertyAll(Colors.black),
+                        foregroundColor:
+                            const WidgetStatePropertyAll(Colors.white),
+                        textStyle: WidgetStatePropertyAll(
+                          antaStyle.copyWith(
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
                       child: const Text(
                         'Selectionner une date',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/functions.dart';
-import 'package:stacktim_booking/helper/style.dart';
+import 'package:stacktim_booking/helper/snackbar.dart';
+import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_detail/calendar_detail_view_controller.dart';
@@ -64,6 +65,7 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
                 contentTitle: controller.isPassed
                     ? "Il n'est plus possible de réserver une session à cette date"
                     : "Aucune session réservée pour ce jour.",
+                lottieName: controller.isPassed ? lottieGamepad : null,
                 showRetryButton: false,
                 onPressedRetry: () {
                   controller.onInit();
@@ -93,17 +95,23 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(
-                                      Icons.arrow_circle_left_outlined,
-                                      color: Colors.white,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "Revenir au calendrier",
-                                      style: antaStyle.copyWith(
-                                        color: Colors.white,
+                                    FilledButton(
+                                      onPressed: () {
+                                        showSnackbar(
+                                            "Impossible de réserver à une date passée",
+                                            SnackStatusEnum.warning);
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.grey),
+                                        foregroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.white),
+                                      ),
+                                      child: const Text(
+                                        'Réserver ma place',
+                                        style: TextStyle(color: Colors.white),
                                       ),
                                     ),
                                   ],

@@ -56,14 +56,15 @@ SliverWoltModalSheetPage bookingSummary({
             ),
             Row(
               children: [
-                const Text(
+                Text(
                   "Date choisie : ",
-                  style: antaStyle,
+                  style: antaStyle.copyWith(fontSize: 16),
                 ),
                 Expanded(
                   child: Text(
                     controller.bookedAt.value.capitalizeFirst!,
                     style: antaStyle.copyWith(
+                      fontSize: 16,
                       decoration: TextDecoration.underline,
                       overflow: TextOverflow.clip,
                     ),
@@ -76,9 +77,9 @@ SliverWoltModalSheetPage bookingSummary({
             ),
             Row(
               children: [
-                const Text(
+                Text(
                   "Crénau choisi : ",
-                  style: antaStyle,
+                  style: antaStyle.copyWith(fontSize: 16),
                 ),
                 Expanded(
                   child: Text(
@@ -87,6 +88,7 @@ SliverWoltModalSheetPage bookingSummary({
                         : "De ${controller.beginingHourSelected.value.capitalizeFirst!}h${controller.minutesSelected} à ${controller.endingHourSelected.value.capitalizeFirst!}h${controller.minutesSelected}",
                     style: antaStyle.copyWith(
                       decoration: TextDecoration.underline,
+                      fontSize: 16,
                       overflow: TextOverflow.clip,
                     ),
                   ),
@@ -98,15 +100,16 @@ SliverWoltModalSheetPage bookingSummary({
             ),
             Row(
               children: [
-                const Text(
+                Text(
                   "Siège choisi : ",
-                  style: antaStyle,
+                  style: antaStyle.copyWith(fontSize: 16),
                 ),
                 Expanded(
                   child: Text(
                     "Siège numéro ${controller.computerSelected.value}",
                     style: antaStyle.copyWith(
                       decoration: TextDecoration.underline,
+                      fontSize: 16,
                       overflow: TextOverflow.clip,
                     ),
                   ),
@@ -127,9 +130,9 @@ SliverWoltModalSheetPage bookingSummary({
             await controller.createBooking();
           },
           style: const ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.white),
-            foregroundColor: MaterialStatePropertyAll(Colors.red),
-            textStyle: MaterialStatePropertyAll(antaStyle),
+            backgroundColor: WidgetStatePropertyAll(Colors.white),
+            foregroundColor: WidgetStatePropertyAll(Colors.red),
+            textStyle: WidgetStatePropertyAll(antaStyle),
           ),
           child: const SizedBox(
             height: 30,
@@ -168,9 +171,9 @@ SliverWoltModalSheetPage bookingSummary({
             }
           },
           style: const ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.black),
-            foregroundColor: MaterialStatePropertyAll(Colors.white),
-            textStyle: MaterialStatePropertyAll(antaStyle),
+            backgroundColor: WidgetStatePropertyAll(Colors.black),
+            foregroundColor: WidgetStatePropertyAll(Colors.white),
+            textStyle: WidgetStatePropertyAll(antaStyle),
           ),
           child: const SizedBox(
             height: 30,

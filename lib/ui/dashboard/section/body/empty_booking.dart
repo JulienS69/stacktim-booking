@@ -78,9 +78,9 @@ class _EmptyBookingState extends State<EmptyBooking> {
                         widget.onPressed();
                       },
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.black),
-                        foregroundColor: MaterialStatePropertyAll(Colors.white),
-                        textStyle: MaterialStatePropertyAll(antaStyle),
+                        backgroundColor: WidgetStatePropertyAll(Colors.black),
+                        foregroundColor: WidgetStatePropertyAll(Colors.white),
+                        textStyle: WidgetStatePropertyAll(antaStyle),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -101,11 +101,9 @@ SliverWoltModalSheetPage bookingSchedule({
                           await controller.checkAvailbilityComputer();
                         },
                         style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(Colors.black),
-                          foregroundColor:
-                              MaterialStatePropertyAll(Colors.white),
-                          textStyle: MaterialStatePropertyAll(antaStyle),
+                          backgroundColor: WidgetStatePropertyAll(Colors.black),
+                          foregroundColor: WidgetStatePropertyAll(Colors.white),
+                          textStyle: WidgetStatePropertyAll(antaStyle),
                         ),
                         child: SizedBox(
                           height: buttonHeight,
@@ -124,8 +122,20 @@ SliverWoltModalSheetPage bookingSchedule({
                                   ],
                                 )
                               : const Center(
-                                  child: Text(
-                                    "Choisir ma place dans la salle",
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Choisir ma place dans la salle",
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.arrow_circle_right_outlined,
+                                        color: Colors.white,
+                                      ),
+                                    ],
                                   ),
                                 ),
                         ),
