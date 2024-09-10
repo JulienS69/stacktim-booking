@@ -35,18 +35,22 @@ class BookingEndingTime extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text(
-                      controller.endingHourSelected.isEmpty
-                          ? "Aucunes"
-                          : "${controller.endingHourSelected.value} heures"
-                              "${controller.minutesSelected != "0" ? " et ${controller.minutesSelected} minutes" : ""}",
-                      style: antaStyle.copyWith(
-                        fontSize: 16,
-                        color: controller.endingHourSelected.isEmpty
-                            ? Colors.red
-                            : Colors.white60,
-                        decoration: TextDecoration.underline,
-                      )),
+                  Expanded(
+                    child: Text(
+                        controller.endingHourSelected.isEmpty
+                            ? "Aucunes"
+                            : "${controller.endingHourSelected.value} h "
+                                "${controller.endingMinutesSelected != "0" ? controller.endingMinutesSelected : ""}",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: antaStyle.copyWith(
+                          fontSize: 16,
+                          color: controller.endingHourSelected.isEmpty
+                              ? Colors.red
+                              : Colors.white60,
+                          decoration: TextDecoration.underline,
+                        )),
+                  ),
                   const Spacer(),
                   const Icon(
                     Icons.schedule,

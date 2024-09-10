@@ -83,9 +83,10 @@ SliverWoltModalSheetPage bookingSummary({
                 ),
                 Expanded(
                   child: Text(
-                    controller.minutesSelected == "0"
+                    controller.startingMinutesSelected == "0" &&
+                            controller.endingMinutesSelected == "0"
                         ? "De ${controller.beginingHourSelected.value.capitalizeFirst!} à ${controller.endingHourSelected.value.capitalizeFirst!} heures"
-                        : "De ${controller.beginingHourSelected.value.capitalizeFirst!}h${controller.minutesSelected} à ${controller.endingHourSelected.value.capitalizeFirst!}h${controller.minutesSelected}",
+                        : "De ${controller.beginingHourSelected.value.capitalizeFirst!}h${controller.startingMinutesSelected} à ${controller.endingHourSelected.value.capitalizeFirst!}h${controller.endingMinutesSelected}",
                     style: antaStyle.copyWith(
                       decoration: TextDecoration.underline,
                       fontSize: 16,

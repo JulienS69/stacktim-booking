@@ -36,18 +36,22 @@ class BookingBeginningTime extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text(
-                      controller.startingtimeSelected.isEmpty
-                          ? "Aucunes"
-                          : "${controller.beginingHourSelected} heures"
-                              "${controller.minutesSelected != "0" ? " et ${controller.minutesSelected} minutes" : ""}",
-                      style: antaStyle.copyWith(
-                        fontSize: 16,
-                        color: controller.startingtimeSelected.isEmpty
-                            ? Colors.red
-                            : Colors.white60,
-                        decoration: TextDecoration.underline,
-                      )),
+                  Expanded(
+                    child: Text(
+                        controller.startingtimeSelected.isEmpty
+                            ? "Aucunes"
+                            : "${controller.beginingHourSelected} h "
+                                "${controller.startingMinutesSelected != "0" ? controller.startingMinutesSelected : ""}",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: antaStyle.copyWith(
+                          fontSize: 16,
+                          color: controller.startingtimeSelected.isEmpty
+                              ? Colors.red
+                              : Colors.white60,
+                          decoration: TextDecoration.underline,
+                        )),
+                  ),
                   const Spacer(),
                   const Icon(
                     Icons.schedule,

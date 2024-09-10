@@ -73,7 +73,8 @@ class DashboardViewController extends GetxController
   RxString selectedDate = "".obs;
   RxString beginingHourSelected = "".obs;
   RxString endingHourSelected = "".obs;
-  String minutesSelected = "";
+  String startingMinutesSelected = "";
+  String endingMinutesSelected = "";
   RxString startingtimeSelected = "".obs;
   RxString endingtimeSelected = "".obs;
   String computerUuidSelected = "";
@@ -370,7 +371,8 @@ class DashboardViewController extends GetxController
     selectedDate.value = "";
     beginingHourSelected.value = "";
     endingHourSelected.value = "";
-    minutesSelected = "";
+    startingMinutesSelected = "";
+    endingMinutesSelected = "";
     startingtimeSelected.value = "";
     endingtimeSelected.value = "";
     computerSelected.value = 0;
@@ -450,7 +452,7 @@ class DashboardViewController extends GetxController
                       : beginingHourSelected.isNotEmpty
                           ? int.parse(beginingHourSelected.value) + 1
                           : TimeOfDay.now().hour,
-              minute: minutesSelected == "30" ? 30 : 0,
+              minute: startingMinutesSelected == "30" ? 30 : 0,
             ),
             0),
         sunrise: const TimeOfDay(hour: 6, minute: 0),
@@ -462,7 +464,6 @@ class DashboardViewController extends GetxController
         accentColor: Colors.white,
         blurredBackground: true,
         duskSpanInMinutes: 120,
-        disableMinute: isEndingTime ? true : false,
         disableAutoFocusToNextInput: isEndingTime ? true : false,
         okText: isEndingTime
             ? "Je confirme l'heure de fin"
@@ -483,20 +484,20 @@ class DashboardViewController extends GetxController
           Navigator.pop(context);
           HapticFeedback.heavyImpact();
         },
-        minHour: isAfternoon() ? 17 : 12,
+        minHour: isAfternoon() ? 17 : 7,
         maxHour: 21,
         maxMinute: 30,
         onChange: (time) async {
           HapticFeedback.vibrate();
           if (!isEndingTime) {
             // Vérifier si l'heure est dans les créneaux horaires valides
-            if ((time.hour >= 12 && time.hour <= 13 && time.minute != 59) ||
+            if ((time.hour >= 7 && time.hour <= 13 && time.minute != 59) ||
                 (time.hour >= 17 && time.hour <= 21 && time.minute != 59)) {
               beginingHourSelected.value = time.hour.toString();
-              minutesSelected = time.minute.toString();
+              startingMinutesSelected = time.minute.toString();
               Time beginHourSelect = Time(hour: time.hour, minute: time.minute);
               startingtimeSelected.value = beginHourSelect.format(Get.context!);
-              if (minutesSelected != "0") {
+              if (startingMinutesSelected != "0") {
                 DateFormat format = DateFormat('HH:mm');
                 DateTime parsedDateTime =
                     format.parse(endingtimeSelected.value);
@@ -507,12 +508,12 @@ class DashboardViewController extends GetxController
               }
             } else {
               showSnackbar(
-                  "Impossible de choisir une heure en dehors des horaires définis - 12h-13h30 / 17h-21h",
+                  "Impossible de choisir une heure en dehors des horaires définis - 7h-13h30 / 17h-21h",
                   SnackStatusEnum.error);
             }
           } else {
             // Vérifier si l'heure est dans les créneaux horaires valides
-            if ((time.hour >= 12 && time.hour <= 13 && time.minute != 59) ||
+            if ((time.hour >= 7 && time.hour <= 13 && time.minute != 59) ||
                 (time.hour >= 17 && time.hour <= 21 && time.minute != 59)) {
               DateFormat format = DateFormat('HH:mm');
               DateTime parsedDateTime =
@@ -531,7 +532,7 @@ class DashboardViewController extends GetxController
                     SnackStatusEnum.error);
               } else {
                 endingHourSelected.value = time.hour.toString();
-                minutesSelected = time.minute.toString();
+                endingMinutesSelected = time.minute.toString();
                 Time endedTime = Time(hour: time.hour, minute: time.minute);
                 endingtimeSelected.value = endedTime.format(Get.context!);
                 if (selectedDate.value.isNotEmpty &&
