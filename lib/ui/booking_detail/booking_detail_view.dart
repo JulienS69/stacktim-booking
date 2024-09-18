@@ -2,10 +2,10 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
+import 'package:stacktim_booking/logic/models/game/game.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/ui/booking_detail/booking_detail_view_controller.dart';
 import 'package:stacktim_booking/ui/booking_detail/seat_picker_detail.dart';
@@ -73,6 +73,8 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                 bookingDate: formatDateInLocal(
                     datePicked:
                         controller.currentBooking.value.bookedAt.toString()),
+                bookingGame:
+                    controller.currentBooking.value.game ?? const Game(),
                 bookingTitle: controller.currentBooking.value.title ?? '',
                 fullName: controller.currentBooking.value.user?.fullName ?? '',
                 nickName: controller.currentBooking.value.user?.nickName ??
@@ -142,6 +144,7 @@ class BookingDetailView extends GetView<BookingDetailViewController> {
                     bookingDate: formatDateInLocal(
                         datePicked: booking.bookedAt.toString()),
                     bookingTitle: booking.title ?? '',
+                    bookingGame: booking.game ?? const Game(),
                     fullName: booking.user?.fullName ?? '',
                     nickName: booking.user?.nickName ?? 'Aucun pseudo',
                     isCurrentUser: false,

@@ -2,7 +2,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/profil/profil_view_controller.dart';
@@ -46,7 +45,7 @@ class FavoriteGameWidget extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return Stack(
                             children: [
-                              GameCard(
+                              FavoriteGameCard(
                                 controller: controller,
                                 index: index,
                                 isExpanded: true,
@@ -85,7 +84,7 @@ class FavoriteGameWidget extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 20.0),
                             child: Stack(
                               children: [
-                                GameCard(
+                                FavoriteGameCard(
                                   controller: controller,
                                   index: index,
                                   isExpanded: false,
@@ -150,8 +149,8 @@ class FavoriteGameWidget extends StatelessWidget {
   }
 }
 
-class GameCard extends StatelessWidget {
-  const GameCard({
+class FavoriteGameCard extends StatelessWidget {
+  const FavoriteGameCard({
     super.key,
     required this.controller,
     required this.index,

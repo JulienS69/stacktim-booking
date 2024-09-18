@@ -135,13 +135,15 @@ SliverWoltModalSheetPage bookingSummary({
             foregroundColor: WidgetStatePropertyAll(Colors.red),
             textStyle: WidgetStatePropertyAll(antaStyle),
           ),
-          child: const SizedBox(
+          child: SizedBox(
             height: 30,
             width: double.infinity,
             child: Center(
-              child: Text(
-                "Je valide ma réservation",
-              ),
+              child: Text("Je valide ma réservation",
+                  style: antaStyle.copyWith(
+                    color: const Color(0xffFF0808),
+                    fontFamily: 'anta',
+                  )),
             ),
           ),
         ),
@@ -176,12 +178,15 @@ SliverWoltModalSheetPage bookingSummary({
             foregroundColor: WidgetStatePropertyAll(Colors.white),
             textStyle: WidgetStatePropertyAll(antaStyle),
           ),
-          child: const SizedBox(
+          child: SizedBox(
             height: 30,
             width: 250,
             child: Center(
               child: Text(
                 "J'annule ma réservation",
+                style: antaStyle.copyWith(
+                  fontFamily: 'anta',
+                ),
               ),
             ),
           ),

@@ -10,6 +10,7 @@ import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:stacktim_booking/ui/new_booking/first_sheet/section/booking_title.dart';
 import 'package:stacktim_booking/ui/new_booking/first_sheet/section/date_picker.dart';
 import 'package:stacktim_booking/ui/new_booking/first_sheet/section/end_time_picker.dart';
+import 'package:stacktim_booking/ui/new_booking/first_sheet/section/game_picker.dart';
 import 'package:stacktim_booking/ui/new_booking/first_sheet/section/start_time_picker.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -66,6 +67,7 @@ SliverWoltModalSheetPage bookingSchedule({
             controller: controller,
             modalSheetContext: modalSheetContext,
           ),
+          GamePicker(controller: controller),
           BookingDatePicker(
             controller: controller,
             pageIndexNotifier: pageIndexNotifier,
@@ -87,7 +89,7 @@ SliverWoltModalSheetPage bookingSchedule({
       ),
     ),
     stickyActionBar: Obx(
-      () => controller.titleSelected.value.isNotEmpty &&
+      () => controller.gameSelected.value.id != null &&
               controller.isDatePicked.value &&
               controller.beginingHourSelected.isNotEmpty &&
               controller.endingHourSelected.value.isNotEmpty
@@ -121,17 +123,20 @@ SliverWoltModalSheetPage bookingSchedule({
                                     )
                                   ],
                                 )
-                              : const Center(
+                              : Center(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         "Choisir ma place dans la salle",
+                                        style: antaStyle.copyWith(
+                                          fontFamily: 'anta',
+                                        ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 5,
                                       ),
-                                      Icon(
+                                      const Icon(
                                         Icons.arrow_circle_right_outlined,
                                         color: Colors.white,
                                       ),

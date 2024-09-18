@@ -25,9 +25,11 @@ import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/logic/models/booking/booking.dart';
 import 'package:stacktim_booking/logic/models/computer/computer.dart';
+import 'package:stacktim_booking/logic/models/game/game.dart';
 import 'package:stacktim_booking/logic/models/status/status.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/logic/repository/booking_repository.dart';
+import 'package:stacktim_booking/logic/repository/game_repository.dart';
 import 'package:stacktim_booking/logic/repository/holliday_repository.dart';
 import 'package:stacktim_booking/logic/repository/status_repository.dart';
 import 'package:stacktim_booking/logic/repository/user_repository.dart';
@@ -46,11 +48,13 @@ class DashboardViewController extends GetxController
   UserRepository userRepository = UserRepository();
   ComputerRepository computerRepository = ComputerRepository();
   HolidayRepository holidayRepository = HolidayRepository();
+  GameRepository gameRepository = GameRepository();
   //LIST
   RxList<Status> statusList = <Status>[].obs;
   RxList<Booking> bookingList = <Booking>[].obs;
   RxList<Booking> filteredBookingList = <Booking>[].obs;
   RxList<Computer> computersList = <Computer>[].obs;
+  RxList<Game> gameList = <Game>[].obs;
   List<TargetFocus> tutorialList = [];
   List<DateTime>? holidaysList;
   //OBJECT
@@ -67,6 +71,8 @@ class DashboardViewController extends GetxController
   Rx<double> progressValue = 0.0.obs;
   RxBool isConfirmed = false.obs;
   bool isCheckInTime = false;
+  RxBool isExpanded = false.obs;
+
   //STRING
   RxString titleSelected = "".obs;
   RxString bookedAt = "".obs;
@@ -105,6 +111,7 @@ class DashboardViewController extends GetxController
   RxString attachmentPath = "".obs;
   RxString attachmentName = "".obs;
   RxString imageName = ''.obs;
+  Rx<Game> gameSelected = const Game().obs;
 
 //This allows checking if the request to create a reservation has been made from another page.
   checkArgument() {
@@ -322,6 +329,7 @@ class DashboardViewController extends GetxController
       endAt: endingtimeSelected.value,
       beginAt: startingtimeSelected.value,
       duration: durationHours,
+      gameId: gameSelected.value.id,
     );
     return await bookingRepository
         .createBooking(currentBooking: currentBooking)
@@ -378,11 +386,15 @@ class DashboardViewController extends GetxController
     computerSelected.value = 0;
     progressValue.value = 0.0;
     isConfirmed.value = false;
+    gameSelected.value = const Game();
+    isExpanded.value = false;
     pageIndexNotifier.value = pageIndexNotifier.value - 3;
   }
 
   bool checkFormIsEmpty() {
-    if (bookedAt.isNotEmpty || titleController.text.isNotEmpty) {
+    if (bookedAt.isNotEmpty ||
+        titleController.text.isNotEmpty ||
+        gameSelected.value.id != null) {
       return false;
     } else {
       return true;
@@ -537,7 +549,7 @@ class DashboardViewController extends GetxController
                 endingtimeSelected.value = endedTime.format(Get.context!);
                 if (selectedDate.value.isNotEmpty &&
                     startingtimeSelected.value.isNotEmpty &&
-                    titleSelected.value.isNotEmpty) {
+                    gameSelected.value.id != null) {
                   if (hasEnoughCreditsForReservation()) {
                     await checkAvailbilityComputer();
                   } else {
@@ -969,6 +981,19 @@ class DashboardViewController extends GetxController
     }
   }
 
+  Future<void> getGameList() async {
+    return await gameRepository.getGameList().then(
+          (value) => value.fold(
+            (l) {
+              Sentry.captureEvent(l);
+            },
+            (r) {
+              gameList.value = r;
+            },
+          ),
+        );
+  }
+
   @override
   void onInit() async {
     change(null, status: RxStatus.loading());
@@ -984,6 +1009,7 @@ class DashboardViewController extends GetxController
         await Future.wait([
           getMyBookings(),
           getStatusList(),
+          getGameList(),
         ]);
         checkArgument();
         if (isCheckInTime) {

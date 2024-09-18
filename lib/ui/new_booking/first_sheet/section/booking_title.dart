@@ -20,7 +20,6 @@ class BookingTitle extends StatelessWidget {
       children: [
         TextField(
           cursorColor: grey13,
-          autofocus: true,
           textAlign: TextAlign.center,
           keyboardAppearance: Brightness.dark,
           maxLength: 32,
@@ -31,10 +30,10 @@ class BookingTitle extends StatelessWidget {
             hintText: 'Titre de la réservation',
             hintStyle: antaStyle.copyWith(fontSize: 16),
             focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 0.0),
+              borderSide: BorderSide(color: Colors.white, width: 0.0),
             ),
             enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 0.0),
+              borderSide: BorderSide(color: Colors.white, width: 0.0),
             ),
           ),
           style: const TextStyle(

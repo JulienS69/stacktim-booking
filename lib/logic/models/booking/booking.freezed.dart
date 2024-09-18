@@ -42,12 +42,15 @@ mixin _$Booking {
   User? get user => throw _privateConstructorUsedError;
   @JsonKey(name: 'computer')
   Computer? get computer => throw _privateConstructorUsedError;
+  @JsonKey(name: 'game')
+  Game? get game => throw _privateConstructorUsedError;
   @JsonKey(name: 'status')
   Status? get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_checkin_completed')
   bool? get isCheckinComplete => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_checkout_completed')
   bool? get isCheckoutComplete => throw _privateConstructorUsedError;
+  String? get gameId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -71,12 +74,15 @@ abstract class $BookingCopyWith<$Res> {
       @JsonKey(name: 'duration') int? duration,
       @JsonKey(name: 'user') User? user,
       @JsonKey(name: 'computer') Computer? computer,
+      @JsonKey(name: 'game') Game? game,
       @JsonKey(name: 'status') Status? status,
       @JsonKey(name: 'is_checkin_completed') bool? isCheckinComplete,
-      @JsonKey(name: 'is_checkout_completed') bool? isCheckoutComplete});
+      @JsonKey(name: 'is_checkout_completed') bool? isCheckoutComplete,
+      String? gameId});
 
   $UserCopyWith<$Res>? get user;
   $ComputerCopyWith<$Res>? get computer;
+  $GameCopyWith<$Res>? get game;
   $StatusCopyWith<$Res>? get status;
 }
 
@@ -104,9 +110,11 @@ class _$BookingCopyWithImpl<$Res, $Val extends Booking>
     Object? duration = freezed,
     Object? user = freezed,
     Object? computer = freezed,
+    Object? game = freezed,
     Object? status = freezed,
     Object? isCheckinComplete = freezed,
     Object? isCheckoutComplete = freezed,
+    Object? gameId = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -153,6 +161,10 @@ class _$BookingCopyWithImpl<$Res, $Val extends Booking>
           ? _value.computer
           : computer // ignore: cast_nullable_to_non_nullable
               as Computer?,
+      game: freezed == game
+          ? _value.game
+          : game // ignore: cast_nullable_to_non_nullable
+              as Game?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -165,6 +177,10 @@ class _$BookingCopyWithImpl<$Res, $Val extends Booking>
           ? _value.isCheckoutComplete
           : isCheckoutComplete // ignore: cast_nullable_to_non_nullable
               as bool?,
+      gameId: freezed == gameId
+          ? _value.gameId
+          : gameId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -189,6 +205,18 @@ class _$BookingCopyWithImpl<$Res, $Val extends Booking>
 
     return $ComputerCopyWith<$Res>(_value.computer!, (value) {
       return _then(_value.copyWith(computer: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $GameCopyWith<$Res>? get game {
+    if (_value.game == null) {
+      return null;
+    }
+
+    return $GameCopyWith<$Res>(_value.game!, (value) {
+      return _then(_value.copyWith(game: value) as $Val);
     });
   }
 
@@ -224,14 +252,18 @@ abstract class _$$BookingImplCopyWith<$Res> implements $BookingCopyWith<$Res> {
       @JsonKey(name: 'duration') int? duration,
       @JsonKey(name: 'user') User? user,
       @JsonKey(name: 'computer') Computer? computer,
+      @JsonKey(name: 'game') Game? game,
       @JsonKey(name: 'status') Status? status,
       @JsonKey(name: 'is_checkin_completed') bool? isCheckinComplete,
-      @JsonKey(name: 'is_checkout_completed') bool? isCheckoutComplete});
+      @JsonKey(name: 'is_checkout_completed') bool? isCheckoutComplete,
+      String? gameId});
 
   @override
   $UserCopyWith<$Res>? get user;
   @override
   $ComputerCopyWith<$Res>? get computer;
+  @override
+  $GameCopyWith<$Res>? get game;
   @override
   $StatusCopyWith<$Res>? get status;
 }
@@ -258,9 +290,11 @@ class __$$BookingImplCopyWithImpl<$Res>
     Object? duration = freezed,
     Object? user = freezed,
     Object? computer = freezed,
+    Object? game = freezed,
     Object? status = freezed,
     Object? isCheckinComplete = freezed,
     Object? isCheckoutComplete = freezed,
+    Object? gameId = freezed,
   }) {
     return _then(_$BookingImpl(
       id: freezed == id
@@ -307,6 +341,10 @@ class __$$BookingImplCopyWithImpl<$Res>
           ? _value.computer
           : computer // ignore: cast_nullable_to_non_nullable
               as Computer?,
+      game: freezed == game
+          ? _value.game
+          : game // ignore: cast_nullable_to_non_nullable
+              as Game?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -319,6 +357,10 @@ class __$$BookingImplCopyWithImpl<$Res>
           ? _value.isCheckoutComplete
           : isCheckoutComplete // ignore: cast_nullable_to_non_nullable
               as bool?,
+      gameId: freezed == gameId
+          ? _value.gameId
+          : gameId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -338,9 +380,11 @@ class _$BookingImpl implements _Booking {
       @JsonKey(name: 'duration') this.duration,
       @JsonKey(name: 'user') this.user,
       @JsonKey(name: 'computer') this.computer,
+      @JsonKey(name: 'game') this.game,
       @JsonKey(name: 'status') this.status,
       @JsonKey(name: 'is_checkin_completed') this.isCheckinComplete,
-      @JsonKey(name: 'is_checkout_completed') this.isCheckoutComplete});
+      @JsonKey(name: 'is_checkout_completed') this.isCheckoutComplete,
+      this.gameId});
 
   factory _$BookingImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookingImplFromJson(json);
@@ -379,6 +423,9 @@ class _$BookingImpl implements _Booking {
   @JsonKey(name: 'computer')
   final Computer? computer;
   @override
+  @JsonKey(name: 'game')
+  final Game? game;
+  @override
   @JsonKey(name: 'status')
   final Status? status;
   @override
@@ -387,10 +434,12 @@ class _$BookingImpl implements _Booking {
   @override
   @JsonKey(name: 'is_checkout_completed')
   final bool? isCheckoutComplete;
+  @override
+  final String? gameId;
 
   @override
   String toString() {
-    return 'Booking(id: $id, userId: $userId, statusId: $statusId, computerId: $computerId, title: $title, bookedAt: $bookedAt, beginAt: $beginAt, endAt: $endAt, duration: $duration, user: $user, computer: $computer, status: $status, isCheckinComplete: $isCheckinComplete, isCheckoutComplete: $isCheckoutComplete)';
+    return 'Booking(id: $id, userId: $userId, statusId: $statusId, computerId: $computerId, title: $title, bookedAt: $bookedAt, beginAt: $beginAt, endAt: $endAt, duration: $duration, user: $user, computer: $computer, game: $game, status: $status, isCheckinComplete: $isCheckinComplete, isCheckoutComplete: $isCheckoutComplete, gameId: $gameId)';
   }
 
   @override
@@ -414,11 +463,13 @@ class _$BookingImpl implements _Booking {
             (identical(other.user, user) || other.user == user) &&
             (identical(other.computer, computer) ||
                 other.computer == computer) &&
+            (identical(other.game, game) || other.game == game) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.isCheckinComplete, isCheckinComplete) ||
                 other.isCheckinComplete == isCheckinComplete) &&
             (identical(other.isCheckoutComplete, isCheckoutComplete) ||
-                other.isCheckoutComplete == isCheckoutComplete));
+                other.isCheckoutComplete == isCheckoutComplete) &&
+            (identical(other.gameId, gameId) || other.gameId == gameId));
   }
 
   @JsonKey(ignore: true)
@@ -436,9 +487,11 @@ class _$BookingImpl implements _Booking {
       duration,
       user,
       computer,
+      game,
       status,
       isCheckinComplete,
-      isCheckoutComplete);
+      isCheckoutComplete,
+      gameId);
 
   @JsonKey(ignore: true)
   @override
@@ -467,10 +520,11 @@ abstract class _Booking implements Booking {
       @JsonKey(name: 'duration') final int? duration,
       @JsonKey(name: 'user') final User? user,
       @JsonKey(name: 'computer') final Computer? computer,
+      @JsonKey(name: 'game') final Game? game,
       @JsonKey(name: 'status') final Status? status,
       @JsonKey(name: 'is_checkin_completed') final bool? isCheckinComplete,
-      @JsonKey(name: 'is_checkout_completed')
-      final bool? isCheckoutComplete}) = _$BookingImpl;
+      @JsonKey(name: 'is_checkout_completed') final bool? isCheckoutComplete,
+      final String? gameId}) = _$BookingImpl;
 
   factory _Booking.fromJson(Map<String, dynamic> json) = _$BookingImpl.fromJson;
 
@@ -508,6 +562,9 @@ abstract class _Booking implements Booking {
   @JsonKey(name: 'computer')
   Computer? get computer;
   @override
+  @JsonKey(name: 'game')
+  Game? get game;
+  @override
   @JsonKey(name: 'status')
   Status? get status;
   @override
@@ -516,6 +573,8 @@ abstract class _Booking implements Booking {
   @override
   @JsonKey(name: 'is_checkout_completed')
   bool? get isCheckoutComplete;
+  @override
+  String? get gameId;
   @override
   @JsonKey(ignore: true)
   _$$BookingImplCopyWith<_$BookingImpl> get copyWith =>

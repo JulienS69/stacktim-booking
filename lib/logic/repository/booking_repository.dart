@@ -46,6 +46,7 @@ class BookingRepository extends RestApiRepository {
             {"relation": "user"},
             {"relation": "computer"},
             {"relation": "status"},
+            {"relation": "game"},
           ]
         }
       },
@@ -85,6 +86,7 @@ class BookingRepository extends RestApiRepository {
             {"relation": "user"},
             {"relation": "computer"},
             {"relation": "status"},
+            {"relation": "game"},
           ],
         },
       },
@@ -132,6 +134,7 @@ class BookingRepository extends RestApiRepository {
             {"relation": "user"},
             {"relation": "computer"},
             {"relation": "status"},
+            {"relation": "game"},
           ]
         }
       },
@@ -173,6 +176,7 @@ class BookingRepository extends RestApiRepository {
               "begin_at": currentBooking.beginAt,
               "end_at": currentBooking.endAt,
               "duration": currentBooking.duration,
+              "game_id": currentBooking.gameId,
             }
           }
         ]

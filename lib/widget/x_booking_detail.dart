@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/logic/models/game/game.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookingDetail extends StatelessWidget {
@@ -14,6 +16,7 @@ class BookingDetail extends StatelessWidget {
   String endedBookingHourPicked;
   bool isCurrentUser;
   String userMail;
+  Game bookingGame;
   int? computerSelected;
   void Function()? onTap;
   bool? isWithSeat;
@@ -26,6 +29,7 @@ class BookingDetail extends StatelessWidget {
     required this.userMail,
     required this.startedBookingHourPicked,
     required this.endedBookingHourPicked,
+    required this.bookingGame,
     this.computerSelected,
     this.onTap,
     this.isWithSeat,
@@ -34,215 +38,258 @@ class BookingDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: grey10,
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: grey10,
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          fullName,
-                          style: TextStyle(
-                            color: isCurrentUser ? redLiquidSwipe : blueChip,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          nickName,
-                          style: const TextStyle(
-                            color: grey5,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 75,
-                    width: 75,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      child: Image.network(
-                        'https://picsum.photos/200',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Divider(
-                color: isCurrentUser ? redLiquidSwipe : blueChip,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Nom de la réservation : $bookingTitle',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: RichText(
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      strutStyle: const StrutStyle(fontFamily: 'Anta'),
-                      text: TextSpan(
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
-                        children: [
-                          const TextSpan(
-                            text: 'Réservation prise le : ',
-                            style: TextStyle(fontFamily: 'Anta'),
-                          ),
-                          TextSpan(
-                            text: bookingDate,
-                            style: const TextStyle(
-                              color: greenChip,
-                              fontFamily: 'Anta',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: RichText(
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      strutStyle: const StrutStyle(fontFamily: 'Anta'),
-                      text: TextSpan(
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
-                        children: [
-                          const TextSpan(
-                            text: 'Crénau choisi : ',
-                            style: TextStyle(fontFamily: 'Anta'),
-                          ),
-                          const TextSpan(
-                            text: 'de ',
-                            style: TextStyle(fontFamily: 'Anta'),
-                          ),
-                          TextSpan(
-                            text: '${startedBookingHourPicked}h',
-                            style: const TextStyle(
-                              color: greenChip,
-                              fontFamily: 'Anta',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const TextSpan(
-                              text: ' à ',
-                              style: TextStyle(fontFamily: 'Anta')),
-                          TextSpan(
-                              text: '${endedBookingHourPicked}h',
-                              style: const TextStyle(
-                                color: greenChip,
-                                fontFamily: 'Anta',
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              isWithSeat ?? false
-                  ? InkWell(
-                      onTap: () async {
-                        if (onTap != null) {
-                          onTap!();
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Siège choisi : $computerSelected",
-                              style: const TextStyle(
-                                fontSize: 12,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              fullName,
+                              style: TextStyle(
+                                color:
+                                    isCurrentUser ? redLiquidSwipe : blueChip,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          faIconWithCode('f06e', color: Colors.white)
-                        ],
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-              !isCurrentUser
-                  ? InkWell(
-                      onTap: () {
-                        if (userMail.isNotEmpty) {
-                          launchUrl(
-                            mode: LaunchMode.externalApplication,
-                            Uri.parse(
-                              teamsUrlOfUser(userMail: userMail),
-                            ),
-                          );
-                        } else {
-                          showSnackbar(
-                              "Impossible de contacter cet utilisateur pour le moment",
-                              SnackStatusEnum.warning);
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Row(
-                          children: [
-                            const Text(
-                              'Contacter sur Teams',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  decoration: TextDecoration.underline),
-                            ),
-                            const Spacer(),
-                            Image.asset(
-                              teams,
-                              height: 25,
+                            Text(
+                              nickName,
+                              style: const TextStyle(
+                                color: grey5,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                    )
-                  : const SizedBox.shrink(),
-            ],
+                      SizedBox(
+                        height: 75,
+                        width: 75,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          child: Image.network(
+                            'https://picsum.photos/200',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: isCurrentUser ? redLiquidSwipe : blueChip,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Nom de la réservation : ${bookingTitle.isEmpty ? bookingGame.label : bookingTitle}',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: RichText(
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          strutStyle: const StrutStyle(fontFamily: 'Anta'),
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 12,
+                            ),
+                            children: [
+                              const TextSpan(
+                                text: 'Réservation prise le : ',
+                                style: TextStyle(fontFamily: 'Anta'),
+                              ),
+                              TextSpan(
+                                text: bookingDate,
+                                style: const TextStyle(
+                                  color: greenChip,
+                                  fontFamily: 'Anta',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: RichText(
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          strutStyle: const StrutStyle(fontFamily: 'Anta'),
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 12,
+                            ),
+                            children: [
+                              const TextSpan(
+                                text: 'Crénau choisi : ',
+                                style: TextStyle(fontFamily: 'Anta'),
+                              ),
+                              const TextSpan(
+                                text: 'de ',
+                                style: TextStyle(fontFamily: 'Anta'),
+                              ),
+                              TextSpan(
+                                text: '${startedBookingHourPicked}h',
+                                style: const TextStyle(
+                                  color: greenChip,
+                                  fontFamily: 'Anta',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const TextSpan(
+                                  text: ' à ',
+                                  style: TextStyle(fontFamily: 'Anta')),
+                              TextSpan(
+                                  text: '${endedBookingHourPicked}h',
+                                  style: const TextStyle(
+                                    color: greenChip,
+                                    fontFamily: 'Anta',
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  isWithSeat ?? false
+                      ? InkWell(
+                          onTap: () async {
+                            if (onTap != null) {
+                              onTap!();
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Siège choisi : $computerSelected",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              faIconWithCode('f06e', color: Colors.white)
+                            ],
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  !isCurrentUser
+                      ? InkWell(
+                          onTap: () {
+                            if (userMail.isNotEmpty) {
+                              launchUrl(
+                                mode: LaunchMode.externalApplication,
+                                Uri.parse(
+                                  teamsUrlOfUser(userMail: userMail),
+                                ),
+                              );
+                            } else {
+                              showSnackbar(
+                                  "Impossible de contacter cet utilisateur pour le moment",
+                                  SnackStatusEnum.warning);
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Row(
+                              children: [
+                                const Text(
+                                  'Contacter sur Teams',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      decoration: TextDecoration.underline),
+                                ),
+                                const Spacer(),
+                                Image.asset(
+                                  teams,
+                                  height: 25,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0, top: 115),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Visibility(
+              visible: bookingGame.media?.first.originalUrl != null,
+              child: TweenAnimationBuilder<double>(
+                tween: Tween<double>(begin: 0.0, end: 1.0),
+                duration: const Duration(seconds: 2),
+                curve: Curves.easeInOut,
+                builder: (context, value, child) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white.withOpacity(0.8),
+                          blurRadius: value * 15,
+                          spreadRadius: value * 3,
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5.0),
+                      child: SizedBox(
+                        height: 40,
+                        child: CachedNetworkImage(
+                          imageUrl: bookingGame.media?.first.originalUrl ?? "",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

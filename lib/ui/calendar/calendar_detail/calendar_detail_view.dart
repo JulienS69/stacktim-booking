@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
+import 'package:stacktim_booking/logic/models/game/game.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_detail/calendar_detail_view_controller.dart';
@@ -40,6 +41,7 @@ class CalendarDetailView extends GetView<CalendarDetailViewController> {
                       itemBuilder: (context, index) {
                         Booking booking = controller.bookings[index];
                         return BookingDetail(
+                          bookingGame: booking.game ?? const Game(),
                           bookingDate: formatDateInLocal(
                               datePicked: booking.bookedAt.toString()),
                           bookingTitle: booking.title ?? '',

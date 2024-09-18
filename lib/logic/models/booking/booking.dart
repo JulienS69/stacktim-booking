@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:stacktim_booking/logic/models/computer/computer.dart';
+import 'package:stacktim_booking/logic/models/game/game.dart';
 import 'package:stacktim_booking/logic/models/status/status.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 
@@ -20,9 +21,11 @@ class Booking with _$Booking {
     @JsonKey(name: 'duration') int? duration,
     @JsonKey(name: 'user') User? user,
     @JsonKey(name: 'computer') Computer? computer,
+    @JsonKey(name: 'game') Game? game,
     @JsonKey(name: 'status') Status? status,
     @JsonKey(name: 'is_checkin_completed') bool? isCheckinComplete,
     @JsonKey(name: 'is_checkout_completed') bool? isCheckoutComplete,
+    String? gameId,
   }) = _Booking;
 
   factory Booking.fromJson(Map<String, dynamic> json) =>

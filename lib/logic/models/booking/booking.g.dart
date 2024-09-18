@@ -23,11 +23,15 @@ _$BookingImpl _$$BookingImplFromJson(Map<String, dynamic> json) =>
       computer: json['computer'] == null
           ? null
           : Computer.fromJson(json['computer'] as Map<String, dynamic>),
+      game: json['game'] == null
+          ? null
+          : Game.fromJson(json['game'] as Map<String, dynamic>),
       status: json['status'] == null
           ? null
           : Status.fromJson(json['status'] as Map<String, dynamic>),
       isCheckinComplete: json['is_checkin_completed'] as bool?,
       isCheckoutComplete: json['is_checkout_completed'] as bool?,
+      gameId: json['gameId'] as String?,
     );
 
 Map<String, dynamic> _$$BookingImplToJson(_$BookingImpl instance) =>
@@ -43,7 +47,9 @@ Map<String, dynamic> _$$BookingImplToJson(_$BookingImpl instance) =>
       'duration': instance.duration,
       'user': instance.user,
       'computer': instance.computer,
+      'game': instance.game,
       'status': instance.status,
       'is_checkin_completed': instance.isCheckinComplete,
       'is_checkout_completed': instance.isCheckoutComplete,
+      'gameId': instance.gameId,
     };

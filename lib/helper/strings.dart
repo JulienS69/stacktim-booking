@@ -25,6 +25,10 @@ const String cancelVector = 'assets/images/vector.png';
 const String addVector = 'assets/images/add_vector.png';
 const String reduceVector = 'assets/images/reduce_vector.png';
 const String checkVector = 'assets/images/check_vector.png';
+const String littleAddVector = 'assets/images/little_add_vector.png';
+const String littleReduceVector = 'assets/images/little_reduce_vector.png';
+const String changeVector = 'assets/images/vector_change.png';
+const String littleChangeVector = 'assets/images/little_change_vector.png';
 
 //STUB - FOLDER LOTTIE
 const String lottieCheck = 'assets/lotties/check.json';
