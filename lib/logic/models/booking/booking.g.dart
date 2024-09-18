@@ -16,7 +16,7 @@ _$BookingImpl _$$BookingImplFromJson(Map<String, dynamic> json) =>
       bookedAt: json['booked_at'] as String?,
       beginAt: json['begin_at'] as String?,
       endAt: json['end_at'] as String?,
-      duration: json['duration'] as int?,
+      duration: (json['duration'] as num?)?.toInt(),
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),

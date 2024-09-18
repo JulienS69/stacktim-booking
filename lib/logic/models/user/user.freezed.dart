@@ -34,6 +34,8 @@ mixin _$User {
   List<Role>? get roles => throw _privateConstructorUsedError;
   @JsonKey(name: 'credit')
   Credit? get credit => throw _privateConstructorUsedError;
+  @JsonKey(name: 'games')
+  List<Game>? get gamesList => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -52,7 +54,8 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(name: 'nickname') String? nickName,
       @JsonKey(name: 'email') String? email,
       @JsonKey(name: 'roles') List<Role>? roles,
-      @JsonKey(name: 'credit') Credit? credit});
+      @JsonKey(name: 'credit') Credit? credit,
+      @JsonKey(name: 'games') List<Game>? gamesList});
 
   $CreditCopyWith<$Res>? get credit;
 }
@@ -77,6 +80,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? email = freezed,
     Object? roles = freezed,
     Object? credit = freezed,
+    Object? gamesList = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -107,6 +111,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.credit
           : credit // ignore: cast_nullable_to_non_nullable
               as Credit?,
+      gamesList: freezed == gamesList
+          ? _value.gamesList
+          : gamesList // ignore: cast_nullable_to_non_nullable
+              as List<Game>?,
     ) as $Val);
   }
 
@@ -137,7 +145,8 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(name: 'nickname') String? nickName,
       @JsonKey(name: 'email') String? email,
       @JsonKey(name: 'roles') List<Role>? roles,
-      @JsonKey(name: 'credit') Credit? credit});
+      @JsonKey(name: 'credit') Credit? credit,
+      @JsonKey(name: 'games') List<Game>? gamesList});
 
   @override
   $CreditCopyWith<$Res>? get credit;
@@ -160,6 +169,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? email = freezed,
     Object? roles = freezed,
     Object? credit = freezed,
+    Object? gamesList = freezed,
   }) {
     return _then(_$UserImpl(
       id: freezed == id
@@ -190,6 +200,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.credit
           : credit // ignore: cast_nullable_to_non_nullable
               as Credit?,
+      gamesList: freezed == gamesList
+          ? _value._gamesList
+          : gamesList // ignore: cast_nullable_to_non_nullable
+              as List<Game>?,
     ));
   }
 }
@@ -204,8 +218,10 @@ class _$UserImpl implements _User {
       @JsonKey(name: 'nickname') this.nickName,
       @JsonKey(name: 'email') this.email,
       @JsonKey(name: 'roles') final List<Role>? roles,
-      @JsonKey(name: 'credit') this.credit})
-      : _roles = roles;
+      @JsonKey(name: 'credit') this.credit,
+      @JsonKey(name: 'games') final List<Game>? gamesList})
+      : _roles = roles,
+        _gamesList = gamesList;
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -239,10 +255,20 @@ class _$UserImpl implements _User {
   @override
   @JsonKey(name: 'credit')
   final Credit? credit;
+  final List<Game>? _gamesList;
+  @override
+  @JsonKey(name: 'games')
+  List<Game>? get gamesList {
+    final value = _gamesList;
+    if (value == null) return null;
+    if (_gamesList is EqualUnmodifiableListView) return _gamesList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'User(id: $id, firstname: $firstname, lastName: $lastName, nickName: $nickName, email: $email, roles: $roles, credit: $credit)';
+    return 'User(id: $id, firstname: $firstname, lastName: $lastName, nickName: $nickName, email: $email, roles: $roles, credit: $credit, gamesList: $gamesList)';
   }
 
   @override
@@ -259,13 +285,23 @@ class _$UserImpl implements _User {
                 other.nickName == nickName) &&
             (identical(other.email, email) || other.email == email) &&
             const DeepCollectionEquality().equals(other._roles, _roles) &&
-            (identical(other.credit, credit) || other.credit == credit));
+            (identical(other.credit, credit) || other.credit == credit) &&
+            const DeepCollectionEquality()
+                .equals(other._gamesList, _gamesList));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, firstname, lastName,
-      nickName, email, const DeepCollectionEquality().hash(_roles), credit);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      firstname,
+      lastName,
+      nickName,
+      email,
+      const DeepCollectionEquality().hash(_roles),
+      credit,
+      const DeepCollectionEquality().hash(_gamesList));
 
   @JsonKey(ignore: true)
   @override
@@ -289,7 +325,8 @@ abstract class _User implements User {
       @JsonKey(name: 'nickname') final String? nickName,
       @JsonKey(name: 'email') final String? email,
       @JsonKey(name: 'roles') final List<Role>? roles,
-      @JsonKey(name: 'credit') final Credit? credit}) = _$UserImpl;
+      @JsonKey(name: 'credit') final Credit? credit,
+      @JsonKey(name: 'games') final List<Game>? gamesList}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -314,6 +351,9 @@ abstract class _User implements User {
   @override
   @JsonKey(name: 'credit')
   Credit? get credit;
+  @override
+  @JsonKey(name: 'games')
+  List<Game>? get gamesList;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

@@ -21,6 +21,10 @@ const String teams = 'assets/images/teams.png';
 const String discord = 'assets/images/discord.png';
 const String arrow = 'assets/images/arrow.png';
 const String camera = 'assets/images/camera.png';
+const String cancelVector = 'assets/images/vector.png';
+const String addVector = 'assets/images/add_vector.png';
+const String reduceVector = 'assets/images/reduce_vector.png';
+const String checkVector = 'assets/images/check_vector.png';
 
 //STUB - FOLDER LOTTIE
 const String lottieCheck = 'assets/lotties/check.json';

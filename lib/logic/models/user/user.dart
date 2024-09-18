@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get/get.dart';
 import 'package:stacktim_booking/logic/models/credit/credit.dart';
+import 'package:stacktim_booking/logic/models/game/game.dart';
 import 'package:stacktim_booking/logic/models/role/role.dart';
 
 part 'user.freezed.dart';
@@ -16,6 +17,7 @@ class User with _$User {
     @JsonKey(name: 'email') String? email,
     @JsonKey(name: 'roles') List<Role>? roles,
     @JsonKey(name: 'credit') Credit? credit,
+    @JsonKey(name: 'games') List<Game>? gamesList,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

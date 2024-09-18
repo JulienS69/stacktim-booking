@@ -18,6 +18,9 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       credit: json['credit'] == null
           ? null
           : Credit.fromJson(json['credit'] as Map<String, dynamic>),
+      gamesList: (json['games'] as List<dynamic>?)
+          ?.map((e) => Game.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -29,4 +32,5 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'email': instance.email,
       'roles': instance.roles,
       'credit': instance.credit,
+      'games': instance.gamesList,
     };

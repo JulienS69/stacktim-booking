@@ -6,6 +6,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/profil/section/header/available_credit.dart';
 import 'package:stacktim_booking/ui/profil/section/header/edit_nickname.dart';
+import 'package:stacktim_booking/ui/profil/section/header/favorite_game.dart';
 import 'package:stacktim_booking/ui/profil/section/header/hours_played.dart';
 import 'package:stacktim_booking/ui/profil/section/header/nickname.dart';
 import 'package:stacktim_booking/ui/profil/section/header/profil_header.dart';
@@ -108,10 +109,39 @@ class ProfilView extends GetView<ProfilViewController> {
                       //STUB -  Hours Played
                       HoursPlayed(controller: controller),
                       const SizedBox(
-                        height: 25,
+                        height: 15,
+                      ),
+                      const Row(
+                        children: [
+                          Text(
+                            "Mes jeux favoris :",
+                          ),
+                        ],
+                      ),
+                      FavoriteGameWidget(controller: controller),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: GestureDetector(
+                          onTap: () async {
+                            //TODO LOGIC POUR AJOUTER UN JEUX FAVORIS
+                            await HapticFeedback.heavyImpact();
+                            controller.isExpanded.value =
+                                !controller.isExpanded.value;
+                          },
+                          child: Image.asset(
+                            controller.isExpanded.value
+                                ? reduceVector
+                                : addVector,
+                            height: 50,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
                       ),
                       const Divider(
-                        color: Colors.white,
+                        color: Color(0xffFF0808),
+                        thickness: 3,
                       ),
                       const SizedBox(
                         height: 15,

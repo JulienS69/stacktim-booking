@@ -1,20 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'role.dart';
+part of 'media.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RoleImpl _$$RoleImplFromJson(Map<String, dynamic> json) => _$RoleImpl(
+_$MediaImpl _$$MediaImplFromJson(Map<String, dynamic> json) => _$MediaImpl(
       id: (json['id'] as num?)?.toInt(),
-      roleName: json['name'] as String?,
-      guardName: json['guard_name'] as String?,
+      originalUrl: json['original_url'] as String?,
     );
 
-Map<String, dynamic> _$$RoleImplToJson(_$RoleImpl instance) =>
+Map<String, dynamic> _$$MediaImplToJson(_$MediaImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.roleName,
-      'guard_name': instance.guardName,
+      'original_url': instance.originalUrl,
     };

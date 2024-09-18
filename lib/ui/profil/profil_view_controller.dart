@@ -13,7 +13,9 @@ import 'package:stacktim_booking/helper/local_storage.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
+import 'package:stacktim_booking/logic/models/game/game.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
+import 'package:stacktim_booking/logic/repository/game_repository.dart';
 import 'package:stacktim_booking/logic/repository/user_repository.dart';
 import 'package:stacktim_booking/navigation/route.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -21,6 +23,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 class ProfilViewController extends GetxController with StateMixin {
   //REPOSITORY
   UserRepository userRepository = UserRepository();
+  GameRepository gameRepository = GameRepository();
   //OBJECT
   User currentUser = const User();
   //BOOL
@@ -28,6 +31,7 @@ class ProfilViewController extends GetxController with StateMixin {
   RxBool isShowingVersion = false.obs;
   RxBool isSkeletonLoading = true.obs;
   RxBool isEditing = false.obs;
+  RxBool isExpanded = false.obs;
   //TEXT EDITING CONTROLLER
   TextEditingController nickNameController = TextEditingController();
   TextEditingController stackCreditController = TextEditingController();
@@ -45,12 +49,80 @@ class ProfilViewController extends GetxController with StateMixin {
   //LIST
   List<TargetFocus> tutorialList = [];
   List<User> administratorList = [];
+  RxList<Game> gameList = <Game>[].obs;
   //OTHER
   PackageInfo? packageInfo;
   SharedPreferences? sharedPreferences;
   final nickNameButtonKey =
       GlobalKey<FormState>(debugLabel: 'nickNameButtonKey');
   final profilButtonKey = GlobalKey<FormState>(debugLabel: 'profilButtonKey');
+
+  Future<void> getGameList() async {
+    return await gameRepository.getGameList().then(
+          (value) => value.fold(
+            (l) {
+              Sentry.captureEvent(l);
+            },
+            (r) {
+              gameList.value = r.map((game) {
+                // Parcours la liste des jeux de l'utilisateur courant
+                for (var gameSelected in currentUser.gamesList ?? []) {
+                  // Si l'id du jeu sélectionné correspond à celui du jeu actuel
+                  if (gameSelected.id == game.id) {
+                    // Marque le jeu comme sélectionné
+                    return game.copyWith(isSelected: true);
+                  }
+                }
+                // Sinon, retourne le jeu tel quel
+                return game;
+              }).toList();
+            },
+          ),
+        );
+  }
+
+  // Fonction pour mettre à jour la sélection
+  Future<void> toggleFavoriteGame(
+      {required bool isDetachmode, required String gameId}) async {
+    RxList<Map<String, String>> favoriteGamesOperations =
+        <Map<String, String>>[].obs;
+    // Si le jeu n'existe pas, on l'ajoute avec l'opération "sync"
+    favoriteGamesOperations.add({
+      "operation": isDetachmode ? "detach" : "attach",
+      "key": gameId,
+    });
+    await updateGameFavorite(favoriteGamesOperations: favoriteGamesOperations);
+    favoriteGamesOperations.refresh();
+
+    print('Jeu ajouté aux favoris : $gameId');
+  }
+
+  Future<void> updateGameFavorite(
+      {required List<Map<String, String>> favoriteGamesOperations}) async {
+    return await userRepository.updateUser(queryRoute: '/users/mutate', body: {
+      "mutate": [
+        {
+          "operation": "update",
+          "key": currentUser.id,
+          "relations": {"games": favoriteGamesOperations}
+        }
+      ]
+    }).then(
+      (value) => value.fold(
+        (l) async {
+          await Sentry.captureException(l);
+          showSnackbar(
+              "Un problème est survenue lors de la récupération de tes informations",
+              SnackStatusEnum.error);
+          change(null, status: RxStatus.error());
+        },
+        (r) async {
+          isExpanded.value = false;
+          showSnackbar("Ton profil a été mis à jour", SnackStatusEnum.success);
+        },
+      ),
+    );
+  }
 
 //This allows retrieving the logged-in user.
   Future<void> getCurrentUser() async {
@@ -355,7 +427,7 @@ class ProfilViewController extends GetxController with StateMixin {
   //This allows updating the user's credits
   Future<void> updateStackCredits() async {
     await userRepository
-        .updateStackCredits(
+        .updateUser(
             credits: int.parse(stackCreditController.text),
             creditId: currentUser.credit?.id ?? "0")
         .then(
@@ -531,8 +603,12 @@ class ProfilViewController extends GetxController with StateMixin {
         sharedPreferences = await SharedPreferences.getInstance();
         await getDataTutorial();
         await getCurrentUser();
+        await Future.wait([
+          getCurrentUser(),
+          getGameList(),
+          getAdministratorUser(),
+        ]);
         getUserRole();
-        await getAdministratorUser();
         packageInfo = await PackageInfo.fromPlatform();
         version = packageInfo?.version ?? "1.0.0";
         buildNumber = packageInfo?.buildNumber ?? "1";

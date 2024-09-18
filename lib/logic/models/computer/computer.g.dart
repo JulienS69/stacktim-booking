@@ -9,7 +9,7 @@ part of 'computer.dart';
 _$ComputerImpl _$$ComputerImplFromJson(Map<String, dynamic> json) =>
     _$ComputerImpl(
       id: json['id'] as String?,
-      number: json['number'] as int?,
+      number: (json['number'] as num?)?.toInt(),
       slug: json['slug'] as String?,
       isUnderMaintenance: json['is_under_maintenance'] as bool?,
       isAvailable: json['is_available'] as bool?,

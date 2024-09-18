@@ -9,7 +9,7 @@ part of 'pivot.dart';
 _$PivotImpl _$$PivotImplFromJson(Map<String, dynamic> json) => _$PivotImpl(
       modelId: json['model_id'] as String?,
       modelType: json['model_type'] as String?,
-      roleId: json['role_id'] as int?,
+      roleId: (json['role_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$PivotImplToJson(_$PivotImpl instance) =>
