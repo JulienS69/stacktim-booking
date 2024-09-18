@@ -20,7 +20,7 @@ class HoursPlayed extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              controller.currentUser.credit?.creditUsed.toString() ?? "0",
+              controller.currentUser.value.credit?.creditUsed.toString() ?? "0",
               style: const TextStyle(color: Colors.red),
             ),
             const SizedBox(

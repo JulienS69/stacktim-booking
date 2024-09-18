@@ -48,7 +48,8 @@ class EditNickName extends StatelessWidget {
                 FocusScope.of(context).requestFocus(FocusNode());
               },
               decoration: InputDecoration(
-                hintText: controller.currentUser.nickName ?? "Nouveau pseudo",
+                hintText:
+                    controller.currentUser.value.nickName ?? "Nouveau pseudo",
                 hintStyle: antaStyle,
                 border: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white, width: 1.0),

@@ -82,7 +82,7 @@ class ProfilHeader extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  controller.currentUser.fullName,
+                  controller.currentUser.value.fullName,
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,

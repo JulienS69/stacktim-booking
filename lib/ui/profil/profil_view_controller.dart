@@ -25,13 +25,14 @@ class ProfilViewController extends GetxController with StateMixin {
   UserRepository userRepository = UserRepository();
   GameRepository gameRepository = GameRepository();
   //OBJECT
-  User currentUser = const User();
+  Rx<User> currentUser = const User().obs;
   //BOOL
   RxBool isShowTutorial = false.obs;
   RxBool isShowingVersion = false.obs;
   RxBool isSkeletonLoading = true.obs;
   RxBool isEditing = false.obs;
   RxBool isExpanded = false.obs;
+  RxBool isLoading = false.obs;
   //TEXT EDITING CONTROLLER
   TextEditingController nickNameController = TextEditingController();
   TextEditingController stackCreditController = TextEditingController();
@@ -66,7 +67,7 @@ class ProfilViewController extends GetxController with StateMixin {
             (r) {
               gameList.value = r.map((game) {
                 // Parcours la liste des jeux de l'utilisateur courant
-                for (var gameSelected in currentUser.gamesList ?? []) {
+                for (var gameSelected in currentUser.value.gamesList ?? []) {
                   // Si l'id du jeu sélectionné correspond à celui du jeu actuel
                   if (gameSelected.id == game.id) {
                     // Marque le jeu comme sélectionné
@@ -93,8 +94,6 @@ class ProfilViewController extends GetxController with StateMixin {
     });
     await updateGameFavorite(favoriteGamesOperations: favoriteGamesOperations);
     favoriteGamesOperations.refresh();
-
-    print('Jeu ajouté aux favoris : $gameId');
   }
 
   Future<void> updateGameFavorite(
@@ -103,7 +102,7 @@ class ProfilViewController extends GetxController with StateMixin {
       "mutate": [
         {
           "operation": "update",
-          "key": currentUser.id,
+          "key": currentUser.value.id,
           "relations": {"games": favoriteGamesOperations}
         }
       ]
@@ -117,7 +116,11 @@ class ProfilViewController extends GetxController with StateMixin {
           change(null, status: RxStatus.error());
         },
         (r) async {
+          isLoading.value = true;
+          await getCurrentUser();
+          await getGameList();
           isExpanded.value = false;
+          isLoading.value = false;
           showSnackbar("Ton profil a été mis à jour", SnackStatusEnum.success);
         },
       ),
@@ -140,7 +143,7 @@ class ProfilViewController extends GetxController with StateMixin {
                 userCreditAvailable.value = (r.credit!.creditAvailable ?? 0) -
                     (r.credit!.notYetUsed ?? 0);
               }
-              currentUser = r;
+              currentUser.value = r;
             },
           ),
         );
@@ -162,8 +165,8 @@ class ProfilViewController extends GetxController with StateMixin {
 
   String getUserRole() {
     currentUserRole = "Membre Stacktim Esport";
-    if (currentUser.roles != null) {
-      if (currentUser.roles!.first.roleName == "Stacktim Admin") {
+    if (currentUser.value.roles != null) {
+      if (currentUser.value.roles!.first.roleName == "Stacktim Admin") {
         currentUserRole = "Membre de l’organisation Stacktim Esport";
       } else {
         currentUserRole = "Membre Stacktim Esport";
@@ -409,7 +412,7 @@ class ProfilViewController extends GetxController with StateMixin {
   Future<void> updateCurrentUser() async {
     await userRepository
         .updateNickName(
-            nickName: nickName.value, userUuid: currentUser.id ?? "0")
+            nickName: nickName.value, userUuid: currentUser.value.id ?? "0")
         .then(
           (value) => value.fold(
             (l) async {
@@ -429,7 +432,7 @@ class ProfilViewController extends GetxController with StateMixin {
     await userRepository
         .updateUser(
             credits: int.parse(stackCreditController.text),
-            creditId: currentUser.credit?.id ?? "0")
+            creditId: currentUser.value.credit?.id ?? "0")
         .then(
           (value) => value.fold(
             (l) async {

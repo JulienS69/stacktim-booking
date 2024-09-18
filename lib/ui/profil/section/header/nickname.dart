@@ -36,7 +36,7 @@ class NickName extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )
                   : Text(
-                      controller.currentUser.nickName ?? "Pseudo",
+                      controller.currentUser.value.nickName ?? "Pseudo",
                       style: const TextStyle(
                         fontSize: 18,
                         color: Color.fromARGB(255, 98, 105, 109),
