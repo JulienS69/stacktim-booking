@@ -26,15 +26,15 @@ class FavoriteGameWidget extends StatelessWidget {
               child: AnimatedContainer(
                 duration: const Duration(seconds: 1),
                 height: controller.isExpanded.value
-                    ? 400
+                    ? 155 * (controller.gameList.length / 3)
                     : (controller.currentUser.value.gamesList?.isNotEmpty ??
                             false)
                         ? 135
-                        : 0,
+                        : null,
                 child: controller.isExpanded.value
                     ? GridView.builder(
                         shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         padding: const EdgeInsets.only(right: 2.0, left: 2.0),
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: Get.size.width / 3,
