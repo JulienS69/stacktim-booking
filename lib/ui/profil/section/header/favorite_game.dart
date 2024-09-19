@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/ui/profil/profil_view_controller.dart';
@@ -17,132 +18,145 @@ class FavoriteGameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Opacity(
-        opacity: controller.isLoading.value ? 0.2 : 1,
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 12.0, left: 15),
-              child: AnimatedContainer(
-                duration: const Duration(seconds: 1),
-                height: controller.isExpanded.value
-                    ? 155 * (controller.gameList.length / 3)
-                    : (controller.currentUser.value.gamesList?.isNotEmpty ??
-                            false)
-                        ? 135
-                        : null,
-                child: controller.isExpanded.value
-                    ? GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.only(right: 2.0, left: 2.0),
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: Get.size.width / 3,
-                          childAspectRatio: 1,
-                          mainAxisSpacing: 15,
-                        ),
-                        itemCount: controller.gameList.length,
-                        itemBuilder: (context, index) {
-                          return Stack(
-                            children: [
-                              FavoriteGameCard(
-                                controller: controller,
-                                index: index,
-                                isExpanded: true,
-                              ),
-                              Visibility(
-                                visible:
-                                    controller.gameList[index].isSelected ==
-                                        true,
-                                child: Positioned(
-                                  top: 0,
-                                  right: 15,
-                                  child: Image.asset(
-                                    checkVector,
-                                    height: 25,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.currentUser.value.gamesList !=
-                                null
-                            ? (controller.currentUser.value.gamesList!.length >=
-                                    3
-                                ? 3
-                                : controller
-                                    .currentUser.value.gamesList!.length)
-                            : 0,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
-                            child: Stack(
+      () => Visibility(
+        visible: !controller.isSkeletonLoading.value,
+        child: Opacity(
+          opacity: controller.isLoading.value ? 0.2 : 1,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0, left: 15),
+                child: AnimatedContainer(
+                  duration: const Duration(seconds: 1),
+                  height: controller.isExpanded.value
+                      ? 155 * (controller.gameList.length / 3)
+                      : (controller.currentUser.value.gamesList?.isNotEmpty ??
+                              false)
+                          ? 135
+                          : null,
+                  child: controller.isExpanded.value
+                      ? GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.only(right: 2.0, left: 2.0),
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: Get.size.width / 3,
+                            childAspectRatio: 1,
+                            mainAxisSpacing: 15,
+                          ),
+                          itemCount: controller.gameList.length,
+                          itemBuilder: (context, index) {
+                            return Stack(
                               children: [
                                 FavoriteGameCard(
                                   controller: controller,
                                   index: index,
-                                  isExpanded: false,
+                                  isExpanded: true,
                                 ),
                                 Visibility(
-                                  visible: !controller.isSkeletonLoading.value,
+                                  visible:
+                                      controller.gameList[index].isSelected ==
+                                          true,
                                   child: Positioned(
                                     top: 0,
-                                    right: 0,
-                                    child: InkWell(
-                                      onTap: () {
-                                        AwesomeDialog(
-                                          context: context,
-                                          dialogType: DialogType.question,
-                                          dialogBackgroundColor:
-                                              backgroundColor,
-                                          animType: AnimType.rightSlide,
-                                          title: 'Attention',
-                                          desc:
-                                              "Veux-tu vraiment retirer ce jeux de tes favoris ?",
-                                          btnCancelText: 'Je confirme',
-                                          btnCancelOnPress: () async {
-                                            await controller.toggleFavoriteGame(
-                                                gameId: controller
-                                                        .currentUser
-                                                        .value
-                                                        .gamesList?[index]
-                                                        .id ??
-                                                    "",
-                                                isDetachmode: true);
-                                          },
-                                          btnOkText: 'Retour',
-                                          btnOkOnPress: () {},
-                                          btnOkColor: Colors.black,
-                                        ).show();
-                                      },
-                                      child: Image.asset(
-                                        cancelVector,
-                                        height: 25,
-                                      ),
+                                    right: 15,
+                                    child: Image.asset(
+                                      checkVector,
+                                      height: 25,
                                     ),
                                   ),
                                 ),
                               ],
-                            ),
-                          );
-                        },
-                      ),
+                            );
+                          },
+                        )
+                      : Visibility(
+                          visible: controller
+                                  .currentUser.value.gamesList?.isNotEmpty ??
+                              false,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                controller.currentUser.value.gamesList != null
+                                    ? (controller.currentUser.value.gamesList!
+                                                .length >=
+                                            3
+                                        ? 3
+                                        : controller.currentUser.value
+                                            .gamesList!.length)
+                                    : 0,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 20.0),
+                                child: Stack(
+                                  children: [
+                                    FavoriteGameCard(
+                                      controller: controller,
+                                      index: index,
+                                      isExpanded: false,
+                                    ),
+                                    Visibility(
+                                      visible:
+                                          !controller.isSkeletonLoading.value,
+                                      child: Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: InkWell(
+                                          onTap: () {
+                                            AwesomeDialog(
+                                              context: context,
+                                              dialogType: DialogType.question,
+                                              dialogBackgroundColor:
+                                                  backgroundColor,
+                                              animType: AnimType.rightSlide,
+                                              title: 'Attention',
+                                              desc:
+                                                  "Veux-tu vraiment retirer ce jeux de tes favoris ?",
+                                              btnCancelText: 'Je confirme',
+                                              btnCancelOnPress: () async {
+                                                await controller
+                                                    .toggleFavoriteGame(
+                                                        gameId: controller
+                                                                .currentUser
+                                                                .value
+                                                                .gamesList?[
+                                                                    index]
+                                                                .id ??
+                                                            "",
+                                                        isDetachmode: true);
+                                              },
+                                              btnOkText: 'Retour',
+                                              btnOkOnPress: () {},
+                                              btnOkColor: Colors.black,
+                                            ).show();
+                                          },
+                                          child: Image.asset(
+                                            cancelVector,
+                                            height: 25,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                ),
               ),
-            ),
-            Visibility(
-              visible: controller.isLoading.value,
-              child: const Padding(
-                padding: EdgeInsets.only(top: 8.0),
-                child: LinearProgressIndicator(),
-              ),
-            )
-          ],
+              Visibility(
+                visible: controller.isLoading.value,
+                child: const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: LinearProgressIndicator(),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

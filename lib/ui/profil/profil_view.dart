@@ -119,20 +119,22 @@ class ProfilView extends GetView<ProfilViewController> {
                         ],
                       ),
                       FavoriteGameWidget(controller: controller),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: GestureDetector(
-                          onTap: () async {
-                            //TODO LOGIC POUR AJOUTER UN JEUX FAVORIS
-                            await HapticFeedback.heavyImpact();
-                            controller.isExpanded.value =
-                                !controller.isExpanded.value;
-                          },
-                          child: Image.asset(
-                            controller.isExpanded.value
-                                ? reduceVector
-                                : addVector,
-                            height: 50,
+                      Visibility(
+                        visible: !controller.isSkeletonLoading.value,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: GestureDetector(
+                            onTap: () async {
+                              await HapticFeedback.heavyImpact();
+                              controller.isExpanded.value =
+                                  !controller.isExpanded.value;
+                            },
+                            child: Image.asset(
+                              controller.isExpanded.value
+                                  ? reduceVector
+                                  : addVector,
+                              height: 50,
+                            ),
                           ),
                         ),
                       ),

@@ -928,6 +928,7 @@ class DashboardViewController extends GetxController
         imageFile.value = File(result.path);
         imageFile.value = await compressFile(imageFile.value);
         attachmentName.value = getReceiptName(imageFile.value);
+        await checkBooking();
       } else {
         AwesomeDialog(
           context: Get.context!,
@@ -941,7 +942,6 @@ class DashboardViewController extends GetxController
         ).show();
       }
     }
-    await checkBooking();
   }
 
   // Compresse le document scanné sinon erreur de l'api

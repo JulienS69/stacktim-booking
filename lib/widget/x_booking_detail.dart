@@ -251,43 +251,50 @@ class BookingDetail extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(right: 20.0, top: 115),
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Visibility(
-              visible: bookingGame.media?.first.originalUrl != null,
-              child: TweenAnimationBuilder<double>(
-                tween: Tween<double>(begin: 0.0, end: 1.0),
-                duration: const Duration(seconds: 2),
-                curve: Curves.easeInOut,
-                builder: (context, value, child) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white.withOpacity(0.8),
-                          blurRadius: value * 15,
-                          spreadRadius: value * 3,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0, top: 115),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Visibility(
+                  visible: bookingGame.media?.first.originalUrl != null,
+                  child: TweenAnimationBuilder<double>(
+                    tween: Tween<double>(begin: 0.0, end: 1.0),
+                    duration: const Duration(seconds: 2),
+                    curve: Curves.easeInOut,
+                    builder: (context, value, child) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.8),
+                              blurRadius: value * 15,
+                              spreadRadius: value * 3,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5.0),
-                      child: SizedBox(
-                        height: 40,
-                        child: CachedNetworkImage(
-                          imageUrl: bookingGame.media?.first.originalUrl ?? "",
-                          fit: BoxFit.cover,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5.0),
+                          child: SizedBox(
+                            height: 40,
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  bookingGame.media?.first.originalUrl ?? "",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                },
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         )
       ],
     );
