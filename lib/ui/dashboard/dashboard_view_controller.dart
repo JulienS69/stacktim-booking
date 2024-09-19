@@ -827,13 +827,14 @@ class DashboardViewController extends GetxController
       filteredBookingList.assignAll(bookingList);
     } else {
       filteredBookingList.assignAll(
-        bookingList.where(
-          (booking) =>
-              booking.title != null &&
-              booking.title!.toLowerCase().contains(
-                    title.toLowerCase(),
-                  ),
-        ),
+        bookingList.where((booking) {
+          final bookingTitle = booking.title?.toLowerCase();
+          final gameLabel = booking.game?.label?.toLowerCase();
+
+          return (bookingTitle != null &&
+                  bookingTitle.contains(title.toLowerCase())) ||
+              (gameLabel != null && gameLabel.contains(title.toLowerCase()));
+        }),
       );
     }
   }
