@@ -266,21 +266,7 @@ void showPhotoDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) => PopScope(
-      canPop: isCheckedIn,
-      onPopInvoked: (s) {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.warning,
-          dialogBackgroundColor: backgroundColor,
-          animType: AnimType.rightSlide,
-          title: 'Attention',
-          desc:
-              "Tu dois prendre la photo de ta place (de ton setup) avant de jouer",
-          btnOkText: 'Retour',
-          btnOkOnPress: () {},
-          btnOkColor: Colors.black,
-        ).show();
-      },
+      canPop: isCheckedIn == false,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
