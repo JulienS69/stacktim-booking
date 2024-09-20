@@ -70,7 +70,9 @@ class BookingListingState extends State<BookingListing> {
                     widget.controller.bookingIdToChecking =
                         currentBooking.id ?? '';
                     await widget.controller.takePictureForCheck();
-                  })
+                  },
+                  isCheckedIn: widget.controller.isCheckInTime,
+                )
               : XBookingCard(
                   currentBooking: currentBooking,
                   isInProgress: true,
@@ -80,7 +82,9 @@ class BookingListingState extends State<BookingListing> {
                     widget.controller.bookingIdToChecking =
                         currentBooking.id ?? '';
                     await widget.controller.takePictureForCheck();
-                  });
+                  },
+                  isCheckedIn: widget.controller.isCheckInTime,
+                );
         },
       );
     });

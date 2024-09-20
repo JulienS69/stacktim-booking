@@ -17,6 +17,7 @@ class XBookingCard extends StatelessWidget {
     required this.currentBooking,
     required this.isInProgress,
     required this.userId,
+    required this.isCheckedIn,
     this.onTapCheckout,
     this.hue,
   });
@@ -25,6 +26,7 @@ class XBookingCard extends StatelessWidget {
   final bool isInProgress;
   final double? hue;
   final String? userId;
+  final bool? isCheckedIn;
   final void Function()? onTapCheckout;
   @override
   Widget build(BuildContext context) {
@@ -258,12 +260,13 @@ class XBookingCard extends StatelessWidget {
 void showPhotoDialog(
   BuildContext context,
   void Function() onTap,
+  bool isCheckedIn,
 ) {
   showDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) => PopScope(
-      canPop: false,
+      canPop: isCheckedIn,
       onPopInvoked: (s) {
         AwesomeDialog(
           context: context,

@@ -897,7 +897,6 @@ class DashboardViewController extends GetxController
             (r) async {
               isCheckInTime = false;
               bookingIdToChecking = "";
-              Get.back();
               if (isCheckInTime == false && isInProgress.value) {
                 showSnackbar(
                     "Ta photo a bien été transmise. Tu n'as plus qu'à attendre que l'horaire de fin de ta session soit passé pour que ce bouton disparaisse.",
@@ -907,6 +906,7 @@ class DashboardViewController extends GetxController
                     "Ta photo a bien été transmise !", SnackStatusEnum.success);
               }
               await getMyBookings();
+              Get.back();
               bookingList.refresh();
             },
           ),
@@ -1014,7 +1014,7 @@ class DashboardViewController extends GetxController
         ]);
         checkArgument();
         if (isCheckInTime) {
-          showPhotoDialog(Get.context!, takePictureForCheck);
+          showPhotoDialog(Get.context!, takePictureForCheck, isCheckInTime);
         }
         change(null, status: RxStatus.success());
       } else {
