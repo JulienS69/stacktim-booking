@@ -184,11 +184,12 @@ class BookingDatePicker extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Selectionner une date',
+                        'Sélectionner une date',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: 14,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),

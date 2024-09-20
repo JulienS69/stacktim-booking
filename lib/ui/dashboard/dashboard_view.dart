@@ -8,7 +8,6 @@ import 'package:stacktim_booking/ui/dashboard/section/body/booking_listing.dart'
 import 'package:stacktim_booking/ui/dashboard/section/body/empty_booking.dart';
 import 'package:stacktim_booking/ui/dashboard/section/header/booking_search_bar.dart';
 import 'package:stacktim_booking/ui/dashboard/section/header/stack_credit.dart';
-import 'package:stacktim_booking/ui/new_booking/new_booking_view.dart';
 import 'package:stacktim_booking/widget/x_app_bar.dart';
 import 'package:stacktim_booking/widget/x_error_page.dart';
 import 'package:stacktim_booking/widget/x_loader_stacktim.dart';
@@ -75,8 +74,7 @@ class DashboardView extends GetView<DashboardViewController> {
                     )
                   : EmptyBooking(
                       onPressed: () {
-                        NewBookingSheet(controller: controller).showModalSheet(
-                            context, controller.pageIndexNotifier);
+                        controller.checkCreditBeforeCreateBooking();
                       },
                     )),
             ],
