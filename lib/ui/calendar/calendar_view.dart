@@ -5,6 +5,7 @@ import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/dialogHelper.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
+import 'package:stacktim_booking/logic/models/booking/booking.dart';
 import 'package:stacktim_booking/logic/models/calendar_data_source/calendar_data_source.dart';
 import 'package:stacktim_booking/navigation/route.dart';
 import 'package:stacktim_booking/ui/calendar/calendar_view_controller.dart';
@@ -101,6 +102,7 @@ class CalendarPage extends GetView<CalendarViewController> {
               flex: 3,
               child: SfCalendar(
                 view: CalendarView.month,
+                showTodayButton: false,
                 todayHighlightColor: Colors.transparent,
                 blackoutDates: controller.holidaysList,
                 blackoutDatesTextStyle: const TextStyle(
@@ -115,7 +117,10 @@ class CalendarPage extends GetView<CalendarViewController> {
                   textAlign: TextAlign.center,
                 ),
                 dataSource: XCalendarDataSource(controller.bookingList),
-                todayTextStyle: const TextStyle(color: Colors.white),
+                todayTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
                 onViewChanged: (viewChangedDetails) {
                   controller.getMonthlyBookings(
                     viewChangedDetails.visibleDates.first.month,
@@ -132,31 +137,66 @@ class CalendarPage extends GetView<CalendarViewController> {
                   );
                 },
                 monthCellBuilder: (context, details) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  // Check if is current day
+                  bool isToday = details.date.day == DateTime.now().day &&
+                      details.date.month == DateTime.now().month &&
+                      details.date.year == DateTime.now().year;
+
+                  // Check if session belong to current user
+                  bool isBookingOfCurrentUser =
+                      details.appointments.any((appointment) {
+                    Booking booking = appointment as Booking;
+                    return booking.userId == controller.currentUser.id;
+                  });
+                  return Stack(
                     children: [
-                      details.appointments.length >= 5
-                          ? Text(
-                              '${details.date.day}',
-                              style: const TextStyle(
-                                color: redChip,
-                              ),
-                            )
-                          : (details.appointments.isNotEmpty &&
-                                  details.appointments.length < 5)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: isToday
+                              ? const Color.fromARGB(255, 87, 87, 87)
+                                  .withOpacity(0.5)
+                              : Colors.transparent,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: details.appointments.length >= 5
                               ? Text(
                                   '${details.date.day}',
                                   style: const TextStyle(
-                                    color: blueChip,
+                                    color: redChip,
                                   ),
                                 )
-                              : Text(
-                                  '${details.date.day}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
+                              : (details.appointments.isNotEmpty &&
+                                      details.appointments.length < 5)
+                                  ? Text(
+                                      '${details.date.day}',
+                                      style: const TextStyle(
+                                        color: blueChip,
+                                      ),
+                                    )
+                                  : Text(
+                                      '${details.date.day}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                        ),
+                      ),
+                      if (isBookingOfCurrentUser)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
+                                color: greenChip,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   );
                 },
@@ -180,7 +220,7 @@ class CalendarPage extends GetView<CalendarViewController> {
               padding: const EdgeInsets.only(left: 18, right: 18, bottom: 18),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: const Color(0xff333333),
                     borderRadius: BorderRadius.circular(18)),
                 width: double.infinity,
                 child: Padding(
@@ -213,7 +253,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                           ),
                           const Expanded(
                             child: Text(
-                              'Journée avec de nombreuses sessions',
+                              'Sessions nombreuses',
                               style: TextStyle(
                                 color: redChip,
                                 overflow: TextOverflow.ellipsis,
@@ -241,7 +281,7 @@ class CalendarPage extends GetView<CalendarViewController> {
                           ),
                           const Expanded(
                             child: Text(
-                              'Journée avec peu de sessions',
+                              'Peu de sessions',
                               style: TextStyle(
                                 color: blueChip,
                                 overflow: TextOverflow.ellipsis,
@@ -269,8 +309,39 @@ class CalendarPage extends GetView<CalendarViewController> {
                           ),
                           const Expanded(
                             child: Text(
-                              'Journée sans sessions',
+                              'Aucune session',
                               style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              maxLines: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: greenChip,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const Expanded(
+                            child: Text(
+                              'Tes réservations',
+                              style: TextStyle(
+                                color: greenChip,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               maxLines: 2,

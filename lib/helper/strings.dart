@@ -58,7 +58,7 @@ String demoStacktimBookingApi =
 //LINK - PROD
 String prodStacktimBookingApi = "https://stacktim-booking-api.dailyapps.fr/api";
 // Link that never expires
-String stacktimDiscordUrl = "https://discord.gg/HHvzYuZRC4";
+String stacktimDiscordUrl = "https://discord.gg/rvuBpt3Txc";
 //SENTRY URL
 String sentryUrl = "https://ba9ffe8555cc99f0f99ab537fe16c310@sentry.xefi.fr/31";
 //OTHERS

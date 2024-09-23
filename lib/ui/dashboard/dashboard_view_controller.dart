@@ -283,40 +283,6 @@ class DashboardViewController extends GetxController
         );
   }
 
-  // Check if the user has enough credits to make a reservation based on the selected start and end times.
-  bool hasEnoughCreditsForReservation() {
-    // Convert time strings into hours and minutes
-    List<int> startTimeParts =
-        startingtimeSelected.value.split(':').map(int.parse).toList();
-    List<int> endTimeParts =
-        endingtimeSelected.value.split(':').map(int.parse).toList();
-
-    // Retrieve the start and end hours
-    int startHours = startTimeParts[0];
-    int endHours = endTimeParts[0];
-
-    // Calculate the duration in hours
-    durationHours = endHours - startHours;
-
-    // Initialize variables
-    bool heCanReserve = false;
-    creditAvailable = 0;
-
-    // Check if the user's credit information is available and calculate the available credits
-    if (currentUser.credit != null &&
-        currentUser.credit!.creditAvailable != null) {
-      // Calculate the credits not yet used
-      int creditNotYetUsed = currentUser.credit!.notYetUsed ?? 0;
-      // Calculate the available credits after subtracting the credits not yet used
-      creditAvailable = currentUser.credit!.creditAvailable! - creditNotYetUsed;
-      // Check if the available credits are enough for the reservation duration
-      heCanReserve = (creditAvailable >= durationHours);
-    }
-
-    // Return whether the user can make the reservation
-    return heCanReserve;
-  }
-
 //This allows creating the reservation.
   createBooking() async {
     HapticFeedback.vibrate();
@@ -343,8 +309,11 @@ class DashboardViewController extends GetxController
                 dialogBackgroundColor: backgroundColor,
                 animType: AnimType.rightSlide,
                 title: 'Oups !',
-                desc:
-                    "Quelque chose c'est mal passé pendant l'enregistrement de ta session",
+                //TODO CHECK WITH BACK IF MESSAGE STATUS CHANGE
+                desc: l ==
+                        "Vous avez déjà une réservation qui se chevauche sur ce créneau."
+                    ? "Tu ne peux pas réserver deux fois le même jour pour le même créneau"
+                    : "Quelque chose c'est mal passé pendant l'enregistrement de ta session",
                 btnCancelText: 'Retour',
                 btnCancelOnPress: () {},
               ).show();
@@ -550,15 +519,7 @@ class DashboardViewController extends GetxController
                 if (selectedDate.value.isNotEmpty &&
                     startingtimeSelected.value.isNotEmpty &&
                     gameSelected.value.id != null) {
-                  if (hasEnoughCreditsForReservation()) {
-                    await checkAvailbilityComputer();
-                  } else {
-                    Sentry.captureMessage(
-                        "L'utilisateur ne possède pas assez de crédits pour pouvoir réserver la session sélectionnée");
-                    showSnackbar(
-                        "Tu ne possèdes pas assez de crédits. Crédits restant : $creditAvailable",
-                        SnackStatusEnum.warning);
-                  }
+                  await checkAvailbilityComputer();
                 }
               }
             } else {

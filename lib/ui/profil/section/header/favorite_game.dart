@@ -29,7 +29,7 @@ class FavoriteGameWidget extends StatelessWidget {
                 child: AnimatedContainer(
                   duration: const Duration(seconds: 1),
                   height: controller.isExpanded.value
-                      ? 155 * (controller.gameList.length / 3)
+                      ? 140 * (controller.gameList.length / 3)
                       : (controller.currentUser.value.gamesList?.isNotEmpty ??
                               false)
                           ? 135
@@ -193,7 +193,7 @@ class FavoriteGameCard extends StatelessWidget {
                   dialogBackgroundColor: backgroundColor,
                   animType: AnimType.rightSlide,
                   title: 'Attention',
-                  desc: "Veux-tu vraiment retirer ce jeux de tes favoris ?",
+                  desc: "Veux-tu vraiment retirer ce jeu de tes favoris ?",
                   btnCancelText: 'Je confirme',
                   btnCancelOnPress: () async {
                     await controller.toggleFavoriteGame(
@@ -211,7 +211,7 @@ class FavoriteGameCard extends StatelessWidget {
                   dialogBackgroundColor: backgroundColor,
                   animType: AnimType.rightSlide,
                   title: 'Attention',
-                  desc: "Veux-tu vraiment ajouter ce jeux à tes favoris ?",
+                  desc: "Veux-tu vraiment ajouter ce jeu à tes favoris ?",
                   btnCancelText: 'Je confirme',
                   btnCancelOnPress: () async {
                     await controller.toggleFavoriteGame(

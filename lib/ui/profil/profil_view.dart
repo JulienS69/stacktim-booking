@@ -99,7 +99,7 @@ class ProfilView extends GetView<ProfilViewController> {
                           ? const SizedBox.shrink()
                           : UserRole(controller: controller),
                       const SizedBox(
-                        height: 50,
+                        height: 30,
                       ),
                       //STUB -  Credits Available
                       AvailableCredits(controller: controller),

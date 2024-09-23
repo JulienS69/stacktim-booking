@@ -461,6 +461,9 @@ class ProfilViewController extends GetxController with StateMixin {
         LocalStorageKeyEnum.isShowTutorialProfil.name, true);
     await sharedPreferences?.setBool(
         LocalStorageKeyEnum.isShowTutorialCalendar.name, true);
+    await sharedPreferences?.setBool(
+        LocalStorageKeyEnum.isSkippedTutorial.name, false);
+
     Get.offAllNamed(Routes.dashboard);
   }
 

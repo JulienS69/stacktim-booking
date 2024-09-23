@@ -107,11 +107,7 @@ class XBookingCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            currentBooking.duration != null
-                                ? currentBooking.duration! > 1
-                                    ? 'Stack crédit utilisé : ${currentBooking.duration ?? 0} unités'
-                                    : 'Stack crédit utilisé : ${currentBooking.duration ?? 0} unité'
-                                : "Aucun crédit utilisé",
+                            "Siège réservé : N°${currentBooking.computer?.number ?? 0}",
                             style: const TextStyle(
                               color: Colors.white70,
                               overflow: TextOverflow.clip,
