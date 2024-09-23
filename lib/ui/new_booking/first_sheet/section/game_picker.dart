@@ -25,7 +25,7 @@ class GamePicker extends StatelessWidget {
               Text(
                 "Choix du jeu : ",
                 style: antaStyle.copyWith(
-                  fontSize: 16,
+                  fontSize: 15,
                   decoration: TextDecoration.underline,
                 ),
               ),
@@ -115,7 +115,7 @@ class GamePicker extends StatelessWidget {
             child: Text(
               controller.gameSelected.value.label ?? "",
               style: antaStyle.copyWith(
-                fontSize: 16,
+                fontSize: 15,
                 color: Colors.white60,
                 decoration: TextDecoration.underline,
               ),
@@ -134,7 +134,7 @@ class GamePicker extends StatelessWidget {
                     : controller.gameSelected.value.label != null
                         ? littleChangeVector
                         : littleAddVector,
-                height: 45,
+                height: 35,
               ),
             ),
           ),

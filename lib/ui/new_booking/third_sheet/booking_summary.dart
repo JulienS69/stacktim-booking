@@ -17,7 +17,7 @@ SliverWoltModalSheetPage bookingSummary({
   return WoltModalSheetPage(
     topBarTitle: Text(
       "Récapitulatif de ta réservation",
-      style: titleStyle.copyWith(fontSize: 16),
+      style: titleStyle.copyWith(fontSize: 15),
     ),
     leadingNavBarWidget: IconButton(
       padding: const EdgeInsets.all(pagePadding),
@@ -58,13 +58,13 @@ SliverWoltModalSheetPage bookingSummary({
               children: [
                 Text(
                   "Date choisie : ",
-                  style: antaStyle.copyWith(fontSize: 16),
+                  style: antaStyle.copyWith(fontSize: 15),
                 ),
                 Expanded(
                   child: Text(
                     controller.bookedAt.value.capitalizeFirst!,
                     style: antaStyle.copyWith(
-                      fontSize: 16,
+                      fontSize: 15,
                       decoration: TextDecoration.underline,
                       overflow: TextOverflow.clip,
                     ),
@@ -79,7 +79,7 @@ SliverWoltModalSheetPage bookingSummary({
               children: [
                 Text(
                   "Crénau choisi : ",
-                  style: antaStyle.copyWith(fontSize: 16),
+                  style: antaStyle.copyWith(fontSize: 15),
                 ),
                 Expanded(
                   child: Text(
@@ -89,7 +89,7 @@ SliverWoltModalSheetPage bookingSummary({
                         : "De ${controller.beginingHourSelected.value.capitalizeFirst!}h${controller.startingMinutesSelected} à ${controller.endingHourSelected.value.capitalizeFirst!}h${controller.endingMinutesSelected}",
                     style: antaStyle.copyWith(
                       decoration: TextDecoration.underline,
-                      fontSize: 16,
+                      fontSize: 15,
                       overflow: TextOverflow.clip,
                     ),
                   ),
@@ -103,14 +103,14 @@ SliverWoltModalSheetPage bookingSummary({
               children: [
                 Text(
                   "Siège choisi : ",
-                  style: antaStyle.copyWith(fontSize: 16),
+                  style: antaStyle.copyWith(fontSize: 15),
                 ),
                 Expanded(
                   child: Text(
                     "Siège numéro ${controller.computerSelected.value}",
                     style: antaStyle.copyWith(
                       decoration: TextDecoration.underline,
-                      fontSize: 16,
+                      fontSize: 15,
                       overflow: TextOverflow.clip,
                     ),
                   ),

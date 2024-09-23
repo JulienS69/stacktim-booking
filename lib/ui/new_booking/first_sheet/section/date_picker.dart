@@ -26,7 +26,7 @@ class BookingDatePicker extends StatelessWidget {
               children: [
                 Text(
                   "Date choisie : ",
-                  style: antaStyle.copyWith(fontSize: 16),
+                  style: antaStyle.copyWith(fontSize: 15),
                 ),
                 const SizedBox(
                   width: 5,
@@ -44,7 +44,7 @@ class BookingDatePicker extends StatelessWidget {
                           controller.bookedAt.value.capitalizeFirst!,
                           style: antaStyle.copyWith(
                             color: Colors.white60,
-                            fontSize: 16,
+                            fontSize: 15,
                             decoration: TextDecoration.underline,
                           ),
                         ),

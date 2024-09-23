@@ -28,7 +28,7 @@ class BookingTitle extends StatelessWidget {
           },
           decoration: InputDecoration(
             hintText: 'Titre de la réservation',
-            hintStyle: antaStyle.copyWith(fontSize: 16),
+            hintStyle: antaStyle.copyWith(fontSize: 15),
             focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.white, width: 0.0),
             ),
@@ -40,7 +40,7 @@ class BookingTitle extends StatelessWidget {
             color: Colors.white60,
             fontFamily: 'Anta',
             decoration: TextDecoration.none,
-            fontSize: 18,
+            fontSize: 15,
           ),
           onChanged: (title) {
             controller.titleSelected.value = title;
