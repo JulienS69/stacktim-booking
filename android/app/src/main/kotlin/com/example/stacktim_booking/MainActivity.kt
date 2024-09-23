@@ -1,4 +1,4 @@
-package com.stacktim.booking
+package com.stack.stacktimbooking
 
 import io.flutter.embedding.android.FlutterActivity
 
