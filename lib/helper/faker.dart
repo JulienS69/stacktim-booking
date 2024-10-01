@@ -1,5 +1,5 @@
 bool isProdDate() {
-  DateTime prodDay = DateTime(2024, 9, 24, 8, 30);
+  DateTime prodDay = DateTime(2023, 10, 1, 12, 00);
   if (DateTime.now().isBefore(prodDay)) {
     return false;
   } else {
