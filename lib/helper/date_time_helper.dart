@@ -55,6 +55,5 @@ String formatDateAndTime(
       "${bookedDateTime.day} ${getMonthName(bookedDateTime.month)}";
   String formattedTimeRange =
       "${formatTime(beginDateTime)} à ${formatTime(endDateTime)}";
-
   return "Le $formattedBookedDate de $formattedTimeRange";
 }

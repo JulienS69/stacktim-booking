@@ -1,3 +1,4 @@
+// import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,9 +10,10 @@ import 'package:stacktim_booking/helper/style.dart';
 import 'package:stacktim_booking/ui/dashboard/dashboard_view_controller.dart';
 import 'package:stacktim_booking/ui/new_booking/first_sheet/section/booking_title.dart';
 import 'package:stacktim_booking/ui/new_booking/first_sheet/section/date_picker.dart';
-import 'package:stacktim_booking/ui/new_booking/first_sheet/section/end_time_picker.dart';
 import 'package:stacktim_booking/ui/new_booking/first_sheet/section/game_picker.dart';
 import 'package:stacktim_booking/ui/new_booking/first_sheet/section/start_time_picker.dart';
+import 'package:stacktim_booking/ui/new_booking/first_sheet/section/time_slot_widget.dart';
+import 'package:stacktim_booking/widget/x_bouncing_button.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 SliverWoltModalSheetPage bookingSchedule({
@@ -77,13 +79,15 @@ SliverWoltModalSheetPage bookingSchedule({
             modalSheetContext: modalSheetContext,
             pageIndexNotifier: pageIndexNotifier,
           ),
-          const SizedBox(
-            height: 15,
-          ),
-          BookingEndingTime(
+          TimeSlotWidget(
             controller: controller,
-            modalSheetContext: modalSheetContext,
-            pageIndexNotifier: pageIndexNotifier,
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 15.0),
+            child: Divider(
+              color: Color(0xffFF0808),
+              thickness: 3,
+            ),
           ),
         ],
       ),
@@ -91,58 +95,63 @@ SliverWoltModalSheetPage bookingSchedule({
     stickyActionBar: Obx(
       () => controller.gameSelected.value.id != null &&
               controller.isDatePicked.value &&
-              controller.beginingHourSelected.isNotEmpty &&
-              controller.endingHourSelected.value.isNotEmpty
+              controller.currentTimeSlotSelected.value.name != "Choisir"
           ? Padding(
               padding: const EdgeInsets.all(pagePadding),
               child: Column(
                 children: [
-                  Obx(() => ElevatedButton(
-                        onPressed: () async {
-                          HapticFeedback.vibrate();
-                          await controller.checkAvailbilityComputer();
-                        },
-                        style: const ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(Colors.black),
-                          foregroundColor: WidgetStatePropertyAll(Colors.white),
-                          textStyle: WidgetStatePropertyAll(antaStyle),
-                        ),
-                        child: SizedBox(
-                          height: buttonHeight,
-                          width: double.infinity,
-                          child: controller.isShowLoading.value
-                              ? Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    const CircularProgressIndicator(
-                                      backgroundColor: Colors.white,
-                                    ),
-                                    Image.asset(
-                                      logo,
-                                      height: 15,
-                                    )
-                                  ],
-                                )
-                              : Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                  Obx(() => XBouncingButton(
+                        onPressed: () {},
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            HapticFeedback.vibrate();
+                            await controller.checkAvailbilityComputer();
+                          },
+                          style: const ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(Colors.black),
+                            foregroundColor:
+                                WidgetStatePropertyAll(Colors.white),
+                            textStyle: WidgetStatePropertyAll(antaStyle),
+                          ),
+                          child: SizedBox(
+                            height: buttonHeight,
+                            width: double.infinity,
+                            child: controller.isShowLoading.value
+                                ? Stack(
+                                    alignment: Alignment.center,
                                     children: [
-                                      Text(
-                                        "Choisir ma place dans la salle",
-                                        style: antaStyle.copyWith(
-                                          fontFamily: 'anta',
-                                        ),
+                                      const CircularProgressIndicator(
+                                        backgroundColor: Colors.white,
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_circle_right_outlined,
-                                        color: Colors.white,
-                                      ),
+                                      Image.asset(
+                                        logo,
+                                        height: 15,
+                                      )
                                     ],
+                                  )
+                                : Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Choisir ma place dans la salle",
+                                          style: antaStyle.copyWith(
+                                            fontFamily: 'anta',
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_circle_right_outlined,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
+                          ),
                         ),
                       )),
                 ],

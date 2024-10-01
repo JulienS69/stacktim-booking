@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:day_night_time_picker/lib/constants.dart';
-import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +25,7 @@ import 'package:stacktim_booking/logic/models/booking/booking.dart';
 import 'package:stacktim_booking/logic/models/computer/computer.dart';
 import 'package:stacktim_booking/logic/models/game/game.dart';
 import 'package:stacktim_booking/logic/models/status/status.dart';
+import 'package:stacktim_booking/logic/models/time_slot/time_slot.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
 import 'package:stacktim_booking/logic/repository/booking_repository.dart';
 import 'package:stacktim_booking/logic/repository/game_repository.dart';
@@ -72,17 +71,12 @@ class DashboardViewController extends GetxController
   RxBool isConfirmed = false.obs;
   bool isCheckInTime = false;
   RxBool isExpanded = false.obs;
+  RxBool isFriday = false.obs;
 
   //STRING
   RxString titleSelected = "".obs;
   RxString bookedAt = "".obs;
   RxString selectedDate = "".obs;
-  RxString beginingHourSelected = "".obs;
-  RxString endingHourSelected = "".obs;
-  String startingMinutesSelected = "";
-  String endingMinutesSelected = "";
-  RxString startingtimeSelected = "".obs;
-  RxString endingtimeSelected = "".obs;
   String computerUuidSelected = "";
   String statusIdSelected = '';
   String bookingIdToChecking = '';
@@ -112,6 +106,33 @@ class DashboardViewController extends GetxController
   RxString attachmentName = "".obs;
   RxString imageName = ''.obs;
   Rx<Game> gameSelected = const Game().obs;
+  Rx<TimeSlot> currentTimeSlotSelected = TimeSlot(
+    name: "Choisir",
+    startTime: Time(hour: 7, minute: 0),
+    endTime: Time(hour: 8, minute: 30),
+  ).obs;
+  List<TimeSlot> timeSlotList = [
+    TimeSlot(
+      name: "Choisir",
+      startTime: Time(hour: 7, minute: 0),
+      endTime: Time(hour: 8, minute: 30),
+    ),
+    TimeSlot(
+      name: "Matin (7h à 8h30)",
+      startTime: Time(hour: 7, minute: 0),
+      endTime: Time(hour: 8, minute: 30),
+    ),
+    TimeSlot(
+      name: "Midi (12h à 13h30)",
+      startTime: Time(hour: 12, minute: 0),
+      endTime: Time(hour: 13, minute: 30),
+    ),
+    TimeSlot(
+      name: "Soir (17h-18h à 20h)",
+      startTime: Time(hour: 17, minute: 0),
+      endTime: Time(hour: 20, minute: 0),
+    ),
+  ];
 
 //This allows checking if the request to create a reservation has been made from another page.
   checkArgument() {
@@ -168,6 +189,12 @@ class DashboardViewController extends GetxController
         isDatePicked.value = true;
         isShowingDatePicker.value = false;
         selectedDate.value = DateFormat('yyyy-MM-dd').format(DateTime.now());
+        DateTime now = DateTime.now();
+        if (now.weekday == DateTime.friday) {
+          isFriday.value = true;
+        } else {
+          isFriday.value = false;
+        }
         bookedAt.value =
             DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(DateTime.now());
       }
@@ -256,14 +283,23 @@ class DashboardViewController extends GetxController
         );
   }
 
+  String formatTime(Time? time) {
+    if (time == null) return '--:--';
+    String formattedHour = time.hour.toString().padLeft(2, '0');
+    String formattedMinute = time.minute.toString().padLeft(2, '0');
+
+    return '$formattedHour:$formattedMinute';
+  }
+
 //This allows checking if all computers are not taken by other players and retrieving the list of available computers.
   Future<void> checkAvailbilityComputer() async {
     isShowLoading.value = true;
+
     return await computerRepository
         .checkComputerAvailable(
-          beginHourPicked: startingtimeSelected.value,
+          beginHourPicked: formatTime(currentTimeSlotSelected.value.startTime),
           datePicked: selectedDate.value,
-          endHourPicked: endingtimeSelected.value,
+          endHourPicked: formatTime(currentTimeSlotSelected.value.endTime),
         )
         .then(
           (value) => value.fold(
@@ -292,8 +328,11 @@ class DashboardViewController extends GetxController
       bookedAt: selectedDate.value,
       computerId: computerUuidSelected,
       title: titleSelected.value,
-      endAt: endingtimeSelected.value,
-      beginAt: startingtimeSelected.value,
+      endAt: formatTime(currentTimeSlotSelected.value.endTime),
+      beginAt: !isFriday.value &&
+              currentTimeSlotSelected.value.name == "Soir (17h-18h à 20h)"
+          ? "18:00"
+          : formatTime(currentTimeSlotSelected.value.startTime),
       duration: durationHours,
       gameId: gameSelected.value.id,
     );
@@ -346,18 +385,18 @@ class DashboardViewController extends GetxController
     titleSelected.value = "";
     bookedAt.value = "";
     selectedDate.value = "";
-    beginingHourSelected.value = "";
-    endingHourSelected.value = "";
-    startingMinutesSelected = "";
-    endingMinutesSelected = "";
-    startingtimeSelected.value = "";
-    endingtimeSelected.value = "";
     computerSelected.value = 0;
     progressValue.value = 0.0;
     isConfirmed.value = false;
     gameSelected.value = const Game();
     isExpanded.value = false;
     pageIndexNotifier.value = pageIndexNotifier.value - 3;
+    isFriday.value = false;
+    currentTimeSlotSelected.value = TimeSlot(
+      name: "Choisir",
+      startTime: Time(hour: 7, minute: 0),
+      endTime: Time(hour: 8, minute: 30),
+    );
   }
 
   bool checkFormIsEmpty() {
@@ -391,13 +430,6 @@ class DashboardViewController extends GetxController
     isShowingDatePicker.value = false;
     selectedDate.value = DateFormat('yyyy-MM-dd').format(datePicked);
     bookedAt.value = DateFormat('EEEE d MMMM yyyy', 'fr_FR').format(datePicked);
-
-    if (startingtimeSelected.isEmpty) {
-      showTimePicker(
-          context: context,
-          isEndingTime: false,
-          pageIndexNotifier: pageIndexNotifier);
-    }
   }
 
   bool isAfternoon() {
@@ -413,124 +445,6 @@ class DashboardViewController extends GetxController
     }
     // If the selected date is not today or if the current hour is before 1 PM (13:00), return false
     return false;
-  }
-
-  showTimePicker({
-    required BuildContext context,
-    required bool isEndingTime,
-    required ValueNotifier pageIndexNotifier,
-  }) {
-    Navigator.of(context).push(
-      showPicker(
-        context: context,
-        dialogInsetPadding: const EdgeInsets.all(5),
-        value: Time.fromTimeOfDay(
-            TimeOfDay(
-              hour: beginingHourSelected.isNotEmpty && !isEndingTime
-                  ? int.parse(beginingHourSelected.value)
-                  : endingHourSelected.value.isNotEmpty
-                      ? int.parse(endingHourSelected.value)
-                      : beginingHourSelected.isNotEmpty
-                          ? int.parse(beginingHourSelected.value) + 1
-                          : TimeOfDay.now().hour,
-              minute: startingMinutesSelected == "30" ? 30 : 0,
-            ),
-            0),
-        sunrise: const TimeOfDay(hour: 6, minute: 0),
-        sunset: const TimeOfDay(hour: 18, minute: 0),
-        is24HrFormat: true,
-        minuteInterval: TimePickerInterval.THIRTY,
-        themeData: xMyTheme,
-        backgroundColor: Colors.black,
-        accentColor: Colors.white,
-        blurredBackground: true,
-        duskSpanInMinutes: 120,
-        disableAutoFocusToNextInput: isEndingTime ? true : false,
-        okText: isEndingTime
-            ? "Je confirme l'heure de fin"
-            : "Je confirme l'heure de début",
-        okStyle: const TextStyle(fontFamily: "Anta", color: Colors.white60),
-        hourLabel: 'Heures',
-        iosStylePicker: true,
-        cancelStyle: const TextStyle(
-          fontFamily: "Anta",
-          color: Colors.red,
-        ),
-        cancelText: 'Retour',
-        isOnChangeValueMode: false,
-        onChangeDateTime: (time) {
-          HapticFeedback.heavyImpact();
-        },
-        onCancel: () {
-          Navigator.pop(context);
-          HapticFeedback.heavyImpact();
-        },
-        minHour: isAfternoon() ? 17 : 7,
-        maxHour: 21,
-        maxMinute: 30,
-        onChange: (time) async {
-          HapticFeedback.vibrate();
-          if (!isEndingTime) {
-            // Vérifier si l'heure est dans les créneaux horaires valides
-            if ((time.hour >= 7 && time.hour <= 13 && time.minute != 59) ||
-                (time.hour >= 17 && time.hour <= 21 && time.minute != 59)) {
-              beginingHourSelected.value = time.hour.toString();
-              startingMinutesSelected = time.minute.toString();
-              Time beginHourSelect = Time(hour: time.hour, minute: time.minute);
-              startingtimeSelected.value = beginHourSelect.format(Get.context!);
-              if (startingMinutesSelected != "0") {
-                DateFormat format = DateFormat('HH:mm');
-                DateTime parsedDateTime =
-                    format.parse(endingtimeSelected.value);
-                Time updatedEndedTime =
-                    Time(hour: parsedDateTime.hour, minute: time.minute);
-                endingtimeSelected.value =
-                    updatedEndedTime.format(Get.context!);
-              }
-            } else {
-              showSnackbar(
-                  "Impossible de choisir une heure en dehors des horaires définis - 7h-13h30 / 17h-21h",
-                  SnackStatusEnum.error);
-            }
-          } else {
-            // Vérifier si l'heure est dans les créneaux horaires valides
-            if ((time.hour >= 7 && time.hour <= 13 && time.minute != 59) ||
-                (time.hour >= 17 && time.hour <= 21 && time.minute != 59)) {
-              DateFormat format = DateFormat('HH:mm');
-              DateTime parsedDateTime =
-                  format.parse(startingtimeSelected.value);
-              Time beginHourSelect = Time(
-                  hour: parsedDateTime.hour, minute: parsedDateTime.minute);
-
-              Time endHourSelect = Time(hour: time.hour, minute: time.minute);
-              if (endHourSelect.hour < beginHourSelect.hour) {
-                showSnackbar(
-                    "Ton heure de fin est inférieur à l'heure de début choisie",
-                    SnackStatusEnum.error);
-              } else if (beginHourSelect.hour == endHourSelect.hour) {
-                showSnackbar(
-                    "Les heures choisies ne peuvent pas être les mêmes",
-                    SnackStatusEnum.error);
-              } else {
-                endingHourSelected.value = time.hour.toString();
-                endingMinutesSelected = time.minute.toString();
-                Time endedTime = Time(hour: time.hour, minute: time.minute);
-                endingtimeSelected.value = endedTime.format(Get.context!);
-                if (selectedDate.value.isNotEmpty &&
-                    startingtimeSelected.value.isNotEmpty &&
-                    gameSelected.value.id != null) {
-                  await checkAvailbilityComputer();
-                }
-              }
-            } else {
-              showSnackbar(
-                  "Impossible de choisir une heure en dehors des horaires définis - 12h-13h30 / 17h-21h",
-                  SnackStatusEnum.error);
-            }
-          }
-        },
-      ),
-    );
   }
 
   //SECTION TUTORIAL

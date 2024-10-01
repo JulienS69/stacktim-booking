@@ -83,10 +83,13 @@ SliverWoltModalSheetPage bookingSummary({
                 ),
                 Expanded(
                   child: Text(
-                    controller.startingMinutesSelected == "0" &&
-                            controller.endingMinutesSelected == "0"
-                        ? "De ${controller.beginingHourSelected.value.capitalizeFirst!} à ${controller.endingHourSelected.value.capitalizeFirst!} heures"
-                        : "De ${controller.beginingHourSelected.value.capitalizeFirst!}h${controller.startingMinutesSelected} à ${controller.endingHourSelected.value.capitalizeFirst!}h${controller.endingMinutesSelected}",
+                    controller.currentTimeSlotSelected.value.name ==
+                            "Soir (17h-18h à 20h)"
+                        ? "De 17:00h-18:00h à 20:00H"
+                        : controller.currentTimeSlotSelected.value.name !=
+                                'Choisir'
+                            ? 'De ${controller.currentTimeSlotSelected.value.startTime?.hour.toString().padLeft(2, '0')}:${controller.currentTimeSlotSelected.value.startTime?.minute.toString().padLeft(2, '0')}H à ${controller.currentTimeSlotSelected.value.endTime?.hour.toString().padLeft(2, '0')}:${controller.currentTimeSlotSelected.value.endTime?.minute.toString().padLeft(2, '0')}H'
+                            : "Aucune plage horaire choisie",
                     style: antaStyle.copyWith(
                       decoration: TextDecoration.underline,
                       fontSize: 15,

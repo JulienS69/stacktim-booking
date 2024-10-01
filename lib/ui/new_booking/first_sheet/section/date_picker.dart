@@ -136,6 +136,10 @@ class BookingDatePicker extends StatelessWidget {
                           SnackStatusEnum.warning);
 
                       return;
+                    } else if (date.value.weekday == DateTime.friday) {
+                      controller.isFriday.value = true;
+                    } else {
+                      controller.isFriday.value = false;
                     }
                     // if picked date is ok, launch time picker
                     await controller.launchTimePicker(
