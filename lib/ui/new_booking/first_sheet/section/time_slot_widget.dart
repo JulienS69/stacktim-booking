@@ -38,7 +38,8 @@ class TimeSlotWidget extends StatelessWidget {
             ),
             onChanged: (timeSlotSelected) async {
               controller.currentTimeSlotSelected.value = timeSlotSelected;
-              if (controller.gameSelected.value.id != null) {
+              if (controller.gameSelected.value.id != null &&
+                  controller.currentTimeSlotSelected.value.name != 'Choisir') {
                 await controller.checkAvailbilityComputer();
               }
             },
