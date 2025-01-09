@@ -40,19 +40,19 @@ class NewBookingSheet {
       modalTypeBuilder: (context) {
         final size = MediaQuery.of(context).size.width;
         if (size < pageBreakpoint) {
-          return WoltModalType.bottomSheet;
+          return WoltModalType.bottomSheet();
         } else {
-          return WoltModalType.dialog;
+          return WoltModalType.dialog();
         }
       },
       onModalDismissedWithBarrierTap: () {
         Navigator.of(context).pop();
         pageIndexNotifier.value = 0;
       },
-      maxDialogWidth: 560,
-      minDialogWidth: 400,
-      minPageHeight: 0.0,
-      maxPageHeight: 0.9,
+      //  maxDialogWidth: 560,
+      // minDialogWidth: 400,
+      // minPageHeight: 0.0,
+      // maxPageHeight: 0.9,
     );
   }
 }

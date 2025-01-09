@@ -5,12 +5,10 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacktim_booking/helper/color.dart';
@@ -18,6 +16,7 @@ import 'package:stacktim_booking/helper/connection_helper.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/icons.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
+import 'package:stacktim_booking/helper/picture_helper.dart';
 import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/strings.dart';
 import 'package:stacktim_booking/helper/style.dart';
@@ -781,7 +780,6 @@ class DashboardViewController extends GetxController
                     "Ta photo a bien été transmise !", SnackStatusEnum.success);
               }
               await getMyBookings();
-              Get.back();
               bookingList.refresh();
             },
           ),
@@ -796,42 +794,23 @@ class DashboardViewController extends GetxController
       imageQuality: 80,
     );
     if (result != null) {
-      int sizeInBytes = File(result.path).lengthSync();
-      double sizeInMb = sizeInBytes / (1024 * 1024);
-      if (sizeInMb < 10) {
-        // File size is within the limit
-        imageFile.value = File(result.path);
-        imageFile.value = await compressFile(imageFile.value);
-        attachmentName.value = getReceiptName(imageFile.value);
-        await checkBooking();
-      } else {
-        AwesomeDialog(
-          context: Get.context!,
-          dialogType: DialogType.error,
-          dialogBackgroundColor: backgroundColor,
-          animType: AnimType.rightSlide,
-          title: 'Oups !',
-          desc: "Ta photo est supérieur à 10mo (${sizeInMb.round()} Mo)",
-          btnCancelText: 'Retour',
-          btnCancelOnPress: () {},
-        ).show();
-      }
+      imageFile.value = File(result.path);
+      imageFile.value = await compressFile(imageFile.value);
+      attachmentName.value = getReceiptName(imageFile.value);
+      Get.back();
+      await checkBooking();
+    } else {
+      AwesomeDialog(
+        context: Get.context!,
+        dialogType: DialogType.error,
+        dialogBackgroundColor: backgroundColor,
+        animType: AnimType.rightSlide,
+        title: 'Oups !',
+        desc: "Ta photo n'a pas pu être transmise à notre serveur",
+        btnCancelText: 'Retour',
+        btnCancelOnPress: () {},
+      ).show();
     }
-  }
-
-  // Compresse le document scanné sinon erreur de l'api
-  Future<File> compressFile(File file) async {
-    var temporaryDirectory = await getTemporaryDirectory();
-    String fileName = "${file.path.split('/').last}.jpg";
-    String path = "${temporaryDirectory.path}/$fileName";
-    final File compressedFile = File(path);
-    await FlutterImageCompress.compressAndGetFile(
-      file.path,
-      compressedFile.path,
-      quality: 50,
-    );
-
-    return compressedFile;
   }
 
   String getReceiptName(File imageFile) {
@@ -841,19 +820,6 @@ class DashboardViewController extends GetxController
     } else {
       imageName.value = 'checkout.${getFileExtension(imageFile.path)}';
       return imageName.value;
-    }
-  }
-
-  String getFileExtension(String filePath) {
-    int lastIndex = filePath.lastIndexOf('.');
-    // Utilisation de la classe Path pour extraire l'extension
-    if (lastIndex != -1 && lastIndex < filePath.length - 1) {
-      // Récupérer l'extension en utilisant la sous-chaîne
-      String extension = filePath.substring(lastIndex + 1);
-      return extension;
-    } else {
-      // Aucune extension trouvée
-      return '';
     }
   }
 

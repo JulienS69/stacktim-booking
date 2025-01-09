@@ -31,7 +31,7 @@ const styleWidget = TextStyle(
 ThemeData xMyTheme = ThemeData(
   primaryColor: Colors.red, // Couleur principale de l'application
   colorScheme: const ColorScheme(
-    background: Color.fromRGBO(32, 32, 32, 1),
+    surface: Color.fromRGBO(32, 32, 32, 1),
     brightness: Brightness.light,
     primary: Colors.red,
     onPrimary: Colors.orange,
@@ -39,12 +39,12 @@ ThemeData xMyTheme = ThemeData(
     onSecondary: Colors.black26,
     error: Colors.red,
     onError: Colors.redAccent,
-    onBackground: Colors.green,
-    //TEXT
-    surface: Colors.white,
     onSurface: Colors.white,
+    //TEXT
+    // surface: Colors.white,
+    // onSurface: Colors.white,
     surfaceTint: Colors.black,
-    surfaceVariant: Colors.black,
+    surfaceContainerHighest: Colors.black,
   ),
   dialogBackgroundColor: Colors.black,
   bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.black54),

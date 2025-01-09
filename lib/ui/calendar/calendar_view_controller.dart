@@ -1,18 +1,25 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacktim_booking/helper/color.dart';
 import 'package:stacktim_booking/helper/functions.dart';
 import 'package:stacktim_booking/helper/icons.dart';
 import 'package:stacktim_booking/helper/local_storage.dart';
+import 'package:stacktim_booking/helper/picture_helper.dart';
+import 'package:stacktim_booking/helper/snackbar.dart';
 import 'package:stacktim_booking/helper/style.dart';
+import 'package:stacktim_booking/logic/models/booking/booking.dart';
 import 'package:stacktim_booking/logic/models/user/user.dart';
+import 'package:stacktim_booking/logic/repository/booking_repository.dart';
 import 'package:stacktim_booking/logic/repository/holliday_repository.dart';
 import 'package:stacktim_booking/logic/repository/user_repository.dart';
+import 'package:stacktim_booking/widget/x_booking_card.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-
-import '../../logic/models/booking/booking.dart';
-import '../../logic/repository/booking_repository.dart';
 
 class CalendarViewController extends GetxController with StateMixin {
   final BookingRepository bookingRepository;
@@ -31,6 +38,12 @@ class CalendarViewController extends GetxController with StateMixin {
   RxInt userCreditAvailable = 0.obs;
   User currentUser = const User();
 
+  Rx<File> imageFile = File("").obs;
+  RxString attachmentName = "".obs;
+  RxString imageName = ''.obs;
+  String bookingIdToChecking = '';
+  bool isCheckInTime = false;
+
   CalendarViewController({
     required this.bookingRepository,
     required this.userRepository,
@@ -48,9 +61,13 @@ class CalendarViewController extends GetxController with StateMixin {
         getMonthlyBookings(
           DateTime.now().month,
         ),
+        getMyBookings(),
       ]).then((res) async {
         change(null, status: RxStatus.success());
       });
+      if (isCheckInTime) {
+        showPhotoDialog(Get.context!, uploadPicture, isCheckInTime);
+      }
     } catch (e) {
       await Sentry.captureMessage(
           "Erreur lors de l'initialisation des requêtes. - CalendarViewController");
@@ -160,6 +177,95 @@ class CalendarViewController extends GetxController with StateMixin {
       isShowTutorial.value = true;
     }
   }
+
+//SECTION - PICTURE
+  //This allows retrieving the list of user boooking.
+  Future<void> getMyBookings() async {
+    return await bookingRepository.getMyBookings().then(
+          (value) => value.fold(
+            (l) async {
+              await Sentry.captureException(l);
+            },
+            (r) {
+              // Liste temporaire pour stocker les réservations en cours
+              for (var booking in r) {
+                // FOR SHOWING DIALOG TO TAKING A PICTURE FOR CHECKIN
+                if (booking.status?.slug == StatusSlugs.inProgress &&
+                        booking.isCheckinComplete != true ||
+                    booking.status?.slug == StatusSlugs.passee &&
+                        booking.isCheckinComplete != true) {
+                  isCheckInTime = true;
+                  bookingIdToChecking = booking.id ?? "";
+                }
+              }
+            },
+          ),
+        );
+  }
+
+  String getReceiptName(File imageFile) {
+    imageName.value =
+        'checkin_${DateTime.now().toString()}_${currentUser.fullName}.${getFileExtension(imageFile.path)}';
+    return imageName.value;
+  }
+
+  Future<void> uploadPicture() async {
+    imageFile.value = await takePicture();
+    if (imageFile.value.path.isNotEmpty) {
+      attachmentName.value = getReceiptName(imageFile.value);
+      isCheckInTime = false;
+      Get.back();
+      await checkBooking();
+    } else {
+      AwesomeDialog(
+        context: Get.context!,
+        dialogType: DialogType.error,
+        dialogBackgroundColor: backgroundColor,
+        animType: AnimType.rightSlide,
+        title: 'Oups !',
+        desc: "Ta photo n'a pas pu être transmise à notre serveur",
+        btnCancelText: 'Retour',
+        btnCancelOnPress: () {},
+      ).show();
+    }
+  }
+
+//FOR CHEKING & CHECKOUT BOOKING
+  Future<void> checkBooking() async {
+    return await bookingRepository
+        .updateBooking(
+          currentBookingId: bookingIdToChecking,
+          isChecking: true,
+          pictureFile: imageFile.value,
+          attachmentName: attachmentName.value,
+        )
+        .then(
+          (value) => value.fold(
+            (l) async {
+              await Sentry.captureException(l);
+              AwesomeDialog(
+                context: Get.context!,
+                dialogType: DialogType.error,
+                dialogBackgroundColor: backgroundColor,
+                animType: AnimType.rightSlide,
+                title: 'Oups !',
+                desc:
+                    "Quelque chose c'est mal passé pendant l'enregistrement de ta photo",
+                btnCancelText: 'Retour',
+                btnCancelOnPress: () {},
+              ).show();
+            },
+            (r) async {
+              bookingIdToChecking = "";
+              showSnackbar(
+                  "Ta photo a bien été transmise !", SnackStatusEnum.success);
+              await getMyBookings();
+            },
+          ),
+        );
+  }
+
+// ---------------------------------------------------
 
   Future<void> closeTutorial() async {
     isShowTutorial.value = false;
