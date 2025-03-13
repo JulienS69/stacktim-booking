@@ -15,11 +15,15 @@
             "type": "dart",
             "flutterMode": "profile"
         },
-        {
-            "name": "stacktim_booking (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        }
+       {
+      "name": "RD",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "toolArgs": [
+        "--dart-define",
+        "ENV_TYPE=RD",
+      ],
+    },
     ]
 }
